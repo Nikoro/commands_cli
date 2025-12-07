@@ -1,4 +1,13 @@
-## 0.2.0
+## 0.2.1 - 2024-12-08
+
+### Changed
+- Rename `logo/` directory to `assets/` for more general media storage
+- Update documentation to reference new assets path
+
+### Added
+- Add demo.webp to showcase CLI functionality in README
+
+## 0.2.0 - 2025-12-07
 
 ### Features
 - **Update Command**: Add new `--update` (`-u`) option that intelligently updates commands_cli
@@ -29,6 +38,6 @@
 ### CI/CD
 - Add concurrency control to automatically cancel previous workflow runs
 
-## 0.1.0
+## 0.1.0 - 2025-12-07
 
 Initial release 🎉
