@@ -10,7 +10,7 @@ Future<void> handleUpdate() async {
   if (isGlobalExecution) {
     // Determine if installed from git or pub.dev
     final installationSource = await _detectInstallationSource();
-    
+
     if (installationSource == InstallationSource.git) {
       // Update from git repository
       final gitUrl = await _getGitUrl();
@@ -74,12 +74,12 @@ Future<InstallationSource> _detectInstallationSource() async {
     }
 
     final content = await pubspecLockFile.readAsString();
-    
+
     // Check if it's a git source
     if (content.contains('source: git')) {
       return InstallationSource.git;
     }
-    
+
     return InstallationSource.hosted;
   } catch (e) {
     // If we can't detect, assume hosted (pub.dev)
@@ -100,13 +100,13 @@ Future<String> _getGitUrl() async {
     }
 
     final content = await pubspecLockFile.readAsString();
-    
+
     // Extract the git URL from pubspec.lock
     final urlMatch = RegExp(r'url:\s*"?([^"\s]+)"?').firstMatch(content);
     if (urlMatch != null) {
       return urlMatch.group(1)!;
     }
-    
+
     // Fallback to default repository
     return 'https://github.com/Nikoro/commands_cli.git';
   } catch (e) {
