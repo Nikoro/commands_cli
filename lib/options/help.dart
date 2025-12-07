@@ -1,0 +1,36 @@
+import 'package:commands_cli/colors.dart';
+
+void showHelp() {
+  final options = [
+    ('help, --help, -h', 'Display this help message'),
+    ('version, --version, -v', 'Show the current version of commands'),
+    ('list, --list, -l', 'List all installed commands'),
+    ('create [--empty|-e]', 'Create a new commands.yaml file (use --empty or -e for empty file)'),
+    ('watch, --watch, -w', 'Watch commands.yaml for changes and auto-reload'),
+    ('--watch-detached, -wd', 'Start watching in detached mode (background process)'),
+    ('--watch-kill, -wk', 'Kill the detached watcher process'),
+    ('--watch-kill-all, -wka', 'Kill all detached watcher processes'),
+    ('deactivate, --deactivate, -d [command]', 'Deactivate commands package or specific commands'),
+    ('clean, --clean, -c', 'Remove all generated commands and deactivate'),
+  ];
+
+  final maxLength = options.map((o) => o.$1.length).reduce((a, b) => a > b ? a : b);
+
+  print('''
+${bold}Commands - CLI tool for managing custom commands$reset
+
+${bold}Usage:$reset commands [option]
+
+${bold}Options:$reset''');
+
+  for (final (option, description) in options) {
+    final padding = ' ' * (maxLength - option.length);
+    print('  $blue$option$reset$padding  $gray- $description$reset');
+  }
+
+  print('''
+
+${bold}Default behavior:$reset
+  Running ${blue}commands$reset without arguments will load and activate
+  all commands from commands.yaml in the current directory''');
+}

@@ -1,0 +1,16 @@
+name: commands_cli
+description: A CLI to generate project-local command wrappers.
+version: 0.1.0
+repository: https://github.com/Nikoro/commands
+issue_tracker: https://github.com/Nikoro/commands/issues
+
+environment:
+  sdk: ^3.0.0
+
+executables:
+  commands: commands
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.28.0
+

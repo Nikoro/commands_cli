@@ -1,0 +1,11 @@
+name: example
+description: Example project using commands_cli package
+version: 1.0.0
+
+environment:
+  sdk: ^3.0.0
+
+dev_dependencies:
+  commands_cli:
+    path: ../
+  test: ^1.28.0
