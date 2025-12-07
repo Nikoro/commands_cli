@@ -3,9 +3,9 @@
 </p>
 <p align="center">
   <a href="https://pub.dev/packages/commands_cli">
-    <img alt="Pub Package" src="https://tinyurl.com/yfyfbjxz">
+    <img alt="Pub Package" src="https://tinyurl.com/2pc2ny7f">
   </a>
-  <a href="https://github.com/Nikoro/commands/actions">
+  <a href="https://github.com/Nikoro/commands_cli/actions">
     <img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/Nikoro/commands_cli/ci.yaml?label=build">
   </a>
   <a href="https://opensource.org/licenses/MIT">
