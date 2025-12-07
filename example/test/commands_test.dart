@@ -144,5 +144,38 @@ void main() {
         expect(result.exitCode, equals(0));
       });
     }
+
+    for (String flag in ['help', '-h', '--help']) {
+      test('$flag flag prints help information', () async {
+        final result = await Process.run('commands', [flag]);
+
+        expect(
+          result.stdout,
+          equals(
+            '${bold}Commands - CLI tool for managing custom commands$reset\n'
+            '\n'
+            '${bold}Usage:$reset commands [option]\n'
+            '\n'
+            '${bold}Options:$reset\n'
+            '  ${blue}help, --help, -h$reset                        ${gray}- Display this help message$reset\n'
+            '  ${blue}version, --version, -v$reset                  ${gray}- Show the current version of commands$reset\n'
+            '  ${blue}list, --list, -l$reset                        ${gray}- List all installed commands$reset\n'
+            '  ${blue}create [--empty|-e]$reset                     ${gray}- Create a new commands.yaml file (use --empty or -e for empty file)$reset\n'
+            '  ${blue}watch, --watch, -w$reset                      ${gray}- Watch commands.yaml for changes and auto-reload$reset\n'
+            '  ${blue}--watch-detached, -wd$reset                   ${gray}- Start watching in detached mode (background process)$reset\n'
+            '  ${blue}--watch-kill, -wk$reset                       ${gray}- Kill the detached watcher process$reset\n'
+            '  ${blue}--watch-kill-all, -wka$reset                  ${gray}- Kill all detached watcher processes$reset\n'
+            '  ${blue}deactivate, --deactivate, -d [command]$reset  ${gray}- Deactivate commands package or specific commands$reset\n'
+            '  ${blue}clean, --clean, -c$reset                      ${gray}- Remove all generated commands and deactivate$reset\n'
+            '\n'
+            '${bold}Default behavior:$reset\n'
+            '  Running ${blue}commands$reset without arguments will load and activate\n'
+            '  all commands from commands.yaml in the current directory\n',
+          ),
+        );
+
+        expect(result.exitCode, equals(0));
+      });
+    }
   });
 }
