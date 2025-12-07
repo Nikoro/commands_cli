@@ -4,6 +4,7 @@ void showHelp() {
   final options = [
     ('help, --help, -h', 'Display this help message'),
     ('version, --version, -v', 'Show the current version of commands'),
+    ('update, --update, -u', 'Update commands package to the latest version'),
     ('list, --list, -l', 'List all installed commands'),
     ('create [--empty|-e]', 'Create a new commands.yaml file (use --empty or -e for empty file)'),
     ('watch, --watch, -w', 'Watch commands.yaml for changes and auto-reload'),
@@ -11,7 +12,7 @@ void showHelp() {
     ('--watch-kill, -wk', 'Kill the detached watcher process'),
     ('--watch-kill-all, -wka', 'Kill all detached watcher processes'),
     ('deactivate, --deactivate, -d [command]', 'Deactivate commands package or specific commands'),
-    ('clean, --clean, -c', 'Remove all generated commands and deactivate'),
+    ('clean, --clean, -c', 'Remove all generated commands'),
   ];
 
   final maxLength = options.map((o) => o.$1.length).reduce((a, b) => a > b ? a : b);

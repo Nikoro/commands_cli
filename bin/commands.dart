@@ -25,6 +25,11 @@ Future<void> main(List<String> args) async {
     return;
   }
 
+  if (args.containsAny(['update', '--update', '-u'])) {
+    await handleUpdate();
+    return;
+  }
+
   if (args.containsAny(['list', '--list', '-l'])) {
     showList();
     return;

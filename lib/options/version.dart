@@ -4,7 +4,7 @@ import 'package:commands_cli/colors.dart';
 
 Future<void> showVersion() async {
   final version = await _getVersion();
-  print('commands version: $bold$blue$version$reset');
+  print('commands_cli version: $bold$blue$version$reset');
 }
 
 Future<String?> _getVersion() async {
@@ -15,14 +15,14 @@ Future<String?> _getVersion() async {
 
     if (globalResult.exitCode == 0) {
       final output = globalResult.stdout.toString();
-      final match = RegExp(r'^commands\s+([\d\.]+)', multiLine: true).firstMatch(output);
+      final match = RegExp(r'^commands_cli\s+([\d\.]+)', multiLine: true).firstMatch(output);
       if (match != null) return match.group(1);
     }
   }
 
   final lockFile = File('pubspec.lock');
   if (lockFile.existsSync()) {
-    final version = _parseVersionFromLock(lockFile, 'commands');
+    final version = _parseVersionFromLock(lockFile, 'commands_cli');
     if (version != null) return version;
   }
 
