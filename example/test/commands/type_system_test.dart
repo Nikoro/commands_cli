@@ -107,6 +107,21 @@ void main() {
   // ============================================================================
 
   group('type_enum_no_default', () {
+    test('shows interactive picker when no option specified', () async {
+      final result = await Process.run('type_enum_no_default', []);
+      expect(
+        result.stdout,
+        equals('\n'
+            'Select value for ${blue}target$reset:\n'
+            '\n'
+            '    ${green}1. ios     ✓$reset\n'
+            '    2. android  \n'
+            '    3. web      \n'
+            '\n'
+            '${gray}Press number (1-3) or press Esc to cancel:$reset\n'
+            ''),
+      );
+    });
     test('accepts -t flag with valid enum value', () async {
       final result = await Process.run('type_enum_no_default', ['-t', 'ios']);
       expect(result.stdout, equals('target=ios\n'));
@@ -726,6 +741,22 @@ void main() {
   // ============================================================================
 
   group('type_enum_required_positional', () {
+    test('shows interactive picker when no option specified', () async {
+      final result = await Process.run('type_enum_required_positional', []);
+      expect(
+        result.stdout,
+        equals('\n'
+            'Select value for ${blue}platform$reset:\n'
+            '\n'
+            '    ${green}1. Alpha   ✓$reset\n'
+            '    2. Bravo    \n'
+            '    3. Charlie  \n'
+            '\n'
+            '${gray}Press number (1-3) or press Esc to cancel:$reset\n'
+            ''),
+      );
+    });
+
     test('accepts valid positional enum value', () async {
       final result = await Process.run('type_enum_required_positional', ['Alpha']);
       expect(result.stdout, equals('platform=Alpha\n'));
