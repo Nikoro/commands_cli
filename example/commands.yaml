@@ -1506,3 +1506,10 @@ type_explicit_string: ## Test explicit string type prevents inference
         type: string
       - version: '-v, --version'
         type: string
+
+type_enum_required_positional: ## Test required positional enum without default
+  script: echo "platform={platform}"
+  params:
+    required:
+      - platform:
+        values: [Alpha, Bravo, Charlie]

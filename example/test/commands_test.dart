@@ -110,6 +110,7 @@ void main() {
           '✅ ${bold}${green}type_quoted_boolean$reset:                               ${gray}Test quoted boolean becomes string. Type "type_quoted_boolean --help" to learn more.$reset\n'
           '✅ ${bold}${green}type_quoted_inferred$reset:                              ${gray}Test quoted values become strings. Type "type_quoted_inferred --help" to learn more.$reset\n'
           '✅ ${bold}${green}type_explicit_string$reset:                              ${gray}Test explicit string type prevents inference. Type "type_explicit_string --help" to learn more.$reset\n'
+          '✅ ${bold}${green}type_enum_required_positional$reset:                     ${gray}Test required positional enum without default. Type "type_enum_required_positional --help" to learn more.$reset\n'
           '⚠️  ${bold}${yellow}test$reset:                                              is a ${bold}${yellow}reserved$reset command. ${gray}In order to override it see: \x1B]8;;https://github.com/Nikoro/commands/blob/main/README.md#overriding-existing-commands\x1B\\README\x1B]8;;\x1B\\$reset\n'
           '❌ ${bold}${red}invalid!$reset:                                          contains invalid characters\n'
           '❌ ${bold}${red}invalid_quoted_int$reset:                                Parameter ${bold}${red}port$reset is declared as type ${gray}[int]$reset, but its default value is ${gray}[string]$reset\n'

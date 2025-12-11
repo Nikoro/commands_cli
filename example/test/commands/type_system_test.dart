@@ -722,6 +722,55 @@ void main() {
   });
 
   // ============================================================================
+  // REQUIRED POSITIONAL ENUM WITHOUT DEFAULT TESTS
+  // ============================================================================
+
+  group('type_enum_required_positional', () {
+    test('accepts valid positional enum value', () async {
+      final result = await Process.run('type_enum_required_positional', ['Alpha']);
+      expect(result.stdout, equals('platform=Alpha\n'));
+    });
+
+    test('accepts another valid positional enum value', () async {
+      final result = await Process.run('type_enum_required_positional', ['Bravo']);
+      expect(result.stdout, equals('platform=Bravo\n'));
+    });
+
+    test('accepts third valid positional enum value', () async {
+      final result = await Process.run('type_enum_required_positional', ['Charlie']);
+      expect(result.stdout, equals('platform=Charlie\n'));
+    });
+
+    test('rejects invalid positional enum value', () async {
+      final result = await Process.run('type_enum_required_positional', ['Delta']);
+      expect(
+        result.stderr,
+        equals(
+          "❌ Parameter ${red}platform$reset has invalid value: \"Delta\"\n"
+          "💡 Must be one of: ${green}Alpha$reset, ${green}Bravo$reset, ${green}Charlie$reset\n",
+        ),
+      );
+      expect(result.exitCode, equals(1));
+    });
+
+    for (String flag in ['-h', '--help']) {
+      test('$flag prints help with enum values', () async {
+        final result = await Process.run('type_enum_required_positional', [flag]);
+        expect(
+          result.stdout,
+          equals(
+            '${blue}type_enum_required_positional$reset: ${gray}Test required positional enum without default$reset\n'
+            'params:\n'
+            '  required:\n'
+            '    ${magenta}platform$reset\n'
+            '    ${bold}values$reset: Alpha, Bravo, Charlie\n',
+          ),
+        );
+      });
+    }
+  });
+
+  // ============================================================================
   // EXPLICIT STRING TYPE TESTS
   // ============================================================================
 
