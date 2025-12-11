@@ -33,12 +33,17 @@ Integration tests are located in `example/test/` and are essential to verify the
    
    Note: By default (without `--git-ref`), this activates from the `main` branch. Use `--git-ref` to specify a different branch.
 
-3. **Activate all commands:**
+3. **Clean all previously generated commands:**
+   ```sh
+   commands clean
+   ```   
+
+4. **Activate all commands:**
    ```sh
    commands
    ```
 
-4. **Run the integration tests:**
+5. **Run the integration tests:**
    ```sh
    cd example
    dart test
