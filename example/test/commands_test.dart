@@ -178,9 +178,9 @@ void main() {
             '  all commands from commands.yaml in the current directory\n'
             '\n'
             '${bold}Examples:$reset\n'
-            '  ${blue}commands --silent$reset              Activate commands without any output\n'
-            '  ${blue}commands -s -ee$reset                Silent mode, exit on error (shows only errors)\n'
-            '  ${blue}commands --exit-warning$reset        Exit with error code if warnings occur\n',
+            '  ${blue}commands --silent$reset            ${gray}- Activate commands without any output$reset\n'
+            '  ${blue}commands -s -ee$reset              ${gray}- Silent mode, exit on error (shows only errors)$reset\n'
+            '  ${blue}commands --exit-warning$reset      ${gray}- Exit with error code if warnings occur$reset\n',
           ),
         );
 
@@ -292,6 +292,5 @@ void main() {
         expect(result.exitCode, equals(1));
       });
     }
-
   });
 }

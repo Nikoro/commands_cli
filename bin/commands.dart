@@ -21,9 +21,8 @@ Future<void> main(List<String> args) async {
   final exitOnWarning = args.containsAny(['--exit-warning', '-ew']);
 
   // Remove flags from args for other processing
-  final cleanArgs = args.where((arg) =>
-    !['--silent', '-s', '--exit-error', '-ee', '--exit-warning', '-ew'].contains(arg)
-  ).toList();
+  final cleanArgs =
+      args.where((arg) => !['--silent', '-s', '--exit-error', '-ee', '--exit-warning', '-ew'].contains(arg)).toList();
 
   if (cleanArgs.containsAny(['help', '--help', '-h'])) {
     showHelp();

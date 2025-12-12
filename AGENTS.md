@@ -40,12 +40,11 @@ Integration tests are located in `example/test/` and are essential to verify the
 
 4. **Activate all commands:**
    ```sh
-   commands
+   cd example && commands
    ```
 
 5. **Run the integration tests:**
    ```sh
-   cd example
    dart test
    ```
 
