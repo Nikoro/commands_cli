@@ -49,7 +49,7 @@ ${bold}Default behavior:$reset
   all commands from commands.yaml in the current directory
 
 ${bold}Examples:$reset
-  $blue commands --silent$reset              Activate commands without success output
-  $blue commands -s -ee$reset                Silent mode, exit on error
-  $blue commands --exit-warning$reset        Exit with error code if warnings occur''');
+  ${blue}commands --silent$reset              Activate commands without success output
+  ${blue}commands -s -ee$reset                Silent mode, exit on error
+  ${blue}commands --exit-warning$reset        Exit with error code if warnings occur''');
 }
