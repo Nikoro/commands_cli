@@ -13,33 +13,23 @@ void showHelp() {
     ('--watch-kill-all, -wka', 'Kill all detached watcher processes'),
     ('deactivate, --deactivate, -d [command]', 'Deactivate commands package or specific commands'),
     ('clean, --clean, -c', 'Remove all generated commands'),
-  ];
-
-  final flags = [
-    ('--silent, -s', 'Suppress success output (only show errors/warnings)'),
+    ('--silent, -s', 'Suppress all output (only show errors/warnings when combined with exit options)'),
     ('--exit-error, -ee', 'Exit with code 1 immediately on error'),
     ('--exit-warning, -ew', 'Exit with code 1 immediately on error or warning'),
   ];
 
-  final maxLength = [...options, ...flags].map((o) => o.$1.length).reduce((a, b) => a > b ? a : b);
+  final maxLength = options.map((o) => o.$1.length).reduce((a, b) => a > b ? a : b);
 
   print('''
 ${bold}Commands - CLI tool for managing custom commands$reset
 
-${bold}Usage:$reset commands [option] [flags]
+${bold}Usage:$reset commands [option]
 
 ${bold}Options:$reset''');
 
   for (final (option, description) in options) {
     final padding = ' ' * (maxLength - option.length);
     print('  $blue$option$reset$padding  $gray- $description$reset');
-  }
-
-  print('\n${bold}Flags:$reset');
-
-  for (final (flag, description) in flags) {
-    final padding = ' ' * (maxLength - flag.length);
-    print('  $blue$flag$reset$padding  $gray- $description$reset');
   }
 
   print('''
@@ -49,7 +39,7 @@ ${bold}Default behavior:$reset
   all commands from commands.yaml in the current directory
 
 ${bold}Examples:$reset
-  ${blue}commands --silent$reset              Activate commands without success output
-  ${blue}commands -s -ee$reset                Silent mode, exit on error
+  ${blue}commands --silent$reset              Activate commands without any output
+  ${blue}commands -s -ee$reset                Silent mode, exit on error (shows only errors)
   ${blue}commands --exit-warning$reset        Exit with error code if warnings occur''');
 }

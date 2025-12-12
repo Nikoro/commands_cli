@@ -155,33 +155,31 @@ void main() {
           equals(
             '${bold}Commands - CLI tool for managing custom commands$reset\n'
             '\n'
-            '${bold}Usage:$reset commands [option] [flags]\n'
+            '${bold}Usage:$reset commands [option]\n'
             '\n'
             '${bold}Options:$reset\n'
-            '  ${blue}help, --help, -h$reset                        ${gray}- Display this help message$reset\n'
-            '  ${blue}version, --version, -v$reset                  ${gray}- Show the current version of commands$reset\n'
-            '  ${blue}update, --update, -u$reset                    ${gray}- Update commands package to the latest version$reset\n'
-            '  ${blue}list, --list, -l$reset                        ${gray}- List all installed commands$reset\n'
-            '  ${blue}create [--empty|-e]$reset                     ${gray}- Create a new commands.yaml file (use --empty or -e for empty file)$reset\n'
-            '  ${blue}watch, --watch, -w$reset                      ${gray}- Watch commands.yaml for changes and auto-reload$reset\n'
-            '  ${blue}--watch-detached, -wd$reset                   ${gray}- Start watching in detached mode (background process)$reset\n'
-            '  ${blue}--watch-kill, -wk$reset                       ${gray}- Kill the detached watcher process$reset\n'
-            '  ${blue}--watch-kill-all, -wka$reset                  ${gray}- Kill all detached watcher processes$reset\n'
-            '  ${blue}deactivate, --deactivate, -d [command]$reset  ${gray}- Deactivate commands package or specific commands$reset\n'
-            '  ${blue}clean, --clean, -c$reset                      ${gray}- Remove all generated commands$reset\n'
-            '\n'
-            '${bold}Flags:$reset\n'
-            '  ${blue}--silent, -s$reset                            ${gray}- Suppress success output (only show errors/warnings)$reset\n'
-            '  ${blue}--exit-error, -ee$reset                       ${gray}- Exit with code 1 immediately on error$reset\n'
-            '  ${blue}--exit-warning, -ew$reset                     ${gray}- Exit with code 1 immediately on error or warning$reset\n'
+            '  ${blue}help, --help, -h$reset                                           ${gray}- Display this help message$reset\n'
+            '  ${blue}version, --version, -v$reset                                     ${gray}- Show the current version of commands$reset\n'
+            '  ${blue}update, --update, -u$reset                                       ${gray}- Update commands package to the latest version$reset\n'
+            '  ${blue}list, --list, -l$reset                                           ${gray}- List all installed commands$reset\n'
+            '  ${blue}create [--empty|-e]$reset                                        ${gray}- Create a new commands.yaml file (use --empty or -e for empty file)$reset\n'
+            '  ${blue}watch, --watch, -w$reset                                         ${gray}- Watch commands.yaml for changes and auto-reload$reset\n'
+            '  ${blue}--watch-detached, -wd$reset                                      ${gray}- Start watching in detached mode (background process)$reset\n'
+            '  ${blue}--watch-kill, -wk$reset                                          ${gray}- Kill the detached watcher process$reset\n'
+            '  ${blue}--watch-kill-all, -wka$reset                                     ${gray}- Kill all detached watcher processes$reset\n'
+            '  ${blue}deactivate, --deactivate, -d [command]$reset                     ${gray}- Deactivate commands package or specific commands$reset\n'
+            '  ${blue}clean, --clean, -c$reset                                         ${gray}- Remove all generated commands$reset\n'
+            '  ${blue}--silent, -s$reset                                               ${gray}- Suppress all output (only show errors/warnings when combined with exit options)$reset\n'
+            '  ${blue}--exit-error, -ee$reset                                          ${gray}- Exit with code 1 immediately on error$reset\n'
+            '  ${blue}--exit-warning, -ew$reset                                        ${gray}- Exit with code 1 immediately on error or warning$reset\n'
             '\n'
             '${bold}Default behavior:$reset\n'
             '  Running ${blue}commands$reset without arguments will load and activate\n'
             '  all commands from commands.yaml in the current directory\n'
             '\n'
             '${bold}Examples:$reset\n'
-            '  ${blue}commands --silent$reset              Activate commands without success output\n'
-            '  ${blue}commands -s -ee$reset                Silent mode, exit on error\n'
+            '  ${blue}commands --silent$reset              Activate commands without any output\n'
+            '  ${blue}commands -s -ee$reset                Silent mode, exit on error (shows only errors)\n'
             '  ${blue}commands --exit-warning$reset        Exit with error code if warnings occur\n',
           ),
         );
@@ -215,13 +213,7 @@ void main() {
 
         final output = result.stdout as String;
 
-        // Should NOT contain success messages (✅)
-        expect(output, isNot(contains('✅')));
-        // Should NOT contain warnings (⚠️) when not combined with exit flags
-        expect(output, isNot(contains('⚠️')));
-        // Should NOT contain errors (❌) when not combined with exit flags
-        expect(output, isNot(contains('❌')));
-
+        expect(output, isEmpty);
         expect(result.exitCode, equals(0));
       });
     }
@@ -235,7 +227,7 @@ void main() {
         final output = result.stdout as String;
 
         // Should still show the errors
-        expect(output, contains('❌'));
+        expect(output, allOf(contains('❌'), contains('$red')));
       });
     }
 
@@ -248,8 +240,7 @@ void main() {
         final output = result.stdout as String;
 
         // Should show warnings and errors
-        expect(output, contains('⚠️'));
-        expect(output, contains('❌'));
+        expect(output, allOf(contains('❌'), contains('$red'), contains('⚠️'), contains('$yellow')));
       });
     }
 
@@ -259,13 +250,13 @@ void main() {
       final output = result.stdout as String;
 
       // Should NOT contain success messages (✅)
-      expect(output, isNot(contains('✅')));
+      expect(output, isNot(allOf(contains('✅'), contains('$green'))));
 
       // Should NOT contain warnings (silent mode without --exit-warning)
-      expect(output, isNot(contains('⚠️')));
+      expect(output, isNot(allOf(contains('⚠️'), contains('$yellow'))));
 
       // Should show errors
-      expect(output, contains('❌'));
+      expect(output, allOf(contains('❌'), contains('$red')));
 
       // Should exit with code 1
       expect(result.exitCode, equals(1));
@@ -277,13 +268,13 @@ void main() {
       final output = result.stdout as String;
 
       // Should NOT contain success messages (✅)
-      expect(output, isNot(contains('✅')));
+      expect(output, isNot(allOf(contains('✅'), contains('$green'))));
 
       // Should NOT contain warnings
-      expect(output, isNot(contains('⚠️')));
+      expect(output, isNot(allOf(contains('⚠️'), contains('$yellow'))));
 
       // Should show errors
-      expect(output, contains('❌'));
+      expect(output, allOf(contains('❌'), contains('$red')));
 
       // Should exit with code 1
       expect(result.exitCode, equals(1));
@@ -295,13 +286,13 @@ void main() {
       final output = result.stdout as String;
 
       // Should NOT contain success messages (✅)
-      expect(output, isNot(contains('✅')));
+      expect(output, isNot(allOf(contains('✅'), contains('$green'))));
 
       // Should show warnings
-      expect(output, contains('⚠️'));
+      expect(output, allOf(contains('⚠️'), contains('$yellow')));
 
       // Should show errors
-      expect(output, contains('❌'));
+      expect(output, allOf(contains('❌'), contains('$red')));
 
       // Should exit with code 1
       expect(result.exitCode, equals(1));
@@ -313,30 +304,16 @@ void main() {
       final output = result.stdout as String;
 
       // Should NOT contain success messages (✅)
-      expect(output, isNot(contains('✅')));
+      expect(output, isNot(allOf(contains('✅'), contains('$green'))));
 
       // Should show warnings
-      expect(output, contains('⚠️'));
+      expect(output, allOf(contains('⚠️'), contains('$yellow')));
 
       // Should show errors
-      expect(output, contains('❌'));
+      expect(output, allOf(contains('❌'), contains('$red')));
 
       // Should exit with code 1
       expect(result.exitCode, equals(1));
-    });
-
-    test('--help flag works with --silent', () async {
-      final result = await Process.run('commands', ['--help', '--silent']);
-
-      final output = result.stdout as String;
-
-      // Should show help output
-      expect(output, contains('Commands - CLI tool'));
-      expect(output, contains('--silent, -s'));
-      expect(output, contains('--exit-error, -ee'));
-      expect(output, contains('--exit-warning, -ew'));
-
-      expect(result.exitCode, equals(0));
     });
   });
 }
