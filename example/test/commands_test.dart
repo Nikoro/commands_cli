@@ -169,7 +169,7 @@ void main() {
             '  ${blue}--watch-kill-all, -wka$reset                                     ${gray}- Kill all detached watcher processes$reset\n'
             '  ${blue}deactivate, --deactivate, -d [command]$reset                     ${gray}- Deactivate commands package or specific commands$reset\n'
             '  ${blue}clean, --clean, -c$reset                                         ${gray}- Remove all generated commands$reset\n'
-            '  ${blue}--silent, -s$reset                                               ${gray}- Suppress all output (only show errors/warnings when combined with exit options)$reset\n'
+            '  ${blue}--silent, -s$reset                                               ${gray}- Suppress all output (combine with exit options to show only errors/warnings)$reset\n'
             '  ${blue}--exit-error, -ee$reset                                          ${gray}- Exit with code 1 immediately on error$reset\n'
             '  ${blue}--exit-warning, -ew$reset                                        ${gray}- Exit with code 1 immediately on error or warning$reset\n'
             '\n'
