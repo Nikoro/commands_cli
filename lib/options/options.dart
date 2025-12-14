@@ -3,6 +3,7 @@ export 'create.dart';
 export 'deactivate.dart';
 export 'help.dart';
 export 'list.dart';
+export 'regenerate.dart';
 export 'update.dart';
 export 'version.dart';
 export 'watch.dart';

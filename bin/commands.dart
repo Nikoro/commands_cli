@@ -107,6 +107,11 @@ Future<void> main(List<String> args) async {
     return;
   }
 
+  if (cleanArgs.containsAny(['regenerate', '--regenerate', '-r'])) {
+    handleRegenerate();
+    return;
+  }
+
   if (!hasYamlFile) {
     print('❌ No commands.yaml found');
     exit(1);

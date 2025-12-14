@@ -13,6 +13,7 @@ void showHelp() {
     ('--watch-kill-all, -wka', 'Kill all detached watcher processes'),
     ('deactivate, --deactivate, -d [command]', 'Deactivate commands package or specific commands'),
     ('clean, --clean, -c', 'Remove all generated commands'),
+    ('regenerate, --regenerate, -r', 'Clean and regenerate all previously generated commands'),
     ('--silent, -s', 'Suppress all output (combine with exit options to show only errors/warnings)'),
     ('--exit-error, -ee', 'Exit with code 1 immediately on error'),
     ('--exit-warning, -ew', 'Exit with code 1 immediately on error or warning'),
