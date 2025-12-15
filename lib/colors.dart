@@ -9,3 +9,4 @@ const gray = '\x1B[90m';
 const magenta = '\x1B[35m';
 const bgGreen = '\x1B[42m';
 const black = '\x1B[30m';
+const orange = '\x1B[38;5;209m'; // Orange/reddish color similar to #D5989A

@@ -1,10 +1,29 @@
 import 'dart:io';
 
 import 'package:commands_cli/colors.dart';
+import 'package:commands_cli/version_checker.dart';
 
 Future<void> showVersion() async {
   final version = await _getVersion();
   print('commands_cli version: $bold$blue$version$reset');
+
+  // Check for updates
+  if (version != null) {
+    final updateCheck = await checkForUpdate(version);
+
+    if (updateCheck != null && updateCheck.hasNewerVersion) {
+      print('${orange}Update available!$reset $blue$version$reset → $blue${updateCheck.latestVersion}$reset');
+
+      if (updateCheck.changelogUrl != null) {
+        final url = updateCheck.changelogUrl!;
+        // OSC 8 hyperlink: \x1B]8;;URL\x1B\\TEXT\x1B]8;;\x1B\\
+        final clickableLink = '\x1B]8;;$url\x1B\\$blue$url$reset\x1B]8;;\x1B\\';
+        print('${orange}Changelog:$reset $clickableLink');
+      }
+
+      print('Run ${blue}commands update$reset to update');
+    }
+  }
 }
 
 Future<String?> _getVersion() async {
