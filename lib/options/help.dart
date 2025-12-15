@@ -4,19 +4,19 @@ void showHelp() {
   final options = [
     ('help, --help, -h', 'Display this help message'),
     ('version, --version, -v', 'Show the current version of commands'),
-    ('update, --update, -u', 'Update commands package to the latest version'),
-    ('list, --list, -l', 'List all installed commands'),
+    ('clean, --clean, -c', 'Remove all generated commands'),
     ('create [--empty|-e]', 'Create a new commands.yaml file (use --empty or -e for empty file)'),
+    ('deactivate, --deactivate, -d [command]', 'Deactivate commands package or specific commands'),
+    ('list, --list, -l', 'List all installed commands'),
+    ('regenerate, --regenerate, -r', 'Clean and regenerate all previously generated commands'),
+    ('update, --update, -u', 'Update commands package to the latest version'),
     ('watch, --watch, -w', 'Watch commands.yaml for changes and auto-reload'),
     ('--watch-detached, -wd', 'Start watching in detached mode (background process)'),
     ('--watch-kill, -wk', 'Kill the detached watcher process'),
     ('--watch-kill-all, -wka', 'Kill all detached watcher processes'),
-    ('deactivate, --deactivate, -d [command]', 'Deactivate commands package or specific commands'),
-    ('clean, --clean, -c', 'Remove all generated commands'),
-    ('regenerate, --regenerate, -r', 'Clean and regenerate all previously generated commands'),
-    ('--silent, -s', 'Suppress all output (combine with exit options to show only errors/warnings)'),
     ('--exit-error, -ee', 'Exit with code 1 immediately on error'),
     ('--exit-warning, -ew', 'Exit with code 1 immediately on error or warning'),
+    ('--silent, -s', 'Suppress all output (combine with exit options to show only errors/warnings)'),
   ];
 
   final maxLength = options.map((o) => o.$1.length).reduce((a, b) => a > b ? a : b);
