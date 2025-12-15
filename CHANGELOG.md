@@ -1,3 +1,41 @@
+
+## 0.3.0 - 2025-12-15
+
+### Added
+- Update check: Notifies users when a new version is available and provides a clickable changelog link
+- `regenerate` command: Cleans and reactivates all commands in one step
+- `--silent`, `--exit-error`, and `--exit-warning` flags for improved CLI control
+- Auto-regenerate after successful update
+- String.containsAny extension for cleaner string checks
+- Tests for version checking and enum picker in interactive cases
+
+### Changed
+- Help output: Reordered and grouped options for clarity
+- Treat `--silent` and `--exit` options as regular options in help
+- Improved enum validation error messages
+- Improved update logic to match generated commands dependency to global installation
+
+### Fixed
+- Correctly reactivate individual commands after regeneration
+- Remove leading space in help examples output
+- Allow enum picker for required positional params without defaults
+- Improve error messages for invalid enum values
+- Correct padding in help output test expectations
+
+### Documentation
+- Expanded AGENTS.md and CLAUDE.md with commit and workflow rules
+- Clarified help and option descriptions
+
+### Deprecated
+- Nothing deprecated in this release
+
+### Removed
+- Nothing removed in this release
+
+### Security
+- No security fixes in this release
+
+---
 ## 0.2.1 - 2024-12-08
 
 ### Changed
