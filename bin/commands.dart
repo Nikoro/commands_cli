@@ -170,8 +170,12 @@ Future<void> main(List<String> args) async {
   // Warm up new commands if needed
   if (commandsNeedingWarmup.isNotEmpty) {
     final s = commandsNeedingWarmup.length > 1 ? 's' : '';
-    print('🔥 Warming up ${commandsNeedingWarmup.length} new command$s...');
-    await warmUpCommands(commandsNeedingWarmup);
+    final commandText = '🔥 Warming up ${commandsNeedingWarmup.length} new command$s';
+    print('$commandText - ${gray}0%$reset');
+    await warmUpCommands(commandsNeedingWarmup, onProgress: (current, total) {
+      final percentage = ((current / total) * 100).round();
+      stdout.write('\x1b[1A\r$commandText - $gray$percentage%$reset\n');
+    });
 
     // Reactivate after warmup to register snapshots
     await activatePackage(GeneratedCommands.dir);
