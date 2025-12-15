@@ -45,24 +45,31 @@ Future<void> handleUpdate() async {
     print(output);
 
     // Check if already up to date
-    if (output.containsAny([
+    final alreadyUpToDate = output.containsAny([
       'already activated at newest available version',
       'is already active',
       'already using',
-    ])) {
+    ]);
+
+    // Temporary: always run regenerate for testing
+    const forceRegenerate = true;
+
+    if (alreadyUpToDate && !forceRegenerate) {
       print('$bold$blue Already up to date!$reset');
     } else {
       print('$bold$green✓ Successfully updated!$reset\n');
 
       // Regenerate commands after update
-      final regenerateResult = await Process.run(
+      final regenerateProcess = await Process.start(
         'commands',
         ['regenerate'],
         runInShell: true,
+        mode: ProcessStartMode.inheritStdio,
       );
-      print(regenerateResult.stdout);
-      if (regenerateResult.exitCode != 0) {
-        print(regenerateResult.stderr);
+
+      final regenerateExitCode = await regenerateProcess.exitCode;
+      if (regenerateExitCode != 0) {
+        exit(regenerateExitCode);
       }
     }
   } else {
