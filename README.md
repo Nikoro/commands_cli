@@ -89,7 +89,7 @@ While `Makefile` is a powerful and widely used tool, [`commands_cli`](https://pu
     build: ## Build for platform
       script: echo "Building for {platform}"
       params:
-        optional:
+        required:
           - platform: '-p, --platform'
             values: [ios, android, web]
     ```
@@ -486,7 +486,7 @@ build: ## Build for platform
     echo "Building for {platform}"
   params:
     optional:
-      - platform: '-p, --platform'
+      - required: '-p, --platform'
         values: [ios, android, web]
 ```
 
