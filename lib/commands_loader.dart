@@ -131,7 +131,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
     }
 
     final command = _buildCommand(tempCommandMap, currentCommandDescription);
-    if (currentCommand != null) {
+    // Only add the command if it doesn't have validation errors
+    if (currentCommand != null && !_validationErrors.containsKey(currentCommand)) {
       result[currentCommand] = command;
     }
   }
