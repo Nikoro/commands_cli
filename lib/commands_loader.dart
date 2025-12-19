@@ -601,6 +601,19 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       }
 
       currentParamMetadata['values'] = valuesList;
+
+      // Validate enum values against explicit type immediately
+      final type = currentParamMetadata['type'] as String?;
+      if (type != null && currentParamMetadata['isTypeExplicit'] == true) {
+        final enumValidation = EnumTypeValidator.validateEnumValues(currentParamName, type, valuesList);
+        if (!enumValidation.isValid && currentCommand != null) {
+          _validationErrors[currentCommand] = enumValidation.errorMessage ?? 'validation error';
+          currentParamName = null;
+          currentParamMetadata = {};
+          continue;
+        }
+      }
+
       continue;
     }
 
