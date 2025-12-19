@@ -1163,40 +1163,11 @@ void main() {
   });
 
   // ============================================================================
-  // INVALID TYPED ENUM TESTS (validation at load time)
+  // INVALID TYPED ENUM TESTS (validation at activation time)
   // ============================================================================
 
-  group('invalid_typed_enum_int_string', () {
-    test('shows validation error when command is run', () async {
-      final result = await Process.run('invalid_typed_enum_int_string', []);
-      expect(result.stderr, contains('Parameter'));
-      expect(result.stderr, contains('platform'));
-      expect(result.stderr, contains('[integer]'));
-      expect(result.stderr, contains('"ios"'));
-      expect(result.stderr, contains('[string]'));
-      expect(result.exitCode, equals(1));
-    });
-  });
-
-  group('invalid_typed_enum_int_multi', () {
-    test('shows validation error with multiple invalid values', () async {
-      final result = await Process.run('invalid_typed_enum_int_multi', []);
-      expect(result.stderr, contains('Parameter'));
-      expect(result.stderr, contains('platform'));
-      expect(result.stderr, contains('[integer]'));
-      expect(result.stderr, contains('"ios"'));
-      expect(result.stderr, contains('"2.2"'));
-      expect(result.exitCode, equals(1));
-    });
-  });
-
-  group('invalid_typed_enum_int_default', () {
-    test('shows validation error for invalid default type', () async {
-      final result = await Process.run('invalid_typed_enum_int_default', []);
-      expect(result.stderr, contains('Parameter'));
-      expect(result.stderr, contains('level'));
-      expect(result.stderr, contains('"text"'));
-      expect(result.exitCode, equals(1));
-    });
-  });
+  // Invalid typed enum commands are now rejected at activation time
+  // rather than runtime, so they cannot be tested by running the commands.
+  // The validation is tested in the activation output test in commands_test.dart
+  // which verifies these commands show error messages during activation.
 }
