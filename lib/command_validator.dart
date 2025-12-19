@@ -274,16 +274,12 @@ class EnumTypeValidator {
     }
 
     final typeName = type == 'int' ? 'integer' : type;
-    final hint = StringBuffer(
-        '${typeName.substring(0, 1).toUpperCase()}${typeName.substring(1)} parameters must have a valid $typeName default');
-
-    if (values != null && values.isNotEmpty) {
-      hint.write('\n💡 Must be one of: ${values.join(', ')}');
-    }
+    final defaultTypeName = getValueType(defaultValue);
 
     return ValidationResult.error(
-      'Parameter $bold$red$paramName$reset has invalid default: "$defaultValue"',
-      hint: hint.toString(),
+      'Parameter $bold$red$paramName$reset is declared as type $gray[$typeName]$reset, but its default value is $gray[$defaultTypeName]$reset',
+      hint:
+          'Quoted values are always strings. Either remove quotes (default: $defaultValue) or change type to string',
     );
   }
 }
