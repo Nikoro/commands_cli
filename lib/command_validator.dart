@@ -278,8 +278,7 @@ class EnumTypeValidator {
 
     return ValidationResult.error(
       'Parameter $bold$red$paramName$reset is declared as type $gray[$typeName]$reset, but its default value is $gray[$defaultTypeName]$reset',
-      hint:
-          'Quoted values are always strings. Either remove quotes (default: $defaultValue) or change type to string',
+      hint: 'Quoted values are always strings. Either remove quotes (default: $defaultValue) or change type to string',
     );
   }
 }

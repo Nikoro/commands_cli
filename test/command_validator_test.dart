@@ -268,7 +268,7 @@ void main() {
         expect(result.isValid, isFalse);
         expect(result.errorMessage, contains('Parameter'));
         expect(result.errorMessage, contains('port'));
-        expect(result.errorMessage, contains('[int]'));
+        expect(result.errorMessage, contains('[integer]'));
         expect(result.errorMessage, contains('[string]'));
         expect(result.hint, contains('Quoted values are always strings'));
         expect(result.hint, contains('default: 3000'));
@@ -360,7 +360,7 @@ void main() {
         expect(result.errorMessage, contains('Parameter'));
         expect(result.errorMessage, contains('code'));
         expect(result.errorMessage, contains('[string]'));
-        expect(result.errorMessage, contains('[int]'));
+        expect(result.errorMessage, contains('[integer]'));
         expect(result.hint, contains('Add quotes around numeric values'));
         expect(result.hint, contains('default: "123"'));
       });
@@ -606,9 +606,9 @@ void main() {
           );
           expect(result.isValid, isFalse);
           expect(result.errorMessage, contains('platform'));
-          expect(result.errorMessage, contains('"text"'));
-          expect(result.hint, contains('Integer'));
-          expect(result.hint, contains('Must be one of'));
+          expect(result.errorMessage, contains('[integer]'));
+          expect(result.errorMessage, contains('[string]'));
+          expect(result.hint, contains('Quoted values are always strings'));
         });
 
         test('returns error when double default is string', () {
@@ -620,7 +620,9 @@ void main() {
           );
           expect(result.isValid, isFalse);
           expect(result.errorMessage, contains('ratio'));
-          expect(result.errorMessage, contains('"text"'));
+          expect(result.errorMessage, contains('[double]'));
+          expect(result.errorMessage, contains('[string]'));
+          expect(result.hint, contains('Quoted values are always strings'));
         });
       });
     });
