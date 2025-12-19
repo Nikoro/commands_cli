@@ -118,8 +118,9 @@ class CommandValidator {
 
     // Rule 1: If default value was quoted and type is explicitly non-string, that's an error
     if (wasQuoted && type != 'string') {
+      final displayType = type == 'int' ? 'integer' : type;
       return ValidationResult.error(
-        'Parameter $bold$red$paramName$reset is declared as type $gray[$type]$reset, but its default value is $gray[string]$reset',
+        'Parameter $bold$red$paramName$reset is declared as type $gray[$displayType]$reset, but its default value is $gray[string]$reset',
         hint:
             'Quoted values are always strings. Either remove quotes (default: $defaultValue) or change type to string',
       );
@@ -131,7 +132,7 @@ class CommandValidator {
       final isDouble = double.tryParse(defaultValue) != null && defaultValue.contains('.');
 
       if (isInt || isDouble) {
-        final actualType = isInt ? 'int' : 'double';
+        final actualType = isInt ? 'integer' : 'double';
         return ValidationResult.error(
           'Parameter $bold$red$paramName$reset is declared as type $gray[string]$reset, but its default value is $gray[$actualType]$reset',
           hint:
@@ -242,7 +243,7 @@ class EnumTypeValidator {
     final gotParts = invalidValues.entries.map((e) => '"${e.key}" $gray[${e.value}]$reset').join(', ');
 
     return ValidationResult.error(
-      'Parameter $bold$red$paramName$reset expects an $gray[$typeName]$reset\n      Got: $gotParts',
+      'Parameter $bold$red$paramName$reset expects an $gray[$typeName]$reset. Got: $gotParts',
       hint:
           '${typeName.substring(0, 1).toUpperCase()}${typeName.substring(1)} parameters must have valid $typeName values',
     );
