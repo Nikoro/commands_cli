@@ -209,8 +209,8 @@ Future<void> run(String name, List<String> args) async {
 
           // Validate enum values
           if (param.isEnum && !param.isValidValue(value)) {
-            stderr.writeln('❌ Parameter $red$paramName$reset has invalid value: "$value"');
-            final allowedValues = param.values!.map((v) => '$green$v$reset').join(', ');
+            stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
+            final allowedValues = param.values!.map((v) => '$bold$green$v$reset').join(', ');
             stderr.writeln('💡 Must be one of: $allowedValues');
             exit(1);
           }
@@ -282,8 +282,8 @@ Future<void> run(String name, List<String> args) async {
 
       // Validate enum values
       if (param.isEnum && !param.isValidValue(value)) {
-        stderr.writeln('❌ Parameter $red$paramName$reset has invalid value: "$value"');
-        final allowedValues = param.values!.map((v) => '$green$v$reset').join(', ');
+        stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
+        final allowedValues = param.values!.map((v) => '$bold$green$v$reset').join(', ');
         stderr.writeln('💡 Must be one of: $allowedValues');
         exit(1);
       }
