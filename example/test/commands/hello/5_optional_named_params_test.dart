@@ -10,7 +10,7 @@ void main() {
         hello:
           script: echo "Hello {name}"
           params:
-            required:
+            optional:
               - name: -n
     ''',
     () {
@@ -21,14 +21,14 @@ void main() {
         });
       }
 
-      test('prints error when no required param is specified', () async {
+      test('prints "Hello " when no optional param is specified', () async {
         final result = await Process.run('hello', []);
-        expect(result.stderr, equals('❌ Missing required named param: $bold${red}name$reset\n'));
+        expect(result.stdout, equals('Hello \n'));
       });
 
-      test('prints error when no value for required param is specified', () async {
+      test('prints "Hello " when no value for optional param is specified', () async {
         final result = await Process.run('hello', ['-n']);
-        expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
+        expect(result.stdout, equals('Hello \n'));
       });
 
       for (String flag in ['-h', '--help']) {
@@ -37,7 +37,7 @@ void main() {
           expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
-  required:
+  optional:
     ${magenta}name (-n)$reset
 '''));
         });
@@ -50,7 +50,7 @@ params:
         hello:
           script: echo "Hello {name}"
           params:
-            required:
+            optional:
               - name: '-n, --name, nm'
     ''',
     () {
@@ -63,15 +63,15 @@ params:
         }
       }
 
-      test('prints error when no required param is specified', () async {
+      test('prints "Hello " when no optional param is specified', () async {
         final result = await Process.run('hello', []);
-        expect(result.stderr, equals('❌ Missing required named param: $bold${red}name$reset\n'));
+        expect(result.stdout, equals('Hello \n'));
       });
 
       for (String flag in ['-n', '--name', 'nm']) {
-        test('prints error when no value for required param is specified', () async {
+        test('prints "Hello " when no value for optional param is specified', () async {
           final result = await Process.run('hello', [flag]);
-          expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
+          expect(result.stdout, equals('Hello \n'));
         });
       }
 
@@ -81,7 +81,7 @@ params:
           expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
-  required:
+  optional:
     ${magenta}name (-n, --name, nm)$reset
 '''));
         });
@@ -94,7 +94,7 @@ params:
         hello: ## Description of command hello
           script: echo "Hello {name}"
           params:
-            required:
+            optional:
               - name: '-n, --name, nm' ## Description of parameter name
     ''',
     () {
@@ -107,15 +107,15 @@ params:
         }
       }
 
-      test('prints error when no required param is specified', () async {
+      test('prints "Hello " when no optional param is specified', () async {
         final result = await Process.run('hello', []);
-        expect(result.stderr, equals('❌ Missing required named param: $bold${red}name$reset\n'));
+        expect(result.stdout, equals('Hello \n'));
       });
 
       for (String flag in ['-n', '--name', 'nm']) {
-        test('prints error when no value for required param is specified', () async {
+        test('prints "Hello " when no value for optional param is specified', () async {
           final result = await Process.run('hello', [flag]);
-          expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
+          expect(result.stdout, equals('Hello \n'));
         });
       }
 
@@ -125,7 +125,7 @@ params:
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
-  required:
+  optional:
     ${magenta}name (-n, --name, nm)$reset ${gray}Description of parameter name$reset
 '''));
         });
@@ -138,7 +138,7 @@ params:
         hello:
           script: echo "Hello {name}"
           params:
-            required:
+            optional:
               - name: '-n, --name, nm'
                 default: Bob
     ''',
@@ -158,9 +158,9 @@ params:
       });
 
       for (String flag in ['-n', '--name', 'nm']) {
-        test('prints error when no value for required param is specified', () async {
+        test('prints with default value when no value for optional param is specified', () async {
           final result = await Process.run('hello', [flag]);
-          expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
+          expect(result.stdout, equals('Hello Bob\n'));
         });
       }
 
@@ -170,7 +170,7 @@ params:
           expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
-  required:
+  optional:
     ${magenta}name (-n, --name, nm)$reset
     ${bold}default$reset: "Bob"
 '''));
@@ -184,7 +184,7 @@ params:
         hello: ## Description of command hello
           script: echo "Hello {name}"
           params:
-            required:
+            optional:
               - name: '-n, --name, nm' ## Description of parameter name
                 default: Bob
     ''',
@@ -204,9 +204,9 @@ params:
       });
 
       for (String flag in ['-n', '--name', 'nm']) {
-        test('prints error when no value for required param is specified', () async {
+        test('prints with default value when no value for optional param is specified', () async {
           final result = await Process.run('hello', [flag]);
-          expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
+          expect(result.stdout, equals('Hello Bob\n'));
         });
       }
 
@@ -216,7 +216,7 @@ params:
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
-  required:
+  optional:
     ${magenta}name (-n, --name, nm)$reset ${gray}Description of parameter name$reset
     ${bold}default$reset: "Bob"
 '''));
