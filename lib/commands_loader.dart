@@ -751,7 +751,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           final isValid = values.any((v) => v.toLowerCase() == lowerDefault);
           if (!isValid) {
             if (currentCommand != null) {
-              final greenValues = values.map((v) => '$green$v$reset').join(', ');
+              final greenValues = values.map((v) => '$bold$green$v$reset').join(', ');
               _validationErrors[currentCommand] =
                   'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Must be one of: $greenValues';
             }
