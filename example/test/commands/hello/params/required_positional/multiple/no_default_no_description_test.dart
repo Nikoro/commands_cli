@@ -34,8 +34,7 @@ void main() {
 
       test('prints error when required param is not specified', () async {
         final result = await Process.run('hello', ['x', 'y']);
-        expect(result.stderr,
-            equals('❌ Missing required positional param: $bold${red}charlie$reset\n'));
+        expect(result.stderr, equals('❌ Missing required positional param: $bold${red}charlie$reset\n'));
       });
 
       test('prints "A: x, B: y, C: z"', () async {

@@ -170,7 +170,9 @@ Integration tests are located in `example/test/` and are essential to verify the
 
 5. **Run the integration tests:**
    ```sh
-   dart test
+   dart test --concurrency=1
    ```
 
-**IMPORTANT**: Integration tests in `example/test/` require the package to be globally activated. Do not skip this step or the tests may fail or not reflect the actual changes.
+**IMPORTANT**:
+- Integration tests in `example/test/` require the package to be globally activated. Do not skip this step or the tests may fail or not reflect the actual changes.
+- The `--concurrency=1` flag is **required** because integration tests modify a shared `commands.yaml` file. Running tests in parallel will cause them to interfere with each other and produce incorrect results.

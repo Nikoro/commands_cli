@@ -74,7 +74,8 @@ void main() {
             expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
           });
 
-          test('prints "A: A1, B: B1, C: C1" when no value for optional params [$alpha] and [$beta] is specified', () async {
+          test('prints "A: A1, B: B1, C: C1" when no value for optional params [$alpha] and [$beta] is specified',
+              () async {
             final result = await Process.run('hello', [alpha, beta]);
             expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
           });

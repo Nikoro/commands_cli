@@ -47,7 +47,7 @@ jobs:
 
       - name: Integration tests
         working-directory: example
-        run: dart test
+        run: dart test --concurrency=1
       
       - name: Dry run publish
         run: dart pub publish --dry-run

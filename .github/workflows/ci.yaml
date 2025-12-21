@@ -42,4 +42,4 @@ jobs:
 
       - name: Integration tests
         working-directory: example
-        run: dart test
+        run: dart test --concurrency=1
