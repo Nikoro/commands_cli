@@ -77,9 +77,7 @@ void main() {
           test('prints error when no value for required params [$alpha] and [$beta] is specified', () async {
             final result = await Process.run('hello', [alpha, beta]);
             expect(
-                result.stderr,
-                equals(
-                    '❌ Missing value for param: $bold${red}alpha$reset\n')); // This should be adjusted it should be: '❌ Missing value for params: $bold${red}alpha$reset, $bold${red}beta$reset\n'
+                result.stderr, equals('❌ Missing value for params: $bold${red}alpha$reset, $bold${red}beta$reset\n'));
           });
 
           for (String charlie in ['-c', '--charlie']) {
@@ -90,18 +88,14 @@ void main() {
 
             test('prints error when no value for required params [$alpha] and [$charlie] is specified', () async {
               final result = await Process.run('hello', [alpha, charlie]);
-              expect(
-                  result.stderr,
-                  equals(
-                      '❌ Missing value for param: $bold${red}alpha$reset\n')); // This should be adjusted it should be: '❌ Missing value for params: $bold${red}alpha$reset, $bold${red}charlie$reset\n'
+              expect(result.stderr,
+                  equals('❌ Missing value for params: $bold${red}alpha$reset, $bold${red}charlie$reset\n'));
             });
 
             test('prints error when no value for required params [$beta] and [$charlie] is specified', () async {
               final result = await Process.run('hello', [beta, charlie]);
-              expect(
-                  result.stderr,
-                  equals(
-                      '❌ Missing value for param: $bold${red}beta$reset\n')); // This should be adjusted it should be: '❌ Missing value for params: $bold${red}beta$reset, $bold${red}charlie$reset\n'
+              expect(result.stderr,
+                  equals('❌ Missing value for params: $bold${red}beta$reset, $bold${red}charlie$reset\n'));
             });
 
             test('prints error when no value for required params [$alpha], [$beta] and [$charlie] is specified',
@@ -110,7 +104,7 @@ void main() {
               expect(
                   result.stderr,
                   equals(
-                      '❌ Missing value for param: $bold${red}alpha$reset\n')); // This should be adjusted it should be: '❌ Missing value for params: $bold${red}beta$reset, $bold${red}beta$reset, $bold${red}charlie$reset\n'
+                      '❌ Missing value for params: $bold${red}alpha$reset, $bold${red}beta$reset, $bold${red}charlie$reset\n'));
             });
           }
         }
