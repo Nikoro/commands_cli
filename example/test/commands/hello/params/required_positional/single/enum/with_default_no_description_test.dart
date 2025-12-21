@@ -64,9 +64,9 @@ params:
                 default: Delta
     ''',
     () {
-      for (Object param in ['Alpha', 'Bravo', 'Charlie']) {
+      for (String param in ['Alpha', 'Bravo', 'Charlie']) {
         test('prints error when invalid default value is specified', () async {
-          final result = await Process.run('hello', ['$param']);
+          final result = await Process.run('hello', [param]);
           expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid default: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset

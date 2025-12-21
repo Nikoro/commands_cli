@@ -16,9 +16,9 @@ void main() {
                 values: [Alpha, Bravo, Charlie]
     ''',
     () {
-      for (Object param in ['Alpha', 'Bravo', 'Charlie']) {
+      for (String param in ['Alpha', 'Bravo', 'Charlie']) {
         test('prints "Hello $param"', () async {
-          final result = await Process.run('hello', ['-n', '$param']);
+          final result = await Process.run('hello', ['-n', param]);
           expect(result.stdout, equals('Hello $param\n'));
         });
       }
