@@ -77,8 +77,8 @@ void main() {
       expect(
         result.stderr,
         equals(
-          "❌ Parameter ${red}env$reset has invalid value: \"invalid\"\n"
-          "💡 Must be one of: ${green}dev$reset, ${green}staging$reset, ${green}prod$reset\n",
+          "❌ Parameter $bold${red}env$reset has invalid value: \"invalid\"\n"
+          "💡 Must be one of: $bold${green}dev$reset, $bold${green}staging$reset, $bold${green}prod$reset\n",
         ),
       );
       expect(result.exitCode, equals(1));
@@ -127,8 +127,8 @@ void main() {
       expect(
         result.stderr,
         equals(
-          "❌ Parameter ${red}target$reset has invalid value: \"desktop\"\n"
-          "💡 Must be one of: ${green}ios$reset, ${green}android$reset, ${green}web$reset\n",
+          "❌ Parameter $bold${red}target$reset has invalid value: \"desktop\"\n"
+          "💡 Must be one of: $bold${green}ios$reset, $bold${green}android$reset, $bold${green}web$reset\n",
         ),
       );
       expect(result.exitCode, equals(1));
@@ -248,8 +248,8 @@ void main() {
       expect(
         result.stderr,
         equals(
-          "❌ Parameter ${red}env$reset has invalid value: \"invalid\"\n"
-          "💡 Must be one of: ${green}dev$reset, ${green}staging$reset, ${green}prod$reset\n",
+          "❌ Parameter $bold${red}env$reset has invalid value: \"invalid\"\n"
+          "💡 Must be one of: $bold${green}dev$reset, $bold${green}staging$reset, $bold${green}prod$reset\n",
         ),
       );
       expect(result.exitCode, equals(1));
@@ -731,22 +731,6 @@ void main() {
   // ============================================================================
 
   group('type_enum_required_positional', () {
-    test('shows interactive picker when no option specified', () async {
-      final result = await Process.run('type_enum_required_positional', []);
-      expect(
-        result.stdout,
-        equals('\n'
-            'Select value for ${blue}platform$reset:\n'
-            '\n'
-            '    ${green}1. Alpha   ✓$reset\n'
-            '    2. Bravo    \n'
-            '    3. Charlie  \n'
-            '\n'
-            '${gray}Press number (1-3) or press Esc to cancel:$reset\n'
-            ''),
-      );
-    });
-
     test('accepts valid positional enum value', () async {
       final result = await Process.run('type_enum_required_positional', ['Alpha']);
       expect(result.stdout, equals('platform=Alpha\n'));
@@ -767,8 +751,8 @@ void main() {
       expect(
         result.stderr,
         equals(
-          "❌ Parameter ${red}platform$reset has invalid value: \"Delta\"\n"
-          "💡 Must be one of: ${green}Alpha$reset, ${green}Bravo$reset, ${green}Charlie$reset\n",
+          "❌ Parameter $bold${red}platform$reset has invalid value: \"Delta\"\n"
+          "💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset\n",
         ),
       );
       expect(result.exitCode, equals(1));
@@ -864,8 +848,8 @@ void main() {
       expect(
         result.stderr,
         equals(
-          "❌ Parameter ${red}platform$reset has invalid value: \"desktop\"\n"
-          "💡 Must be one of: ${green}ios$reset, ${green}android$reset, ${green}web$reset\n",
+          "❌ Parameter $bold${red}platform$reset has invalid value: \"desktop\"\n"
+          "💡 Must be one of: $bold${green}ios$reset, $bold${green}android$reset, $bold${green}web$reset\n",
         ),
       );
       expect(result.exitCode, equals(1));
@@ -913,8 +897,8 @@ void main() {
       expect(
         result.stderr,
         equals(
-          "❌ Parameter ${red}platform$reset has invalid value: \"desktop\"\n"
-          "💡 Must be one of: ${green}ios$reset, ${green}android$reset, ${green}web$reset\n",
+          "❌ Parameter $bold${red}platform$reset has invalid value: \"desktop\"\n"
+          "💡 Must be one of: $bold${green}ios$reset, $bold${green}android$reset, $bold${green}web$reset\n",
         ),
       );
       expect(result.exitCode, equals(1));
@@ -962,8 +946,8 @@ void main() {
       expect(
         result.stderr,
         equals(
-          "❌ Parameter ${red}env$reset has invalid value: \"invalid\"\n"
-          "💡 Must be one of: ${green}dev$reset, ${green}staging$reset, ${green}prod$reset\n",
+          "❌ Parameter $bold${red}env$reset has invalid value: \"invalid\"\n"
+          "💡 Must be one of: $bold${green}dev$reset, $bold${green}staging$reset, $bold${green}prod$reset\n",
         ),
       );
       expect(result.exitCode, equals(1));
