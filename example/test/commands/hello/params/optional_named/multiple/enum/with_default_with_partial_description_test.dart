@@ -45,7 +45,7 @@ void main() {
               });
               test('prints "A: $value, B: B1, C: z"', () async {
                 final result = await Process.run('hello', [alpha, value, charlie, 'z']);
-                expect(result.stdout, equals('A: x, B: B1, C: z\n'));
+                expect(result.stdout, equals('A: $value, B: B1, C: z\n'));
               });
               test('prints "A: A1, B: y, C: z"', () async {
                 final result = await Process.run('hello', [beta, 'y', charlie, 'z']);
@@ -53,7 +53,7 @@ void main() {
               });
               test('prints "A: $value, B: y, C: z"', () async {
                 final result = await Process.run('hello', [alpha, value, beta, 'y', charlie, 'z']);
-                expect(result.stdout, equals('A: x, B: y, C: z\n'));
+                expect(result.stdout, equals('A: $value, B: y, C: z\n'));
               });
             }
           }

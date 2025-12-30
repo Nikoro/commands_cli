@@ -322,9 +322,12 @@ Future<void> run(String name, List<String> args) async {
 
       commandValues[paramName] = value;
     } else if (commandValues[paramName] == null && positionalParams.contains(paramName)) {
-      // Add all missing positional params (including enum ones)
-      // We'll only show enum picker if NO positional params are missing
-      missingPositional.add(paramName);
+      final param = getParamByName(paramName);
+      // Only add non-enum-picker params to missing positional list
+      // Enum picker params will be handled by the enum picker section below
+      if (!param.requiresEnumPicker) {
+        missingPositional.add(paramName);
+      }
     }
   }
 

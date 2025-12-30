@@ -21,10 +21,8 @@ void main() {
     () {
       test('prints error when no required param is specified', () async {
         final result = await Process.run('hello', []);
-        expect(
-            result.stderr,
-            equals(
-                '❌ Missing required positional params: $bold${red}alpha$reset, $bold${red}beta$reset, $bold${red}charlie$reset\n'));
+        expect(result.stderr,
+            equals('❌ Missing required positional params: $bold${red}beta$reset, $bold${red}charlie$reset\n'));
       });
       for (String value in ['A1', 'A2', 'A3']) {
         test('prints error when required param is not specified', () async {
