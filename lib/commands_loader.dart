@@ -247,6 +247,13 @@ Map<String, Command> loadCommandsFrom(File yaml) {
     if (trimmed.startsWith('switch:')) {
       final switchMap = <String, dynamic>{};
 
+      // Exit params context if we're at or shallower than params indent level
+      if (paramsIndentLevel != null && indentOf(line) <= paramsIndentLevel) {
+        paramsIndentLevel = null;
+        currentParamType = null;
+        currentParamName = null;
+      }
+
       // Determine which map to add the switch to
       if (currentSwitchName != null && switchStack.isNotEmpty) {
         // Nested switch: add to current switch's map
