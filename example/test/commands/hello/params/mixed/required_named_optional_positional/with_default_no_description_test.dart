@@ -16,7 +16,7 @@ void main() {
               - alpha: '-a, --alpha'
                 default: "A1"
             optional:  
-              - beta
+              - beta:
                 default: "B1"
     ''',
     () {

@@ -1,0 +1,87 @@
+import 'dart:io';
+
+import 'package:commands_cli/colors.dart';
+import 'package:test/test.dart';
+
+import '../../../../../integration_tests.dart';
+
+void main() {
+  integrationTests(
+    '''
+        hello: ## Description of command hello
+          script: |
+            echo "A: {alpha}, B: {beta}, C: {charlie}, D: {delta}"
+          params:
+            required:
+              - alpha: '-a, --alpha' ## Description of parameter alpha
+                default: "A1"
+              - beta: ## Description of parameter beta
+                default: "B1"
+            optional:
+              - charlie: '-c, --charlie' ## Description of parameter charlie
+                default: "C1"
+              - delta: ## Description of parameter delta
+                default: "D1"
+    ''',
+    () {
+      for (String alpha in ['-a', '--alpha']) {
+        test('prints "A: x, B: B1, C: C1, D: D1"', () async {
+          final result = await Process.run('hello', [alpha, 'x']);
+          expect(result.stdout, equals('A: x, B: B1, C: C1, D: D1\n'));
+        });
+
+        test('prints "A: x, B: y, C: C1, D: D1"', () async {
+          final result = await Process.run('hello', [alpha, 'x', 'y']);
+          expect(result.stdout, equals('A: x, B: y, C: C1, D: D1\n'));
+        });
+
+        test('prints "A: x, B: y, C: C1, D: z"', () async {
+          final result = await Process.run('hello', [alpha, 'x', 'y', 'z']);
+          expect(result.stdout, equals('A: x, B: y, C: C1, D: z\n'));
+        });
+
+        for (String charlie in ['-c', '--charlie']) {
+          test('prints "A: x, B: y, C: z, D: D1"', () async {
+            final result = await Process.run('hello', [alpha, 'x', 'y', charlie, 'z']);
+            expect(result.stdout, equals('A: x, B: y, C: z, D: D1\n'));
+          });
+
+          test('prints "A: x, B: y, C: z, D: a"', () async {
+            final result = await Process.run('hello', [alpha, 'x', 'y', charlie, 'z', 'a']);
+            expect(result.stdout, equals('A: x, B: y, C: z, D: a\n'));
+          });
+        }
+      }
+
+      test('prints "A: A1, B: y, C: C1, D: D1"', () async {
+        final result = await Process.run('hello', ['y']);
+        expect(result.stdout, equals('A: A1, B: y, C: C1, D: D1\n'));
+      });
+
+      test('prints "A: A1, B: B1, C: C1, D: D1"', () async {
+        final result = await Process.run('hello', []);
+        expect(result.stdout, equals('A: A1, B: B1, C: C1, D: D1\n'));
+      });
+
+      for (String flag in ['-h', '--help']) {
+        test('$flag prints help', () async {
+          final result = await Process.run('hello', [flag]);
+          expect(result.stdout, equals('''
+${blue}hello$reset: ${gray}Description of command hello$reset
+params:
+  required:
+    ${magenta}alpha (-a, --alpha)$reset ${gray}Description of parameter alpha$reset
+    ${bold}default$reset: "A1"
+    ${magenta}beta$reset ${gray}Description of parameter beta$reset
+    ${bold}default$reset: "B1"
+  optional:
+    ${magenta}charlie (-c, --charlie)$reset ${gray}Description of parameter charlie$reset
+    ${bold}default$reset: "C1"
+    ${magenta}delta$reset ${gray}Description of parameter delta$reset
+    ${bold}default$reset: "D1"
+'''));
+        });
+      }
+    },
+  );
+}
