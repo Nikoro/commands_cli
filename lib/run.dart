@@ -455,6 +455,9 @@ void _printSwitchesHelp(Command command, String indent) {
           final paramFlags = param.flags != null ? ' (${param.flags})' : '';
           final description = param.description != null ? ' $gray${param.description}$reset' : '';
           print('$indent      $magenta${param.name}$paramFlags$reset$description');
+          if (param.values != null && param.values!.isNotEmpty) {
+            print('$indent      ${bold}values$reset: ${param.values!.join(', ')}');
+          }
           if (param.defaultValue != null) {
             final defaultDisplay = param.defaultValue!.contains(' ') ||
                     param.defaultValue!.contains('\n') ||
@@ -471,6 +474,9 @@ void _printSwitchesHelp(Command command, String indent) {
           final paramFlags = param.flags != null ? ' (${param.flags})' : '';
           final description = param.description != null ? ' $gray${param.description}$reset' : '';
           print('$indent      $magenta${param.name}$paramFlags$reset$description');
+          if (param.values != null && param.values!.isNotEmpty) {
+            print('$indent      ${bold}values$reset: ${param.values!.join(', ')}');
+          }
           if (param.defaultValue != null) {
             final defaultDisplay = param.defaultValue!.contains(' ') ||
                     param.defaultValue!.contains('\n') ||
