@@ -8,43 +8,36 @@ import '../../../../../../../integration_tests.dart';
 void main() {
   integrationTests(
     '''
-        hello: ## Description of command hello
+        hello:
           switch:
-            - opt1: ## Description of option 1
+            - opt1:
               script: echo "Hello {name}"
               params:
                 optional:
-                  - name: '-n, --name, nm' ## Description of parameter name
+                  - name:
                     values: [Alpha, Bravo, Charlie]
                     default: Charlie
-            - opt2: ## Description of option 2
+            - opt2:
               script: echo "Option 2"
-            - opt3: ## Description of option 3
+            - opt3:
               script: echo "Option 3"
             - default: opt3
     ''',
     () {
-      for (String flag in ['-n', '--name', 'nm']) {
-        for (String param in ['Alpha', 'Bravo', 'Charlie']) {
-          test('prints "Hello $param"', () async {
-            final result = await Process.run('hello', ['opt1', flag, '$param']);
-            expect(result.stdout, equals('Hello $param\n'));
-          });
-        }
+      for (String param in ['Alpha', 'Bravo', 'Charlie']) {
+        test('prints "Hello $param"', () async {
+          final result = await Process.run('hello', ['opt1', param]);
+          expect(result.stdout, equals('Hello $param\n'));
+        });
       }
 
-      test('prints with default value if none specified', () async {
+      test('prints with default when no optional param is specified', () async {
         final result = await Process.run('hello', ['opt1']);
         expect(result.stdout, equals('Hello Charlie\n'));
       });
 
-      test('prints  with default when no value for optional param is specified', () async {
-        final result = await Process.run('hello', ['opt1', '-n']);
-        expect(result.stdout, equals('Hello Charlie\n'));
-      });
-
       test('prints error when invalid value for optional param is specified', () async {
-        final result = await Process.run('hello', ['opt1', '-n', 'Delta']);
+        final result = await Process.run('hello', ['opt1', 'Delta']);
         expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid value: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset
@@ -70,16 +63,16 @@ void main() {
         test('$flag prints help', () async {
           final result = await Process.run('hello', [flag]);
           expect(result.stdout, equals('''
-${blue}hello$reset: ${gray}Description of command hello$reset
+${blue}hello$reset
 options:
-  ${blue}opt1$reset: ${gray}Description of option 1$reset
+  ${blue}opt1$reset
   params:
     optional:
-      ${magenta}name (-n, --name, nm)$reset ${gray}Description of parameter name$reset
+      ${magenta}name$reset
       ${bold}values$reset: Alpha, Bravo, Charlie
       ${bold}default$reset: "Charlie"
-  ${blue}opt2$reset: ${gray}Description of option 2$reset
-  ${blue}opt3$reset: ${gray}Description of option 3$reset
+  ${blue}opt2$reset
+  ${blue}opt3$reset
   ${bold}default$reset: ${blue}opt3$reset
 '''));
         });
@@ -89,32 +82,30 @@ options:
 
   integrationTests(
     '''
-        hello: ## Description of command hello
+        hello:
           switch:
-            - opt1: ## Description of option 1
+            - opt1:
               script: echo "Hello {name}"
               params:
                 optional:
-                  - name: '-n, --name, nm' ## Description of parameter name
+                  - name:
                     values: [Alpha, Bravo, Charlie]
                     default: Delta
-            - opt2: ## Description of option 2
+            - opt2:
               script: echo "Option 2"
-            - opt3: ## Description of option 3
+            - opt3:
               script: echo "Option 3"
             - default: opt3
     ''',
     () {
-      for (String flag in ['-n', '--name', 'nm']) {
-        for (String param in ['Alpha', 'Bravo', 'Charlie']) {
-          test('prints error when invalid default value is specified', () async {
-            final result = await Process.run('hello', ['opt1', flag, '$param']);
-            expect(result.stderr, equals('''
+      for (String param in ['Alpha', 'Bravo', 'Charlie']) {
+        test('prints error when invalid default value is specified', () async {
+          final result = await Process.run('hello', ['opt1', param]);
+          expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid default: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset
 '''));
-          });
-        }
+        });
       }
 
       test('prints error when invalid default value is specified', () async {
@@ -126,15 +117,7 @@ options:
       });
 
       test('prints error when invalid default value is specified', () async {
-        final result = await Process.run('hello', ['opt1', '-n']);
-        expect(result.stderr, equals('''
-❌ Parameter $bold${red}name$reset has invalid default: "Delta"
-💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset
-'''));
-      });
-
-      test('prints error when invalid default value is specified', () async {
-        final result = await Process.run('hello', ['opt1', '-n', 'Delta']);
+        final result = await Process.run('hello', ['opt1', 'Delta']);
         expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid default: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset

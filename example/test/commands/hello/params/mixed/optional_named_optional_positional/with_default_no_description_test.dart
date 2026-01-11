@@ -17,7 +17,7 @@ void main() {
                 default: "A1"
               - beta:
                 default: "B1"
-    ''',  
+    ''',
     () {
       for (String alpha in ['-a', '--alpha']) {
         test('prints "A: x, B: B1"', () async {
