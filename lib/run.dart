@@ -453,7 +453,8 @@ void _printSwitchesHelp(Command command, String indent) {
         print('$indent    required:');
         for (final param in switchCommand.requiredParams) {
           final paramFlags = param.flags != null ? ' (${param.flags})' : '';
-          print('$indent      $magenta${param.name}$paramFlags$reset');
+          final description = param.description != null ? ' $gray${param.description}$reset' : '';
+          print('$indent      $magenta${param.name}$paramFlags$reset$description');
           if (param.defaultValue != null) {
             final defaultDisplay = param.defaultValue!.contains(' ') ||
                     param.defaultValue!.contains('\n') ||
@@ -468,7 +469,8 @@ void _printSwitchesHelp(Command command, String indent) {
         print('$indent    optional:');
         for (final param in switchCommand.optionalParams) {
           final paramFlags = param.flags != null ? ' (${param.flags})' : '';
-          print('$indent      $magenta${param.name}$paramFlags$reset');
+          final description = param.description != null ? ' $gray${param.description}$reset' : '';
+          print('$indent      $magenta${param.name}$paramFlags$reset$description');
           if (param.defaultValue != null) {
             final defaultDisplay = param.defaultValue!.contains(' ') ||
                     param.defaultValue!.contains('\n') ||

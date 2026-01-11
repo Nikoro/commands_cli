@@ -14,7 +14,7 @@ void main() {
               script: echo "Hello {name}"
               params:
                 required:
-                  - name: ## Description of parameter name
+                  - name ## Description of parameter name
             - opt2: ## Description of option 2
               script: echo "Option 2"
             - opt3: ## Description of option 3
@@ -51,9 +51,9 @@ void main() {
 
 Select an option for ${blue}hello$reset:
 
-    ${green}1. opt1 ✓$reset
-    2. opt2  
-    3. opt3  
+    ${green}1. opt1 ✓$reset ${gray}- Description of option 1$reset
+    2. opt2   ${gray}- Description of option 2$reset
+    3. opt3   ${gray}- Description of option 3$reset
 
 ${gray}Press number (1-3) or press Esc to cancel:$reset
 '''),
