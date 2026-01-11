@@ -465,7 +465,25 @@ Map<String, Command> loadCommandsFrom(File yaml) {
     // Case: - name:   (no description, no flags) - must be strict/anchored
     final paramMatchBare = RegExp(r'^-\s*(\w+):\s*$').firstMatch(trimmed);
 
+    // Case: - name ## description  (no colon, with description)
+    final paramMatchBareNoColonWithDescription = RegExp(r'^-\s*(\w+)\s+##\s*(.+)?$').firstMatch(trimmed);
+
+    // Case: - name  (no colon, no description)
     final paramMatchBareNoColon = RegExp(r'^-\s*(\w+)\s*$').firstMatch(trimmed);
+
+    // Check for bare no colon WITH description first (more specific pattern)
+    if (paramMatchBareNoColonWithDescription != null && currentParamType != null) {
+      finalizeCurrentParam(); // Finalize previous param if any
+      currentParamName = paramMatchBareNoColonWithDescription[1]!;
+      final paramDescription = paramMatchBareNoColonWithDescription[2];
+      currentParamMetadata = {'name': currentParamName!, 'description': paramDescription};
+      final param = Param(name: currentParamName!, description: paramDescription);
+      tempParams[currentParamName!] = param;
+      final targetMap = getCurrentTargetMap();
+
+      addParamToTargetMap(targetMap, currentParamType, param);
+      continue;
+    }
 
     if (paramMatchBareNoColon != null && currentParamType != null) {
       finalizeCurrentParam(); // Finalize previous param if any
