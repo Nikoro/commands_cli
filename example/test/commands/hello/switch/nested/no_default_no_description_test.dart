@@ -41,6 +41,21 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
         );
       });
 
+      test('prints "Level 1a 2a"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a']);
+        expect(result.stdout, equals('Level 1a 2a\n'));
+      });
+
+      test('prints "Level 1a 2b"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2b']);
+        expect(result.stdout, equals('Level 1a 2b\n'));
+      });
+
+      test('prints "Level 1a 2c"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2c']);
+        expect(result.stdout, equals('Level 1a 2c\n'));
+      });
+
       test('prints "Level 1b"', () async {
         final result = await Process.run('hello', ['level1b']);
         expect(result.stdout, equals('Level 1b\n'));

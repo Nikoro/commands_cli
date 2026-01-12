@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
-import '../../../../integration_tests.dart';
+import '../../../../../integration_tests.dart';
 
 void main() {
   integrationTests(
@@ -13,7 +13,14 @@ void main() {
             - level1a: ## Description of level 1a
               switch:
                 - level2a: ## Description of level 1a 2a
-                  script: echo "Level 1a 2a"
+                  switch:
+                    - level3a: ## Description of level 1a 2a 3a
+                      script: echo "Level 1a 2a 3a"
+                    - level3b: ## Description of level 1a 2a 3b
+                      script: echo "Level 1a 2a 3b"
+                    - level3c: ## Description of level 1a 2a 3c
+                      script: echo "Level 1a 2a 3c"
+                    - default: level3c
                 - level2b: ## Description of level 1a 2b
                   script: echo "Level 1a 2b"
                 - level2c: ## Description of level 1a 2c
@@ -31,9 +38,24 @@ void main() {
         expect(result.stdout, equals('Level 1a 2c\n'));
       });
 
-      test('prints "Level 1a 2a"', () async {
+      test('runs default option when option with nested switch is not specified', () async {
         final result = await Process.run('hello', ['level1a', 'level2a']);
-        expect(result.stdout, equals('Level 1a 2a\n'));
+        expect(result.stdout, equals('Level 1a 2a 3c\n'));
+      });
+
+      test('prints "Level 1a 2a 3a"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3a']);
+        expect(result.stdout, equals('Level 1a 2a 3a\n'));
+      });
+
+      test('prints "Level 1a 2a 3b"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3b']);
+        expect(result.stdout, equals('Level 1a 2a 3b\n'));
+      });
+
+      test('prints "Level 1a 2a 3c"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3c']);
+        expect(result.stdout, equals('Level 1a 2a 3c\n'));
       });
 
       test('prints "Level 1a 2b"', () async {
@@ -70,6 +92,11 @@ options:
   ${blue}level1a$reset: ${gray}Description of level 1a$reset
   options:
     ${blue}level2a$reset: ${gray}Description of level 1a 2a$reset
+    options:
+      ${blue}level3a$reset: ${gray}Description of level 1a 2a 3a$reset
+      ${blue}level3b$reset: ${gray}Description of level 1a 2a 3b$reset
+      ${blue}level3c$reset: ${gray}Description of level 1a 2a 3c$reset
+      ${bold}default$reset: ${blue}level3c$reset
     ${blue}level2b$reset: ${gray}Description of level 1a 2b$reset
     ${blue}level2c$reset: ${gray}Description of level 1a 2c$reset
     ${bold}default$reset: ${blue}level2c$reset

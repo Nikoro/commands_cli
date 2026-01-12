@@ -3,24 +3,30 @@ import 'dart:io';
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
-import '../../../../integration_tests.dart';
+import '../../../../../integration_tests.dart';
 
 void main() {
   integrationTests(
     '''
-        hello: ## Description of command hello
+        hello:
           switch:
             - level1a:
               switch:
-                - level2a: ## Description of level 1a 2a
-                  script: echo "Level 1a 2a"
+                - level2a:
+                  switch:
+                    - level3a:
+                      script: echo "Level 1a 2a 3a"
+                    - level3b:
+                      script: echo "Level 1a 2a 3b"
+                    - level3c:
+                      script: echo "Level 1a 2a 3c"
                 - level2b:
                   script: echo "Level 1a 2b"
-                - level2c: ## Description of level 1a 2c
+                - level2c:
                   script: echo "Level 1a 2c"
             - level1b:
               script: echo "Level 1b"
-            - level1c: ## Description of level 1c
+            - level1c:
               script: echo "Level 1c"
     ''',
     () {
@@ -32,18 +38,45 @@ void main() {
 
 Select an option for ${blue}hello level1a$reset:
 
-    ${green}1. level2a ✓$reset ${gray}- Description of level 1a 2a$reset
+    ${green}1. level2a ✓$reset
     2. level2b  
-    3. level2c   ${gray}- Description of level 1a 2c$reset
+    3. level2c  
 
 ${gray}Press number (1-3) or press Esc to cancel:$reset
 '''),
         );
       });
 
-      test('prints "Level 1a 2a"', () async {
+      test('shows interactive picker when option with nested switch is not specified', () async {
         final result = await Process.run('hello', ['level1a', 'level2a']);
-        expect(result.stdout, equals('Level 1a 2a\n'));
+        expect(
+          result.stdout,
+          equals('''
+
+Select an option for ${blue}hello level1a level2a$reset:
+
+    ${green}1. level3a ✓$reset
+    2. level3b  
+    3. level3c  
+
+${gray}Press number (1-3) or press Esc to cancel:$reset
+'''),
+        );
+      });
+
+      test('prints "Level 1a 2a 3a"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3a']);
+        expect(result.stdout, equals('Level 1a 2a 3a\n'));
+      });
+
+      test('prints "Level 1a 2a 3b"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3b']);
+        expect(result.stdout, equals('Level 1a 2a 3b\n'));
+      });
+
+      test('prints "Level 1a 2a 3c"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3c']);
+        expect(result.stdout, equals('Level 1a 2a 3c\n'));
       });
 
       test('prints "Level 1a 2b"', () async {
@@ -76,7 +109,7 @@ Select an option for ${blue}hello$reset:
 
     ${green}1. level1a ✓$reset
     2. level1b  
-    3. level1c   ${gray}- Description of level 1c$reset
+    3. level1c  
 
 ${gray}Press number (1-3) or press Esc to cancel:$reset
 '''),
@@ -87,15 +120,19 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
         test('$flag prints help', () async {
           final result = await Process.run('hello', [flag]);
           expect(result.stdout, equals('''
-${blue}hello$reset: ${gray}Description of command hello$reset
+${blue}hello$reset
 options:
   ${blue}level1a$reset
   options:
-    ${blue}level2a$reset: ${gray}Description of level 1a 2a$reset
+    ${blue}level2a$reset
+    options:
+      ${blue}level3a$reset
+      ${blue}level3b$reset
+      ${blue}level3c$reset
     ${blue}level2b$reset
-    ${blue}level2c$reset: ${gray}Description of level 1a 2c$reset
+    ${blue}level2c$reset
   ${blue}level1b$reset
-  ${blue}level1c$reset: ${gray}Description of level 1c$reset
+  ${blue}level1c$reset
 '''));
         });
       }

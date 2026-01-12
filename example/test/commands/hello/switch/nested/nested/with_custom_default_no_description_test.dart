@@ -3,28 +3,36 @@ import 'dart:io';
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
-import '../../../../integration_tests.dart';
+import '../../../../../integration_tests.dart';
 
 void main() {
   integrationTests(
     '''
-        hello: ## Description of command hello
+        hello:
           switch:
-            - level1a: ## Description of level 1a
+            - level1a:
               switch:
-                - level2a: ## Description of level 1a 2a
-                  script: echo "Level 1a 2a"
-                - level2b: ## Description of level 1a 2b
+                - level2a:
+                  switch:
+                    - level3a:
+                      script: echo "Level 1a 2a 3a"
+                    - level3b:
+                      script: echo "Level 1a 2a 3b"
+                    - level3c:
+                      script: echo "Level 1a 2a 3c"
+                    - default:
+                      script: echo "Level 1a 2a Custom"
+                - level2b:
                   script: echo "Level 1a 2b"
-                - level2c: ## Description of level 1a 2c
+                - level2c:
                   script: echo "Level 1a 2c"
-                - default: ## Description of level 1a Custom
-                  script: echo "Level 1a Custom"                 
-            - level1b: ## Description of level 1b
+                - default:
+                  script: echo "Level 1a Custom"
+            - level1b:
               script: echo "Level 1b"
-            - level1c: ## Description of level 1c
+            - level1c:
               script: echo "Level 1c"
-            - default: ## Description of Custom
+            - default:
               script: echo "Custom"
     ''',
     () {
@@ -33,9 +41,24 @@ void main() {
         expect(result.stdout, equals('Level 1a Custom\n'));
       });
 
-      test('prints "Level 1a 2a"', () async {
+      test('runs default option when option with nested switch is not specified', () async {
         final result = await Process.run('hello', ['level1a', 'level2a']);
-        expect(result.stdout, equals('Level 1a 2a\n'));
+        expect(result.stdout, equals('Level 1a 2a Custom\n'));
+      });
+
+      test('prints "Level 1a 2a 3a"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3a']);
+        expect(result.stdout, equals('Level 1a 2a 3a\n'));
+      });
+
+      test('prints "Level 1a 2a 3b"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3b']);
+        expect(result.stdout, equals('Level 1a 2a 3b\n'));
+      });
+
+      test('prints "Level 1a 2a 3c"', () async {
+        final result = await Process.run('hello', ['level1a', 'level2a', 'level3c']);
+        expect(result.stdout, equals('Level 1a 2a 3c\n'));
       });
 
       test('prints "Level 1a 2b"', () async {
@@ -67,17 +90,22 @@ void main() {
         test('$flag prints help', () async {
           final result = await Process.run('hello', [flag]);
           expect(result.stdout, equals('''
-${blue}hello$reset: ${gray}Description of command hello$reset
+${blue}hello$reset
 options:
-  ${blue}level1a$reset: ${gray}Description of level 1a$reset
+  ${blue}level1a$reset
   options:
-    ${blue}level2a$reset: ${gray}Description of level 1a 2a$reset
-    ${blue}level2b$reset: ${gray}Description of level 1a 2b$reset
-    ${blue}level2c$reset: ${gray}Description of level 1a 2c$reset
-    ${bold}default$reset: ${gray}Description of level 1a Custom$reset
-  ${blue}level1b$reset: ${gray}Description of level 1b$reset
-  ${blue}level1c$reset: ${gray}Description of level 1c$reset
-  ${bold}default$reset: ${gray}Description of Custom$reset
+    ${blue}level2a$reset
+    options:
+      ${blue}level3a$reset
+      ${blue}level3b$reset
+      ${blue}level3c$reset
+      ${bold}default$reset
+    ${blue}level2b$reset
+    ${blue}level2c$reset
+    ${bold}default$reset
+  ${blue}level1b$reset
+  ${blue}level1c$reset
+  ${bold}default$reset
 '''));
         });
       }
