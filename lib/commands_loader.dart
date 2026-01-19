@@ -743,9 +743,19 @@ Map<String, Command> loadCommandsFrom(File yaml) {
 
         // Validation: boolean type with non-boolean default
         if (effectiveType == 'boolean' && defaultValue != 'true' && defaultValue != 'false') {
-          if (currentCommand != null) {
-            _validationErrors[currentCommand] =
-                'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Boolean parameters must have default: true or false';
+          // If type was explicitly set to boolean, report type mismatch
+          if (currentParamMetadata['isTypeExplicit'] == true) {
+            final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
+            if (currentCommand != null) {
+              _validationErrors[currentCommand] =
+                  '❌ Parameter $bold$red$currentParamName$reset is declared as type $gray[boolean]$reset, but its default value is $gray[$defaultValueType]$reset';
+            }
+          } else {
+            // Type was inferred, use the old error message
+            if (currentCommand != null) {
+              _validationErrors[currentCommand] =
+                  'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Boolean parameters must have default: true or false';
+            }
           }
           currentParamName = null;
           currentParamMetadata = {};
