@@ -1,7 +1,10 @@
-        hello:
-          script: echo "Hello {name}"
+        hello: ## Description of command hello
+          script: |
+            echo "A: {alpha}, B: {beta}, C: {charlie}"
           params:
             optional:
-              - name: '-n, --name'
-                type: boolean
+              - alpha:
+                values: [A1, A2, A3]
+              - beta:
+              - charlie: ## Description of parameter charlie
     

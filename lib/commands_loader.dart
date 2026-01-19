@@ -748,7 +748,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
             final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
             if (currentCommand != null) {
               _validationErrors[currentCommand] =
-                  '❌ Parameter $bold$red$currentParamName$reset is declared as type $gray[boolean]$reset, but its default value is $gray[$defaultValueType]$reset';
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[boolean]$reset, but its default value is $gray[$defaultValueType]$reset';
             }
           } else {
             // Type was inferred, use the old error message
