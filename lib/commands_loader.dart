@@ -578,16 +578,21 @@ Map<String, Command> loadCommandsFrom(File yaml) {
         typeValue = typeValue.substring(1, typeValue.length - 1);
       }
 
-      // Validate type value
-      const validTypes = ['boolean', 'string', 'int', 'double'];
+      // Validate type value and normalize 'bool' to 'boolean'
+      const validTypes = ['boolean', 'bool', 'string', 'int', 'double'];
       if (!validTypes.contains(typeValue)) {
         if (currentCommand != null) {
           _validationErrors[currentCommand] =
-              'Invalid type "$typeValue" for parameter "$currentParamName". Must be one of: ${validTypes.join(', ')}';
+              'Invalid type "$typeValue" for parameter "$currentParamName". Must be one of: boolean (or bool), string, int, double';
         }
         currentParamName = null;
         currentParamMetadata = {};
         continue;
+      }
+
+      // Normalize 'bool' to 'boolean'
+      if (typeValue == 'bool') {
+        typeValue = 'boolean';
       }
 
       currentParamMetadata['type'] = typeValue;
