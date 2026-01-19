@@ -583,7 +583,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       if (!validTypes.contains(typeValue)) {
         if (currentCommand != null) {
           _validationErrors[currentCommand] =
-              'Invalid type "$typeValue" for parameter "$currentParamName". Must be one of: boolean (or bool), string, int, double';
+              '❌ Invalid type "$typeValue" for parameter $bold$red$currentParamName$reset.\n💡 Must be one of: $bold${green}boolean$reset, $bold${green}string$reset, $bold${green}number$reset, $bold${green}integer$reset, $bold${green}double$reset';
         }
         currentParamName = null;
         currentParamMetadata = {};
