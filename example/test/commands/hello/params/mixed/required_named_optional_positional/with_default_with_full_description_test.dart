@@ -50,10 +50,10 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   required:
     ${magenta}alpha (-a, --alpha)$reset ${gray}Description of parameter alpha$reset
-    ${bold}default$reset: "A1"
+    ${bold}default$reset: $bold${orange}"A1"$reset
   optional:
     ${magenta}beta$reset ${gray}Description of parameter beta$reset
-    ${bold}default$reset: "B1"
+    ${bold}default$reset: $bold${orange}"B1"$reset
 '''));
         });
       }

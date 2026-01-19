@@ -36,7 +36,7 @@ ${blue}hello$reset
 params:
   required:
     ${magenta}name$reset
-    ${bold}default$reset: "Bob"
+    ${bold}default$reset: $bold${orange}Bob$reset
 '''));
         });
       }

@@ -56,7 +56,7 @@ params:
   optional:
     ${magenta}name (-n, --name, nm)$reset ${gray}Description of parameter name$reset
     ${bold}values$reset: Alpha, Bravo, Charlie
-    ${bold}default$reset: "Charlie"
+    ${bold}default$reset: $bold${orange}Charlie$reset
 '''));
         });
       }

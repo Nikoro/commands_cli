@@ -94,7 +94,7 @@ options:
       optional:
         ${magenta}name$reset ${gray}Description of parameter name$reset
         ${bold}values$reset: Alpha, Bravo, Charlie
-        ${bold}default$reset: "Charlie"
+        ${bold}default$reset: $bold${orange}Charlie$reset
     ${blue}level2b$reset
     ${blue}level2c$reset: ${gray}Description of level 1a 2c$reset
     ${bold}default$reset: ${blue}level2c$reset

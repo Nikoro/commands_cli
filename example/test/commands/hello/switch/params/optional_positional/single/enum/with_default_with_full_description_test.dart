@@ -70,7 +70,7 @@ options:
     optional:
       ${magenta}name$reset ${gray}Description of parameter name$reset
       ${bold}values$reset: Alpha, Bravo, Charlie
-      ${bold}default$reset: "Charlie"
+      ${bold}default$reset: $bold${orange}Charlie$reset
   ${blue}opt2$reset: ${gray}Description of option 2$reset
   ${blue}opt3$reset: ${gray}Description of option 3$reset
   ${bold}default$reset: ${blue}opt3$reset

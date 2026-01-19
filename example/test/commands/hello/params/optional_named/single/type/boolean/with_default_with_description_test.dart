@@ -87,7 +87,7 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   optional:
     ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
-    ${bold}default$reset: "false"
+    ${bold}default$reset: $bold${orange}false$reset
 '''));
           });
         }
@@ -174,7 +174,7 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   optional:
     ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
-    ${bold}default$reset: "true"
+    ${bold}default$reset: $bold${orange}true$reset
 '''));
           });
         }
@@ -359,7 +359,7 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   optional:
     ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
-    ${bold}default$reset: "false"
+    ${bold}default$reset: $bold${orange}false$reset
 '''));
         });
       }
@@ -445,7 +445,7 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   optional:
     ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
-    ${bold}default$reset: "true"
+    ${bold}default$reset: $bold${orange}true$reset
 '''));
         });
       }

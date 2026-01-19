@@ -36,7 +36,7 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   required:
     ${magenta}name$reset ${gray}Description of parameter name$reset
-    ${bold}default$reset: "Bob"
+    ${bold}default$reset: $bold${orange}Bob$reset
 '''));
         });
       }

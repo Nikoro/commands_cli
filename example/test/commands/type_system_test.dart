@@ -43,9 +43,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}verbose (-v, --verbose)$reset\n'
-            '    ${bold}default$reset: "false"\n'
+            '    ${bold}default$reset: $bold${orange}false$reset\n'
             '    ${magenta}debug (-d, --debug)$reset\n'
-            '    ${bold}default$reset: "true"\n',
+            '    ${bold}default$reset: $bold${orange}true$reset\n',
           ),
         );
       });
@@ -95,7 +95,7 @@ void main() {
             '  optional:\n'
             '    ${magenta}env (-e, --environment)$reset\n'
             '    ${bold}values$reset: dev, staging, prod\n'
-            '    ${bold}default$reset: "staging"\n',
+            '    ${bold}default$reset: $bold${orange}staging$reset\n',
           ),
         );
       });
@@ -199,9 +199,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}port (-p, --port)$reset ${gray}[int]$reset\n'
-            '    ${bold}default$reset: "3000"\n'
+            '    ${bold}default$reset: $bold${orange}3000$reset\n'
             '    ${magenta}timeout (--timeout)$reset ${gray}[double]$reset\n'
-            '    ${bold}default$reset: "30.0"\n',
+            '    ${bold}default$reset: $bold${orange}30.0$reset\n',
           ),
         );
       });
@@ -274,13 +274,13 @@ void main() {
             '  optional:\n'
             '    ${magenta}env (-e, --environment)$reset\n'
             '    ${bold}values$reset: dev, staging, prod\n'
-            '    ${bold}default$reset: "staging"\n'
+            '    ${bold}default$reset: $bold${orange}staging$reset\n'
             '    ${magenta}replicas (-r, --replicas)$reset ${gray}[int]$reset\n'
-            '    ${bold}default$reset: "3"\n'
+            '    ${bold}default$reset: $bold${orange}3$reset\n'
             '    ${magenta}timeout (-t, --timeout)$reset ${gray}[double]$reset\n'
-            '    ${bold}default$reset: "30.5"\n'
+            '    ${bold}default$reset: $bold${orange}30.5$reset\n'
             '    ${magenta}verbose (-v, --verbose)$reset\n'
-            '    ${bold}default$reset: "false"\n',
+            '    ${bold}default$reset: $bold${orange}false$reset\n',
           ),
         );
       });
@@ -333,9 +333,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}port (-p, --port)$reset\n'
-            '    ${bold}default$reset: "8080"\n'
+            '    ${bold}default$reset: $bold${orange}8080$reset\n'
             '    ${magenta}workers (-w, --workers)$reset\n'
-            '    ${bold}default$reset: "4"\n',
+            '    ${bold}default$reset: $bold${orange}4$reset\n',
           ),
         );
       });
@@ -380,9 +380,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}ratio (-r, --ratio)$reset\n'
-            '    ${bold}default$reset: "0.5"\n'
+            '    ${bold}default$reset: $bold${orange}0.5$reset\n'
             '    ${magenta}timeout (-t, --timeout)$reset\n'
-            '    ${bold}default$reset: "30.0"\n',
+            '    ${bold}default$reset: $bold${orange}30.0$reset\n',
           ),
         );
       });
@@ -454,9 +454,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}enabled (-e, --enabled)$reset\n'
-            '    ${bold}default$reset: "true"\n'
+            '    ${bold}default$reset: $bold${orange}true$reset\n'
             '    ${magenta}verbose (-v, --verbose)$reset\n'
-            '    ${bold}default$reset: "false"\n',
+            '    ${bold}default$reset: $bold${orange}false$reset\n',
           ),
         );
       });
@@ -498,9 +498,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}name (-n, --name)$reset\n'
-            '    ${bold}default$reset: "example"\n'
+            '    ${bold}default$reset: $bold${orange}example$reset\n'
             '    ${magenta}message (-m, --message)$reset\n'
-            '    ${bold}default$reset: "hello world"\n',
+            '    ${bold}default$reset: $bold${orange}hello world$reset\n',
           ),
         );
       });
@@ -552,13 +552,13 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}port (-p, --port)$reset\n'
-            '    ${bold}default$reset: "3000"\n'
+            '    ${bold}default$reset: $bold${orange}3000$reset\n'
             '    ${magenta}ratio (-r, --ratio)$reset\n'
-            '    ${bold}default$reset: "1.5"\n'
+            '    ${bold}default$reset: $bold${orange}1.5$reset\n'
             '    ${magenta}enabled (-e, --enabled)$reset\n'
-            '    ${bold}default$reset: "true"\n'
+            '    ${bold}default$reset: $bold${orange}true$reset\n'
             '    ${magenta}name (-n, --name)$reset\n'
-            '    ${bold}default$reset: "server"\n',
+            '    ${bold}default$reset: $bold${orange}server$reset\n',
           ),
         );
       });
@@ -595,9 +595,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}port (-p, --port)$reset\n'
-            '    ${bold}default$reset: "8080"\n'
+            '    ${bold}default$reset: $bold${orange}8080$reset\n'
             '    ${magenta}count (-c, --count)$reset\n'
-            '    ${bold}default$reset: "42"\n',
+            '    ${bold}default$reset: $bold${orange}42$reset\n',
           ),
         );
       });
@@ -634,9 +634,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}ratio (-r, --ratio)$reset\n'
-            '    ${bold}default$reset: "0.75"\n'
+            '    ${bold}default$reset: $bold${orange}0.75$reset\n'
             '    ${magenta}timeout (-t, --timeout)$reset\n'
-            '    ${bold}default$reset: "30.0"\n',
+            '    ${bold}default$reset: $bold${orange}30.0$reset\n',
           ),
         );
       });
@@ -673,9 +673,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}enabled (-e, --enabled)$reset\n'
-            '    ${bold}default$reset: "true"\n'
+            '    ${bold}default$reset: $bold${orange}true$reset\n'
             '    ${magenta}verbose (-v, --verbose)$reset\n'
-            '    ${bold}default$reset: "false"\n',
+            '    ${bold}default$reset: $bold${orange}false$reset\n',
           ),
         );
       });
@@ -717,9 +717,9 @@ void main() {
             'params:\n'
             '  optional:\n'
             '    ${magenta}port (-p, --port)$reset\n'
-            '    ${bold}default$reset: "9000"\n'
+            '    ${bold}default$reset: $bold${orange}9000$reset\n'
             '    ${magenta}ratio (-r, --ratio)$reset\n'
-            '    ${bold}default$reset: "2.5"\n',
+            '    ${bold}default$reset: $bold${orange}2.5$reset\n',
           ),
         );
       });
@@ -1026,7 +1026,7 @@ void main() {
             '  required:\n'
             '    ${magenta}level (-l, --level)$reset ${gray}[int]$reset\n'
             '    ${bold}values$reset: 1, 2, 3\n'
-            '    ${bold}default$reset: "1"\n',
+            '    ${bold}default$reset: $bold${orange}1$reset\n',
           ),
         );
       });
@@ -1061,7 +1061,7 @@ void main() {
             '  required:\n'
             '    ${magenta}platform (-p, --platform)$reset ${gray}[string]$reset\n'
             '    ${bold}values$reset: ios, android, web\n'
-            '    ${bold}default$reset: "ios"\n',
+            '    ${bold}default$reset: $bold${orange}ios$reset\n',
           ),
         );
       });

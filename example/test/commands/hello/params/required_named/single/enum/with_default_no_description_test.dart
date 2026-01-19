@@ -56,7 +56,7 @@ params:
   required:
     ${magenta}name (-n, --name, nm)$reset
     ${bold}values$reset: Alpha, Bravo, Charlie
-    ${bold}default$reset: "Charlie"
+    ${bold}default$reset: $bold${orange}Charlie$reset
 '''));
         });
       }
