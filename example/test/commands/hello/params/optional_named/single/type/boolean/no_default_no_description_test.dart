@@ -40,7 +40,7 @@ void main() {
           final result = await Process.run('hello', [flag, '2']);
           expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
-   Got: 1 ${gray}[integer]$reset
+   Got: 2 ${gray}[integer]$reset
 💡 Example: $bgGreen${black}hello $flag true$reset or $bgGreen${black}hello $flag false$reset
 '''));
         });
@@ -54,12 +54,18 @@ void main() {
 '''));
         });
 
-        for (String value in ['text', '"1"', '\'1.5\'', '"true"', '\'false\'']) {
-          test('prints error when value is string ($value)', () async {
-            final result = await Process.run('hello', [flag, value]);
+        for (final testCase in [
+          ('text', '"text"'),
+          ('"1"', '""1""'),
+          ('\'1.5\'', '"\'1.5\'"'),
+          ('"true"', '""true""'),
+          ('\'false\'', '"\'false\'"'),
+        ]) {
+          test('prints error when value is string (${testCase.$1})', () async {
+            final result = await Process.run('hello', [flag, testCase.$1]);
             expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
-   Got: $value ${gray}[string]$reset
+   Got: ${testCase.$2} ${gray}[string]$reset
 💡 Example: $bgGreen${black}hello $flag true$reset or $bgGreen${black}hello $flag false$reset
 '''));
           });
