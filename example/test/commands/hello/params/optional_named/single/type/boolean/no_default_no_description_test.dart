@@ -54,18 +54,12 @@ void main() {
 '''));
         });
 
-        for (final testCase in [
-          ('text', '"text"'),
-          ('"1"', '""1""'),
-          ('\'1.5\'', '"\'1.5\'"'),
-          ('"true"', '""true""'),
-          ('\'false\'', '"\'false\'"'),
-        ]) {
-          test('prints error when value is string (${testCase.$1})', () async {
-            final result = await Process.run('hello', [flag, testCase.$1]);
+        for (String value in ['text', "text", '\"1\"', '\'1.5\'', '\"true\"', '\'false\'']) {
+          test('prints error when value is string ($value)', () async {
+            final result = await Process.run('hello', [flag, value]);
             expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
-   Got: ${testCase.$2} ${gray}[string]$reset
+   Got: $value ${gray}[string]$reset
 💡 Example: $bgGreen${black}hello $flag true$reset or $bgGreen${black}hello $flag false$reset
 '''));
           });
