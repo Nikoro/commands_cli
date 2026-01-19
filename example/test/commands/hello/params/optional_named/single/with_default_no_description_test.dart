@@ -44,7 +44,7 @@ void main() {
 ${blue}hello$reset
 params:
   optional:
-    ${magenta}name (-n, --name, nm)$reset
+    ${magenta}name (-n, --name, nm)$reset $gray[string]$reset
     ${bold}default$reset: $bold${orange}Bob$reset
 '''));
         });

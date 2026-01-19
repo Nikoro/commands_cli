@@ -733,12 +733,15 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           else if (double.tryParse(defaultValue) != null && defaultValue.contains('.')) {
             effectiveType = 'double';
           }
-          // String: default type
+          // Unquoted string values: don't infer type (leave as null)
+          // This prevents showing [string] type for simple unquoted default values
           else {
-            effectiveType = 'string';
+            effectiveType = null;
           }
-          // Store the inferred type
-          currentParamMetadata['type'] = effectiveType;
+          // Store the inferred type only if it was actually inferred
+          if (effectiveType != null) {
+            currentParamMetadata['type'] = effectiveType;
+          }
         }
 
         // Validation: boolean type with non-boolean default
