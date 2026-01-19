@@ -585,8 +585,8 @@ void _printParamHelp(Param param) {
   // Build the help line with proper formatting
   final buffer = StringBuffer('    $magenta${param.name}$flags$reset');
 
-  // If type is explicitly specified, show it inline in gray after the param name
-  if (param.isTypeExplicit && param.type != null) {
+  // Show type if explicitly specified OR if type is inferred (non-null)
+  if (param.type != null) {
     buffer.write(' $gray[${param.type}]');
 
     // If there's a description, add it within the same gray block (no reset between type and description)

@@ -9,11 +9,11 @@ void main() {
   for (String type in ['boolean', 'bool']) {
     integrationTests(
       '''
-        hello:
+        hello: ## Description of command hello
           script: echo "Hello {name}"
           params:
             optional:
-              - name: '-n, --name'
+              - name: '-n, --name' ## Description of parameter name
                 type: $type
     ''',
       () {
@@ -82,10 +82,10 @@ void main() {
           test('$flag prints help', () async {
             final result = await Process.run('hello', [flag]);
             expect(result.stdout, equals('''
-${blue}hello$reset
+${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   optional:
-    ${magenta}name (-n, --name)$reset ${gray}[boolean]$reset
+    ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
 '''));
           });
         }
