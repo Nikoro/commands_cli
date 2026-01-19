@@ -45,7 +45,7 @@ ${blue}hello$reset
 params:
   optional:
     ${magenta}name (-n, --name, nm)$reset
-    ${bold}default$reset: "Bob"
+    ${bold}default$reset: $bold${orange}Bob$reset
 '''));
         });
       }

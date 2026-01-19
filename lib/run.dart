@@ -461,12 +461,7 @@ void _printSwitchesHelp(Command command, String indent) {
             print('$indent      ${bold}values$reset: ${param.values!.join(', ')}');
           }
           if (param.defaultValue != null) {
-            final defaultDisplay = param.defaultValue!.contains(' ') ||
-                    param.defaultValue!.contains('\n') ||
-                    param.defaultValue == param.defaultValue!.trim()
-                ? '"${param.defaultValue}"'
-                : param.defaultValue;
-            print('$indent      ${bold}default$reset: $defaultDisplay');
+            print('$indent      ${bold}default$reset: $bold$orange${param.defaultValue}$reset');
           }
         }
       }
@@ -480,12 +475,7 @@ void _printSwitchesHelp(Command command, String indent) {
             print('$indent      ${bold}values$reset: ${param.values!.join(', ')}');
           }
           if (param.defaultValue != null) {
-            final defaultDisplay = param.defaultValue!.contains(' ') ||
-                    param.defaultValue!.contains('\n') ||
-                    param.defaultValue == param.defaultValue!.trim()
-                ? '"${param.defaultValue}"'
-                : param.defaultValue;
-            print('$indent      ${bold}default$reset: $defaultDisplay');
+            print('$indent      ${bold}default$reset: $bold$orange${param.defaultValue}$reset');
           }
         }
       }
@@ -609,11 +599,6 @@ void _printParamHelp(Param param) {
 
   // Print default value
   if (param.defaultValue != null) {
-    final defaultDisplay = param.defaultValue!.contains(' ') ||
-            param.defaultValue!.contains('\n') ||
-            param.defaultValue == param.defaultValue!.trim()
-        ? '"${param.defaultValue}"'
-        : param.defaultValue;
-    print('    ${bold}default$reset: $defaultDisplay');
+    print('    ${bold}default$reset: $bold$orange${param.defaultValue}$reset');
   }
 }
