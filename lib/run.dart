@@ -582,12 +582,25 @@ Future<int> _executeOriginal(String name, List<String> args) async {
 void _printParamHelp(Param param) {
   final flags = param.flags != null ? ' (${param.flags})' : '';
 
-  // If type is explicitly specified, show it inline in gray after the param name
-  final typeInfo = (param.isTypeExplicit && param.type != null) ? ' $gray[${param.type}]$reset' : '';
+  // Build the help line with proper formatting
+  final buffer = StringBuffer('    $magenta${param.name}$flags$reset');
 
-  print(
-    '    $magenta${param.name}$flags$reset$typeInfo${param.description != null ? ' $gray${param.description}$reset' : ''}',
-  );
+  // If type is explicitly specified, show it inline in gray after the param name
+  if (param.isTypeExplicit && param.type != null) {
+    buffer.write(' $gray[${param.type}]');
+
+    // If there's a description, add it within the same gray block (no reset between type and description)
+    if (param.description != null) {
+      buffer.write(' ${param.description}$reset');
+    } else {
+      buffer.write(reset);
+    }
+  } else if (param.description != null) {
+    // No type info, just add description in gray
+    buffer.write(' $gray${param.description}$reset');
+  }
+
+  print(buffer.toString());
 
   // Print values for enum types
   if (param.values != null && param.values!.isNotEmpty) {
