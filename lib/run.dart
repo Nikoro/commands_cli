@@ -172,9 +172,11 @@ Future<void> run(String name, List<String> args) async {
           if (nextArg == 'true' || nextArg == 'false') {
             commandValues[paramName] = argsCopy.removeAt(0);
           } else {
-            // Invalid boolean value provided
+            // Invalid boolean value provided - detect actual type
+            final valueType = EnumTypeValidator.getValueType(nextArg);
+            final displayValue = valueType == 'string' ? '"$nextArg"' : nextArg;
             stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[boolean]$reset');
-            stderr.writeln('   Got: "$nextArg" $gray[string]$reset');
+            stderr.writeln('   Got: $displayValue $gray[$valueType]$reset');
             stderr.writeln('💡 Example: $bgGreen$black$name $arg true$reset or $bgGreen$black$name $arg false$reset');
             exit(1);
           }
@@ -298,8 +300,10 @@ Future<void> run(String name, List<String> args) async {
 
       // Validate boolean types
       if (param.type == 'boolean' && value != 'true' && value != 'false') {
+        final valueType = EnumTypeValidator.getValueType(value);
+        final displayValue = valueType == 'string' ? '"$value"' : value;
         stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[boolean]$reset');
-        stderr.writeln('   Got: "$value" $gray[string]$reset');
+        stderr.writeln('   Got: $displayValue $gray[$valueType]$reset');
         stderr.writeln('💡 Example: $bgGreen$black$name true$reset or $bgGreen$black$name false$reset');
         exit(1);
       }
