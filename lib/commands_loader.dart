@@ -714,35 +714,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
 
       // Skip the rest of param building if there was a validation error
       if (!hasValidationError) {
-        // Type inference: if type not provided, infer from default value
+        // No type inference - only use explicitly specified types
         String? effectiveType = type;
-        if (effectiveType == null && values == null) {
-          // If the value was quoted in YAML, treat it as a string
-          if (wasQuoted) {
-            effectiveType = 'string';
-          }
-          // Boolean: true/false
-          else if (defaultValue == 'true' || defaultValue == 'false') {
-            effectiveType = 'boolean';
-          }
-          // Integer: parseable as int without decimal point
-          else if (int.tryParse(defaultValue) != null && !defaultValue.contains('.')) {
-            effectiveType = 'int';
-          }
-          // Double: parseable as double with decimal point
-          else if (double.tryParse(defaultValue) != null && defaultValue.contains('.')) {
-            effectiveType = 'double';
-          }
-          // Unquoted string values: don't infer type (leave as null)
-          // This prevents showing [string] type for simple unquoted default values
-          else {
-            effectiveType = null;
-          }
-          // Store the inferred type only if it was actually inferred
-          if (effectiveType != null) {
-            currentParamMetadata['type'] = effectiveType;
-          }
-        }
 
         // Validation: boolean type with non-boolean default
         if (effectiveType == 'boolean' && defaultValue != 'true' && defaultValue != 'false') {
