@@ -609,15 +609,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       final valuesList = valuesRaw
           .split(',')
           .map((v) => v.trim())
-          .map((v) {
-            // If quoted, remove quotes and keep as string
-            if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
-              return v.substring(1, v.length - 1);
-            }
-            // If not quoted, keep as-is (YAML parser will treat unquoted values as strings)
-            // The values remain as strings here, validation will check type compatibility
-            return v;
-          })
+          // Keep values as-is, including quotes
+          // Quotes are meaningful: "true" is a string, true is a boolean
           .where((v) => v.isNotEmpty)
           .toList();
 

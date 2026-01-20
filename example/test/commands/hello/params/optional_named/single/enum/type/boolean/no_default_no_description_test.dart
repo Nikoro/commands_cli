@@ -97,7 +97,7 @@ params:
 
   for (String type in ['boolean', 'bool']) {
     for (final invalid in [
-      (value: 2, type: 'int'),
+      (value: 2, type: 'integer'),
       (value: 1.5, type: 'double'),
       (value: 'text', type: 'string'),
       (value: "text", type: 'string'),
