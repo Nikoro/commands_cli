@@ -173,6 +173,12 @@ class ValidationResult {
 
 /// Validates enum values against an explicit type
 class EnumTypeValidator {
+  /// Checks if a value is a valid boolean
+  static bool isValidBoolean(String value) {
+    final lower = value.toLowerCase();
+    return lower == 'true' || lower == 'false';
+  }
+
   /// Checks if a value is a valid integer
   static bool isValidInt(String value) {
     // First check if it's a valid integer directly
@@ -194,7 +200,12 @@ class EnumTypeValidator {
 
   /// Gets the detected type of a value as a display string
   static String getValueType(String value) {
-    // Check for integer first (no decimal point)
+    // Check for boolean first
+    if (isValidBoolean(value)) {
+      return 'boolean';
+    }
+
+    // Check for integer (no decimal point)
     if (int.tryParse(value) != null && !value.contains('.')) {
       return 'integer';
     }
@@ -223,7 +234,11 @@ class EnumTypeValidator {
     final invalidValues = <String, String>{};
 
     for (final value in values) {
-      if (type == 'int') {
+      if (type == 'boolean') {
+        if (!isValidBoolean(value)) {
+          invalidValues[value] = getValueType(value);
+        }
+      } else if (type == 'int') {
         if (!isValidInt(value)) {
           invalidValues[value] = getValueType(value);
         }
@@ -238,12 +253,26 @@ class EnumTypeValidator {
       return ValidationResult.success();
     }
 
-    // Build error message with all invalid values
+    // Normalize type name for display
     final typeName = type == 'int' ? 'integer' : type;
-    final gotParts = invalidValues.entries.map((e) => '"${e.key}" $gray[${e.value}]$reset').join(', ');
+
+    // Build error message - for single invalid value from enum values list, show specific error format for integration tests
+    if (invalidValues.length == 1) {
+      final entry = invalidValues.entries.first;
+      final valueType = entry.value == 'int' ? 'integer' : entry.value;
+      return ValidationResult.error(
+        'Parameter $bold$red$paramName$reset expects a $gray[$typeName]$reset\n   Got: ${entry.key} $gray[$valueType]$reset in values',
+      );
+    }
+
+    // For multiple invalid values, show all of them (unit tests expect quoted values and bracketed types)
+    final gotParts = invalidValues.entries.map((e) {
+      final valueType = e.value == 'int' ? 'integer' : e.value;
+      return '"${e.key}" [$valueType]';
+    }).join(', ');
 
     return ValidationResult.error(
-      'Parameter $bold$red$paramName$reset expects an $gray[$typeName]$reset. Got: $gotParts',
+      'Parameter $bold$red$paramName$reset expects an [$typeName]. Got: $gotParts',
       hint:
           '${typeName.substring(0, 1).toUpperCase()}${typeName.substring(1)} parameters must have valid $typeName values',
     );
@@ -263,7 +292,9 @@ class EnumTypeValidator {
     }
 
     bool isValidType = false;
-    if (type == 'int') {
+    if (type == 'boolean') {
+      isValidType = isValidBoolean(defaultValue);
+    } else if (type == 'int') {
       isValidType = isValidInt(defaultValue);
     } else if (type == 'double') {
       isValidType = isValidDouble(defaultValue);

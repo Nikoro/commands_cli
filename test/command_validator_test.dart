@@ -529,8 +529,9 @@ void main() {
           expect(result.isValid, isFalse);
           expect(result.errorMessage, contains('platform'));
           expect(result.errorMessage, contains('[integer]'));
-          expect(result.errorMessage, contains('"ios"'));
+          expect(result.errorMessage, contains('ios'));
           expect(result.errorMessage, contains('[string]'));
+          expect(result.errorMessage, contains('in values'));
         });
 
         test('returns error with multiple invalid values', () {
@@ -555,7 +556,8 @@ void main() {
           expect(result.isValid, isFalse);
           expect(result.errorMessage, contains('ratio'));
           expect(result.errorMessage, contains('[double]'));
-          expect(result.errorMessage, contains('"text"'));
+          expect(result.errorMessage, contains('text'));
+          expect(result.errorMessage, contains('in values'));
         });
       });
 
