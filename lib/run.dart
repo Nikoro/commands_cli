@@ -602,8 +602,13 @@ void _printParamHelp(Param param) {
   print(buffer.toString());
 
   // Print values for enum types
-  if (param.values != null && param.values!.isNotEmpty) {
-    print('    ${bold}values$reset: ${param.values!.join(', ')}');
+  // For boolean types with values field, always show "true, false" regardless of actual values
+  if (param.values != null) {
+    if (param.type == 'boolean' || param.type == 'bool') {
+      print('    ${bold}values$reset: true, false');
+    } else if (param.values!.isNotEmpty) {
+      print('    ${bold}values$reset: ${param.values!.join(', ')}');
+    }
   }
 
   // Print default value

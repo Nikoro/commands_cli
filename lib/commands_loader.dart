@@ -601,20 +601,26 @@ Map<String, Command> loadCommandsFrom(File yaml) {
     }
 
     // Match values list for param (enum)
-    // Format: values: [dev, staging, prod] or values: ['dev', 'staging', 'prod']
-    final valuesMatch = RegExp(r'^values:\s*\[(.+)\]$').firstMatch(trimmed);
+    // Format: values: [dev, staging, prod] or values: ['dev', 'staging', 'prod'] or values: []
+    final valuesMatch = RegExp(r'^values:\s*\[(.*)\]$').firstMatch(trimmed);
     if (valuesMatch != null && currentParamName != null) {
       final valuesRaw = valuesMatch[1]!;
-      // Split by comma and clean up
-      final valuesList = valuesRaw
-          .split(',')
-          .map((v) => v.trim())
-          // Keep values as-is, including quotes
-          // Quotes are meaningful: "true" is a string, true is a boolean
-          .where((v) => v.isNotEmpty)
-          .toList();
+      // Split by comma and clean up (handle empty case)
+      final valuesList = valuesRaw.isEmpty
+          ? <String>[]
+          : valuesRaw
+              .split(',')
+              .map((v) => v.trim())
+              // Keep values as-is, including quotes
+              // Quotes are meaningful: "true" is a string, true is a boolean
+              .where((v) => v.isNotEmpty)
+              .toList();
 
-      if (valuesList.isEmpty) {
+      // Check if type is boolean - allow empty values for boolean types
+      final type = currentParamMetadata['type'] as String?;
+      final isBooleanType = type == 'boolean' || type == 'bool';
+
+      if (valuesList.isEmpty && !isBooleanType) {
         if (currentCommand != null) {
           _validationErrors[currentCommand] = 'Parameter "$currentParamName" has empty values list';
         }
@@ -625,8 +631,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
 
       currentParamMetadata['values'] = valuesList;
 
-      // Validate enum values against explicit type immediately
-      final type = currentParamMetadata['type'] as String?;
+      // Validate enum values against explicit type immediately (type already defined above)
       if (type != null && currentParamMetadata['isTypeExplicit'] == true) {
         final enumValidation = EnumTypeValidator.validateEnumValues(currentParamName, type, valuesList);
         if (!enumValidation.isValid && currentCommand != null) {
