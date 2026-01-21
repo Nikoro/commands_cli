@@ -38,7 +38,8 @@ Select value for ${blue}name$reset:
     ${green}0. false ✓$reset
     1. true
 
-${gray}Use arrows to navigate, 0/f for false, 1/t for true, Enter to confirm, Esc to cancel$reset
+${gray}Use arrows to navigate, 0/f for false, 1/t for true$reset
+${gray}Enter to confirm, Esc to cancel$reset
 '''),
         );
       });

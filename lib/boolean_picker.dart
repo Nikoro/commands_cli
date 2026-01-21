@@ -32,8 +32,8 @@ class BooleanPicker {
       }
 
       print('');
-      print(
-          '${colors.gray}Use arrows to navigate, 0/f for false, 1/t for true, Enter to confirm, Esc to cancel${colors.reset}');
+      print('${colors.gray}Use arrows to navigate, 0/f for false, 1/t for true${colors.reset}');
+      print('${colors.gray}Enter to confirm, Esc to cancel${colors.reset}');
     }
 
     // Display initial menu
@@ -65,7 +65,7 @@ class BooleanPicker {
               if (arrowChar == 65) {
                 selectedIndex = (selectedIndex - 1 + values.length) % values.length;
                 // Clear screen and redraw
-                _clearScreen(values.length + 5);
+                _clearScreen(values.length + 6);
                 displayMenu();
                 continue;
               }
@@ -74,7 +74,7 @@ class BooleanPicker {
               if (arrowChar == 66) {
                 selectedIndex = (selectedIndex + 1) % values.length;
                 // Clear screen and redraw
-                _clearScreen(values.length + 5);
+                _clearScreen(values.length + 6);
                 displayMenu();
                 continue;
               }
