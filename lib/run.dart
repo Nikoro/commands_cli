@@ -196,6 +196,8 @@ Future<void> run(String name, List<String> args) async {
               isValidType = EnumTypeValidator.isValidInt(value);
             } else if (param.type == 'double') {
               isValidType = EnumTypeValidator.isValidDouble(value);
+            } else if (param.type == 'boolean') {
+              isValidType = EnumTypeValidator.isValidBoolean(value);
             }
 
             if (!isValidType) {
@@ -276,6 +278,8 @@ Future<void> run(String name, List<String> args) async {
           isValidType = EnumTypeValidator.isValidInt(value);
         } else if (param.type == 'double') {
           isValidType = EnumTypeValidator.isValidDouble(value);
+        } else if (param.type == 'boolean') {
+          isValidType = EnumTypeValidator.isValidBoolean(value);
         }
 
         if (!isValidType) {
