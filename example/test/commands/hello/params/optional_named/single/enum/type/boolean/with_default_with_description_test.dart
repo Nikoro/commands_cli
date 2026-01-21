@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
-import '../../../../../../../integration_tests.dart';
+import '../../../../../../../../integration_tests.dart';
 
 void main() {
   for (String type in ['boolean', 'bool']) {
@@ -15,7 +15,8 @@ void main() {
           params:
             optional:
               - name: '-n, --name' ## Description of parameter name
-                type: $type 
+                type: $type
+                values: [true, false] 
                 default: $def
     ''',
         () {
@@ -88,6 +89,7 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   optional:
     ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
+    ${bold}values$reset: true, false
     ${bold}default$reset: $bold${orange}$def$reset
 '''));
             });
@@ -110,7 +112,8 @@ params:
           params:
             optional:
               - name: '-n, --name' ## Description of parameter name
-                type: $type 
+                type: $type
+                values: [true, false] 
                 default: ${invalid.input}
     ''',
         () {

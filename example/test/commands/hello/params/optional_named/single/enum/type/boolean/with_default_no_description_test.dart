@@ -3,19 +3,20 @@ import 'dart:io';
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
-import '../../../../../../../integration_tests.dart';
+import '../../../../../../../../integration_tests.dart';
 
 void main() {
   for (String type in ['boolean', 'bool']) {
     for (bool def in [true, false]) {
       integrationTests(
         '''
-        hello: ## Description of command hello
+        hello:
           script: echo "Hello {name}"
           params:
             optional:
-              - name: '-n, --name' ## Description of parameter name
-                type: $type 
+              - name: '-n, --name'
+                type: $type
+                values: [true, false] 
                 default: $def
     ''',
         () {
@@ -84,10 +85,11 @@ void main() {
             test('$flag prints help', () async {
               final result = await Process.run('hello', [flag]);
               expect(result.stdout, equals('''
-${blue}hello$reset: ${gray}Description of command hello$reset
+${blue}hello$reset
 params:
   optional:
-    ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
+    ${magenta}name (-n, --name)$reset ${gray}[boolean]$reset
+    ${bold}values$reset: true, false
     ${bold}default$reset: $bold${orange}$def$reset
 '''));
             });
@@ -105,12 +107,13 @@ params:
     ]) {
       integrationTests(
         '''
-        hello: ## Description of command hello
+        hello:
           script: echo "Hello {name}"
           params:
             optional:
-              - name: '-n, --name' ## Description of parameter name
-                type: $type 
+              - name: '-n, --name'
+                type: $type
+                values: [true, false] 
                 default: ${invalid.input}
     ''',
         () {
