@@ -24,9 +24,7 @@ class BooleanPicker {
         final isSelected = i == selectedIndex;
 
         // Build display string - no trailing spaces for non-selected
-        String display = isSelected
-            ? '    ${colors.green}$i. $value ✓${colors.reset}'
-            : '    $i. $value';
+        String display = isSelected ? '    ${colors.green}$i. $value ✓${colors.reset}' : '    $i. $value';
 
         print(display);
       }

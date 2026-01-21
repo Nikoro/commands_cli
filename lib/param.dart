@@ -95,8 +95,7 @@ class Param {
   ///
   /// Note: The values list can be empty, have duplicates, or only have one value.
   /// The boolean picker always shows both 'false' and 'true' options.
-  bool get requiresBooleanPicker =>
-      (type == 'boolean' || type == 'bool') && values != null && defaultValue == null;
+  bool get requiresBooleanPicker => (type == 'boolean' || type == 'bool') && values != null && defaultValue == null;
 
   /// Returns the default value as a boolean
   ///

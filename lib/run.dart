@@ -191,7 +191,11 @@ Future<void> run(String name, List<String> args) async {
           final value = argsCopy.removeAt(0);
 
           // Validate typed enum values at runtime (skip boolean - handled separately with better error messages)
-          if (param.isEnum && param.isTypeExplicit && param.type != null && param.type != 'string' && param.type != 'boolean') {
+          if (param.isEnum &&
+              param.isTypeExplicit &&
+              param.type != null &&
+              param.type != 'string' &&
+              param.type != 'boolean') {
             bool isValidType = false;
             if (param.type == 'int') {
               isValidType = EnumTypeValidator.isValidInt(value);
@@ -271,7 +275,11 @@ Future<void> run(String name, List<String> args) async {
       final param = getParamByName(paramName);
 
       // Validate typed enum values at runtime (skip boolean - handled below with better error messages)
-      if (param.isEnum && param.isTypeExplicit && param.type != null && param.type != 'string' && param.type != 'boolean') {
+      if (param.isEnum &&
+          param.isTypeExplicit &&
+          param.type != null &&
+          param.type != 'string' &&
+          param.type != 'boolean') {
         bool isValidType = false;
         if (param.type == 'int') {
           isValidType = EnumTypeValidator.isValidInt(value);
@@ -338,8 +346,10 @@ Future<void> run(String name, List<String> args) async {
   // This determines whether we can show pickers or should report errors
   bool hasNonPickerMissingParams = false;
   for (final param in resolvedCommand.requiredParams) {
-    if (param.flags != null && commandValues[param.name] == null &&
-        !param.requiresEnumPicker && !param.requiresBooleanPicker) {
+    if (param.flags != null &&
+        commandValues[param.name] == null &&
+        !param.requiresEnumPicker &&
+        !param.requiresBooleanPicker) {
       hasNonPickerMissingParams = true;
       break;
     }
