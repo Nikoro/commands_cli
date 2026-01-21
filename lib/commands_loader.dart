@@ -601,20 +601,29 @@ Map<String, Command> loadCommandsFrom(File yaml) {
     }
 
     // Match values list for param (enum)
-    // Format: values: [dev, staging, prod] or values: ['dev', 'staging', 'prod'] or values: []
-    final valuesMatch = RegExp(r'^values:\s*\[(.*)\]$').firstMatch(trimmed);
-    if (valuesMatch != null && currentParamName != null) {
-      final valuesRaw = valuesMatch[1]!;
-      // Split by comma and clean up (handle empty case)
-      final valuesList = valuesRaw.isEmpty
-          ? <String>[]
-          : valuesRaw
-              .split(',')
-              .map((v) => v.trim())
-              // Keep values as-is, including quotes
-              // Quotes are meaningful: "true" is a string, true is a boolean
-              .where((v) => v.isNotEmpty)
-              .toList();
+    // Format: values: [dev, staging, prod] or values: ['dev', 'staging', 'prod'] or values: [] or values:
+    final valuesWithBracketsMatch = RegExp(r'^values:\s*\[(.*)\]$').firstMatch(trimmed);
+    final valuesEmptyMatch = RegExp(r'^values:\s*$').firstMatch(trimmed);
+
+    if ((valuesWithBracketsMatch != null || valuesEmptyMatch != null) && currentParamName != null) {
+      List<String> valuesList;
+
+      if (valuesEmptyMatch != null) {
+        // values: (without brackets) - treat as empty list
+        valuesList = <String>[];
+      } else {
+        final valuesRaw = valuesWithBracketsMatch![1]!;
+        // Split by comma and clean up (handle empty case)
+        valuesList = valuesRaw.isEmpty
+            ? <String>[]
+            : valuesRaw
+                .split(',')
+                .map((v) => v.trim())
+                // Keep values as-is, including quotes
+                // Quotes are meaningful: "true" is a string, true is a boolean
+                .where((v) => v.isNotEmpty)
+                .toList();
+      }
 
       // Check if type is boolean - allow empty values for boolean types
       final type = currentParamMetadata['type'] as String?;
