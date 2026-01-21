@@ -7,31 +7,32 @@ import '../../../../../../../../integration_tests.dart';
 
 void main() {
   for (String type in ['boolean', 'bool']) {
-    integrationTests(
-      '''
+    for (String values in ['', '[]', '[true]', '[true, false]', '[false, true]', '[false, true, true]']) {
+      integrationTests(
+        '''
         hello:
           script: echo "Hello {name}"
           params:
             required:
               - name: '-n, --name'
                 type: $type
-                values: [true, false]
+                values: $values
     ''',
-      () {
-        for (String flag in ['-n', '--name']) {
-          for (bool value in [true, false]) {
-            test('prints "Hello $value', () async {
-              final result = await Process.run('hello', [flag, '$value']);
-              expect(result.stdout, equals('Hello $value\n'));
-            });
+        () {
+          for (String flag in ['-n', '--name']) {
+            for (bool value in [true, false]) {
+              test('prints "Hello $value', () async {
+                final result = await Process.run('hello', [flag, '$value']);
+                expect(result.stdout, equals('Hello $value\n'));
+              });
+            }
           }
-        }
 
-      test('shows interactive picker when no required param is specified', () async {
-        final result = await Process.run('hello', []);
-        expect(
-          result.stdout,
-          equals('''
+          test('shows interactive picker when no required param is specified', () async {
+            final result = await Process.run('hello', []);
+            expect(
+              result.stdout,
+              equals('''
 
 Select value for ${blue}name$reset:
 
@@ -41,70 +42,71 @@ Select value for ${blue}name$reset:
 ${gray}Use arrows to navigate, 0/f for false, 1/t for true$reset
 ${gray}Enter to confirm, Esc to cancel$reset
 '''),
-        );
-      });
-
-        for (String flag in ['-n', '--name']) {
-          test('prints "Hello true" when no value for required param is specified', () async {
-            final result = await Process.run('hello', [flag]);
-            expect(result.stdout, equals('Hello true\n'));
+            );
           });
 
-          test('prints error when value is integer', () async {
-            final result = await Process.run('hello', [flag, '2']);
-            expect(result.stderr, equals('''
+          for (String flag in ['-n', '--name']) {
+            test('prints "Hello true" when no value for required param is specified', () async {
+              final result = await Process.run('hello', [flag]);
+              expect(result.stdout, equals('Hello true\n'));
+            });
+
+            test('prints error when value is integer', () async {
+              final result = await Process.run('hello', [flag, '2']);
+              expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 2 ${gray}[integer]$reset
 💡 Example: $bgGreen${black}hello $flag true$reset or $bgGreen${black}hello $flag false$reset
 '''));
-          });
+            });
 
-          test('prints error when value is double', () async {
-            final result = await Process.run('hello', [flag, '1.5']);
-            expect(result.stderr, equals('''
+            test('prints error when value is double', () async {
+              final result = await Process.run('hello', [flag, '1.5']);
+              expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 1.5 ${gray}[double]$reset
 💡 Example: $bgGreen${black}hello $flag true$reset or $bgGreen${black}hello $flag false$reset
 '''));
-          });
+            });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
-            test('prints error when value is string ($value)', () async {
-              final result = await Process.run('hello', [flag, value]);
-              expect(result.stderr, equals('''
+            for (String value in [
+              'text',
+              "text",
+              '"1"',
+              '\"1\"',
+              '\'1.5\'',
+              "'1.5'",
+              '\"true\"',
+              '"true"',
+              '\'false\'',
+              "'false'"
+            ]) {
+              test('prints error when value is string ($value)', () async {
+                final result = await Process.run('hello', [flag, value]);
+                expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: $value ${gray}[string]$reset
 💡 Example: $bgGreen${black}hello $flag true$reset or $bgGreen${black}hello $flag false$reset
 '''));
-            });
+              });
+            }
           }
-        }
 
-        for (String flag in ['-h', '--help']) {
-          test('$flag prints help', () async {
-            final result = await Process.run('hello', [flag]);
-            expect(result.stdout, equals('''
+          for (String flag in ['-h', '--help']) {
+            test('$flag prints help', () async {
+              final result = await Process.run('hello', [flag]);
+              expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
   required:
     ${magenta}name (-n, --name)$reset ${gray}[boolean]$reset
     ${bold}values$reset: true, false
 '''));
-          });
-        }
-      },
-    );
+            });
+          }
+        },
+      );
+    }
   }
 
   for (String type in ['boolean', 'bool']) {
