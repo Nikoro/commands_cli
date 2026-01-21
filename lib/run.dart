@@ -326,20 +326,21 @@ Future<void> run(String name, List<String> args) async {
       commandValues[paramName] = value;
     } else if (commandValues[paramName] == null && positionalParams.contains(paramName)) {
       final param = getParamByName(paramName);
-      // Only add non-enum-picker params to missing positional list
-      // Enum picker params will be handled by the enum picker section below
-      if (!param.requiresEnumPicker) {
+      // Only add non-picker params to missing positional list
+      // Picker params will be handled by the picker section below
+      if (!param.requiresEnumPicker && !param.requiresBooleanPicker) {
         missingPositional.add(paramName);
       }
     }
   }
 
-  // Check if there are any missing non-enum-picker required params
-  // This determines whether we can show enum pickers or should report errors
-  bool hasNonEnumPickerMissingParams = false;
+  // Check if there are any missing non-picker required params
+  // This determines whether we can show pickers or should report errors
+  bool hasNonPickerMissingParams = false;
   for (final param in resolvedCommand.requiredParams) {
-    if (param.flags != null && commandValues[param.name] == null && !param.requiresEnumPicker) {
-      hasNonEnumPickerMissingParams = true;
+    if (param.flags != null && commandValues[param.name] == null &&
+        !param.requiresEnumPicker && !param.requiresBooleanPicker) {
+      hasNonPickerMissingParams = true;
       break;
     }
   }
@@ -348,7 +349,7 @@ Future<void> run(String name, List<String> args) async {
   // Only show picker if ALL other required params (non-enum-picker) are already provided
   // AND there are no missing positional params
   // This runs AFTER positional processing to ensure invalid values are caught first
-  if (!hasNonEnumPickerMissingParams && missingPositional.isEmpty) {
+  if (!hasNonPickerMissingParams && missingPositional.isEmpty) {
     for (final param in resolvedCommand.requiredParams) {
       // Only show picker if:
       // 1. Parameter is an enum (has values)
@@ -357,22 +358,22 @@ Future<void> run(String name, List<String> args) async {
       // 4. Parameter is required (we're iterating requiredParams only)
       // 5. ALL other non-enum-picker required params are already provided
       // 6. No positional params are missing
-      if (param.requiresEnumPicker && commandValues[param.name] == null) {
+      if (commandValues[param.name] == null) {
         String? selectedValue;
 
-        // Use BooleanPicker for explicitly typed boolean parameters
-        if (param.type == 'boolean' || param.type == 'bool') {
+        // Use BooleanPicker for explicitly typed boolean parameters with values field
+        if (param.requiresBooleanPicker) {
           selectedValue = BooleanPicker.pick(param.name, description: param.description);
-        } else {
+        } else if (param.requiresEnumPicker) {
           selectedValue = EnumPicker.pick(param, param.name);
         }
 
-        if (selectedValue == null) {
+        if (selectedValue != null) {
+          commandValues[param.name] = selectedValue;
+        } else if (param.requiresBooleanPicker || param.requiresEnumPicker) {
           // User cancelled - exit gracefully
           exit(0);
         }
-
-        commandValues[param.name] = selectedValue;
       }
     }
   }

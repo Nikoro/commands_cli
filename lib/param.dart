@@ -86,6 +86,18 @@ class Param {
   /// - No default value is provided
   bool get requiresEnumPicker => isEnum && defaultValue == null;
 
+  /// Returns true if this parameter requires a boolean picker
+  ///
+  /// A boolean picker is required when:
+  /// - The parameter type is explicitly 'boolean' or 'bool', AND
+  /// - The 'values' field is present (values != null), AND
+  /// - No default value is provided
+  ///
+  /// Note: The values list can be empty, have duplicates, or only have one value.
+  /// The boolean picker always shows both 'false' and 'true' options.
+  bool get requiresBooleanPicker =>
+      (type == 'boolean' || type == 'bool') && values != null && defaultValue == null;
+
   /// Returns the default value as a boolean
   ///
   /// Only call this if [isBoolean] is true
