@@ -189,15 +189,13 @@ Future<void> run(String name, List<String> args) async {
         if (argsCopy.isNotEmpty && !argsCopy.first.startsWith('-')) {
           final value = argsCopy.removeAt(0);
 
-          // Validate typed enum values at runtime
-          if (param.isEnum && param.isTypeExplicit && param.type != null && param.type != 'string') {
+          // Validate typed enum values at runtime (skip boolean - handled separately with better error messages)
+          if (param.isEnum && param.isTypeExplicit && param.type != null && param.type != 'string' && param.type != 'boolean') {
             bool isValidType = false;
             if (param.type == 'int') {
               isValidType = EnumTypeValidator.isValidInt(value);
             } else if (param.type == 'double') {
               isValidType = EnumTypeValidator.isValidDouble(value);
-            } else if (param.type == 'boolean') {
-              isValidType = EnumTypeValidator.isValidBoolean(value);
             }
 
             if (!isValidType) {
@@ -271,15 +269,13 @@ Future<void> run(String name, List<String> args) async {
       final value = positionalArgs[i];
       final param = getParamByName(paramName);
 
-      // Validate typed enum values at runtime
-      if (param.isEnum && param.isTypeExplicit && param.type != null && param.type != 'string') {
+      // Validate typed enum values at runtime (skip boolean - handled below with better error messages)
+      if (param.isEnum && param.isTypeExplicit && param.type != null && param.type != 'string' && param.type != 'boolean') {
         bool isValidType = false;
         if (param.type == 'int') {
           isValidType = EnumTypeValidator.isValidInt(value);
         } else if (param.type == 'double') {
           isValidType = EnumTypeValidator.isValidDouble(value);
-        } else if (param.type == 'boolean') {
-          isValidType = EnumTypeValidator.isValidBoolean(value);
         }
 
         if (!isValidType) {
@@ -293,20 +289,20 @@ Future<void> run(String name, List<String> args) async {
         }
       }
 
-      // Validate enum values
-      if (param.isEnum && !param.isValidValue(value)) {
-        stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
-        final allowedValues = param.values!.map((v) => '$bold$green$v$reset').join(', ');
-        stderr.writeln('💡 Must be one of: $allowedValues');
-        exit(1);
-      }
-
-      // Validate boolean types
+      // Validate boolean types first (before enum validation for better error messages)
       if (param.type == 'boolean' && value != 'true' && value != 'false') {
         final valueType = EnumTypeValidator.getValueType(value);
         stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[boolean]$reset');
         stderr.writeln('   Got: $value $gray[$valueType]$reset');
         stderr.writeln('💡 Example: $bgGreen$black$name true$reset or $bgGreen$black$name false$reset');
+        exit(1);
+      }
+
+      // Validate enum values (skip boolean - handled above with better error messages)
+      if (param.isEnum && param.type != 'boolean' && !param.isValidValue(value)) {
+        stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
+        final allowedValues = param.values!.map((v) => '$bold$green$v$reset').join(', ');
+        stderr.writeln('💡 Must be one of: $allowedValues');
         exit(1);
       }
 
