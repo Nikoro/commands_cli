@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:commands_cli/boolean_picker.dart';
 import 'package:commands_cli/colors.dart';
 import 'package:commands_cli/command.dart';
 import 'package:commands_cli/command_validator.dart';
@@ -357,7 +358,14 @@ Future<void> run(String name, List<String> args) async {
       // 5. ALL other non-enum-picker required params are already provided
       // 6. No positional params are missing
       if (param.requiresEnumPicker && commandValues[param.name] == null) {
-        final selectedValue = EnumPicker.pick(param, param.name);
+        String? selectedValue;
+
+        // Use BooleanPicker for explicitly typed boolean parameters
+        if (param.type == 'boolean' || param.type == 'bool') {
+          selectedValue = BooleanPicker.pick(param.name, description: param.description);
+        } else {
+          selectedValue = EnumPicker.pick(param, param.name);
+        }
 
         if (selectedValue == null) {
           // User cancelled - exit gracefully
