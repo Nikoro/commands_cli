@@ -1,8 +1,312 @@
-        hello: ## Description of command hello
-          script: echo "Hello {name}"
-          params:
-            optional:
-              - name: '-n, --name' ## Description of parameter name
-                type: double
-                default: "true"
-    
+## ============================================================================
+## PRESERVED COMMANDS (DO NOT MODIFY)
+## ============================================================================
+hello: ## Prints "Hello World"
+  script: echo "Hello World"
+
+d:
+  script: |
+    dart ...args
+
+test:
+  override: false
+  script: |
+    echo "test overridden"
+
+make:
+  override: true
+  script: |
+    echo "make overridden"          
+
+invalid!:
+
+invalid_quoted_int: ## Invalid: quoted default with explicit int type
+  script: echo "port={port}"
+  params:
+    optional:
+      - port: '-p, --port'
+        type: int
+        default: "3000"
+
+invalid_quoted_double: ## Invalid: quoted default with explicit double type
+  script: echo "timeout={timeout}"
+  params:
+    optional:
+      - timeout: '-t, --timeout'
+        type: double
+        default: "30.0"
+
+invalid_string_int: ## Invalid: explicit string type with unquoted int default
+  script: echo "code={code}"
+  params:
+    optional:
+      - code: '-c, --code'
+        type: string
+        default: 123
+
+invalid_string_double: ## Invalid: explicit string type with unquoted double default
+  script: echo "version={version}"
+  params:
+    optional:
+      - version: '-v, --version'
+        type: string
+        default: 1.5
+
+invalid_script_and_switch: ## Invalid: has both script and switch defined
+  script: echo "This should not work"
+  switch:
+    - opt1:
+      script: echo "Option 1"
+    - opt2:
+      script: echo "Option 2"
+    - default: opt1
+
+## ============================================================================
+## PARAMETER TYPE SYSTEM TESTS
+## ============================================================================
+
+type_enum_with_default: ## Test enum with default
+  script: echo "env={env}"
+  params:
+    optional:
+      - env: '-e, --environment'
+        values: [dev, staging, prod]
+        default: staging
+
+type_enum_no_default: ## Test enum without default (picker)
+  script: echo "target={target}"
+  params:
+    optional:
+      - target: '-t, --target'
+        description: 'Select target'
+        values: [ios, android, web]
+
+type_numeric_types: ## Test int and double
+  script: echo "port={port} timeout={timeout}"
+  params:
+    optional:
+      - port: '-p, --port'
+        type: int
+        default: 3000
+      - timeout: '--timeout'
+        type: double
+        default: 30.0
+
+type_mixed_types: ## Test all types together
+  script: echo "env={env} replicas={replicas} timeout={timeout} verbose={verbose}"
+  params:
+    optional:
+      - env: '-e, --environment'
+        values: [dev, staging, prod]
+        default: staging
+      - replicas: '-r, --replicas'
+        type: int
+        default: 3
+      - timeout: '-t, --timeout'
+        type: double
+        default: 30.5
+      - verbose: '-v, --verbose'
+        default: false
+
+type_inferred_int: ## Test inferred int type
+  script: echo "port={port} workers={workers}"
+  params:
+    optional:
+      - port: '-p, --port'
+        default: 8080
+      - workers: '-w, --workers'
+        default: 4
+
+type_inferred_double: ## Test inferred double type
+  script: echo "ratio={ratio} timeout={timeout}"
+  params:
+    optional:
+      - ratio: '-r, --ratio'
+        default: 0.5
+      - timeout: '-t, --timeout'
+        default: 30.0
+
+type_inferred_boolean: ## Test inferred boolean type
+  script: echo "enabled={enabled} verbose={verbose}"
+  params:
+    optional:
+      - enabled: '-e, --enabled'
+        default: true
+      - verbose: '-v, --verbose'
+        default: false
+
+type_inferred_string: ## Test inferred string type
+  script: echo "name={name} message={message}"
+  params:
+    optional:
+      - name: '-n, --name'
+        default: example
+      - message: '-m, --message'
+        default: hello world
+
+type_inferred_mixed: ## Test all inferred types together
+  script: echo "port={port} ratio={ratio} enabled={enabled} name={name}"
+  params:
+    optional:
+      - port: '-p, --port'
+        default: 3000
+      - ratio: '-r, --ratio'
+        default: 1.5
+      - enabled: '-e, --enabled'
+        default: true
+      - name: '-n, --name'
+        default: server
+
+type_quoted_int: ## Test quoted int becomes string
+  script: echo "port={port} count={count}"
+  params:
+    optional:
+      - port: '-p, --port'
+        default: "8080"
+      - count: '-c, --count'
+        default: '42'
+
+type_quoted_double: ## Test quoted double becomes string
+  script: echo "ratio={ratio} timeout={timeout}"
+  params:
+    optional:
+      - ratio: '-r, --ratio'
+        default: "0.75"
+      - timeout: '-t, --timeout'
+        default: '30.0'
+
+type_quoted_boolean: ## Test quoted boolean becomes string
+  script: echo "enabled={enabled} verbose={verbose}"
+  params:
+    optional:
+      - enabled: '-e, --enabled'
+        default: "true"
+      - verbose: '-v, --verbose'
+        default: 'false'
+
+type_quoted_inferred: ## Test quoted values become strings
+  script: echo "port={port} ratio={ratio}"
+  params:
+    optional:
+      - port: '-p, --port'
+        default: "9000"
+      - ratio: '-r, --ratio'
+        default: '2.5'
+
+type_explicit_string: ## Test explicit string type prevents inference
+  script: echo "code={code} version={version}"
+  params:
+    required:
+      - code: '-c, --code'
+        type: string
+      - version: '-v, --version'
+        type: string
+
+type_enum_required_positional: ## Test required positional enum without default
+  script: echo "platform={platform}"
+  params:
+    required:
+      - platform:
+        values: [Alpha, Bravo, Charlie]
+
+type_enum_required_named: ## Test required named enum without default (picker)
+  script: echo "platform={platform}"
+  params:
+    required:
+      - platform: '-p, --platform'
+        values: [ios, android, web]
+
+type_enum_optional_named: ## Test optional named enum without default (no picker)
+  script: echo "platform={platform}"
+  params:
+    optional:
+      - platform: '-p, --platform'
+        values: [ios, android, web]
+
+type_enum_optional_positional: ## Test optional positional enum without default (no picker)
+  script: echo "env={env}"
+  params:
+    optional:
+      - env:
+        values: [dev, staging, prod]
+
+## ============================================================================
+## TYPED ENUM TESTS
+## ============================================================================
+
+# Valid typed enum - all values are integers
+type_enum_int_valid: ## Test typed enum with valid int values
+  script: echo "level={level}"
+  params:
+    required:
+      - level: '-l, --level'
+        type: int
+        values: [1, 2, 3]
+        default: 1
+
+# Valid typed enum - string type (explicit)
+type_enum_string_explicit: ## Test typed enum with explicit string type
+  script: echo "platform={platform}"
+  params:
+    required:
+      - platform: '-p, --platform'
+        type: string
+        values: [ios, android, web]
+        default: ios
+
+# Valid typed enum - double type with integers (coercion)
+type_enum_double_with_int: ## Test typed enum double accepts integers
+  script: echo "ratio={ratio}"
+  params:
+    optional:
+      - ratio: '-r, --ratio'
+        type: double
+        values: [1, 2, 3]
+        default: 1
+
+# Valid typed enum - int type with whole number doubles
+type_enum_int_with_whole_doubles: ## Test typed enum int accepts whole doubles
+  script: echo "count={count}"
+  params:
+    optional:
+      - count: '-c, --count'
+        type: int
+        values: [1, 2.0, 3]
+        default: 2.0
+
+# No type specified - mixed values should work
+type_enum_no_type_mixed: ## Test enum without type allows mixed values
+  script: echo "value={value}"
+  params:
+    optional:
+      - value: '-v, --value'
+        values: [1, text, 3.3]
+        default: 1
+
+# Invalid typed enum - int type with string value (should fail at activation)
+invalid_typed_enum_int_string: ## Invalid: int enum with string value
+  script: echo "platform={platform}"
+  params:
+    required:
+      - platform: '-p, --platform'
+        type: int
+        values: [ios, 1, 2]
+
+# Invalid typed enum - int type with multiple invalid values
+invalid_typed_enum_int_multi: ## Invalid: int enum with string and double
+  script: echo "platform={platform}"
+  params:
+    required:
+      - platform:
+        type: int
+        values: [ios, 1, 2.2]
+
+# Invalid typed enum - int default is string
+invalid_typed_enum_int_default: ## Invalid: int enum with string default
+  script: echo "level={level}"
+  params:
+    required:
+      - level: '-l, --level'
+        type: int
+        values: [1, 2, 3]
+        default: text
