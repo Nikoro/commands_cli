@@ -187,7 +187,8 @@ Future<void> run(String name, List<String> args) async {
         }
       } else {
         // Non-boolean parameter - requires a value
-        if (argsCopy.isNotEmpty && !argsCopy.first.startsWith('-')) {
+        // Check if there's a value: either doesn't start with '-' OR is a negative number
+        if (argsCopy.isNotEmpty && (!argsCopy.first.startsWith('-') || _isNegativeNumber(argsCopy.first))) {
           final value = argsCopy.removeAt(0);
 
           // Validate typed enum values at runtime (skip boolean - handled separately with better error messages)
@@ -233,8 +234,17 @@ Future<void> run(String name, List<String> args) async {
             }
           } else if (param.type == 'double') {
             if (!EnumTypeValidator.isValidDouble(value)) {
-              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[number]$reset');
-              stderr.writeln('   Got: "$value" $gray[string]$reset');
+              final valueType = EnumTypeValidator.getValueType(value);
+              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[double]$reset');
+              stderr.writeln('   Got: $value $gray[$valueType]$reset');
+              stderr.writeln('💡 Example: $bgGreen$black$name $arg 3.14$reset');
+              exit(1);
+            }
+            // For double type, reject integer values (must have decimal point)
+            final valueType = EnumTypeValidator.getValueType(value);
+            if (valueType == 'integer') {
+              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[double]$reset');
+              stderr.writeln('   Got: $value $gray[integer]$reset');
               stderr.writeln('💡 Example: $bgGreen$black$name $arg 3.14$reset');
               exit(1);
             }
@@ -324,11 +334,22 @@ Future<void> run(String name, List<String> args) async {
         exit(1);
       }
 
-      if (param.type == 'double' && !EnumTypeValidator.isValidDouble(value)) {
-        stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[number]$reset');
-        stderr.writeln('   Got: "$value" $gray[string]$reset');
-        stderr.writeln('💡 Example: $bgGreen$black$name 3.14$reset');
-        exit(1);
+      if (param.type == 'double') {
+        if (!EnumTypeValidator.isValidDouble(value)) {
+          final valueType = EnumTypeValidator.getValueType(value);
+          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[double]$reset');
+          stderr.writeln('   Got: $value $gray[$valueType]$reset');
+          stderr.writeln('💡 Example: $bgGreen$black$name 3.14$reset');
+          exit(1);
+        }
+        // For double type, reject integer values (must have decimal point)
+        final valueType = EnumTypeValidator.getValueType(value);
+        if (valueType == 'integer') {
+          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[double]$reset');
+          stderr.writeln('   Got: $value $gray[integer]$reset');
+          stderr.writeln('💡 Example: $bgGreen$black$name 3.14$reset');
+          exit(1);
+        }
       }
 
       commandValues[paramName] = value;
@@ -585,6 +606,14 @@ Future<int> _executeOriginal(String name, List<String> args) async {
       tempDir.deleteSync(recursive: true);
     }
   }
+}
+
+/// Checks if a string is a negative number (e.g., "-1", "-3.14", "-1.0")
+/// This is used to distinguish between flags (like "-n") and negative numbers
+bool _isNegativeNumber(String value) {
+  if (!value.startsWith('-')) return false;
+  // Try to parse as a number - if it succeeds, it's a negative number
+  return double.tryParse(value) != null;
 }
 
 /// Prints help text for a single parameter with type information
