@@ -138,38 +138,6 @@ Future<void> run(String name, List<String> args) async {
     commandValues[param.name] = param.defaultValue;
   }
 
-  // Validate default values for typed parameters
-  for (final param in [...resolvedCommand.requiredParams, ...resolvedCommand.optionalParams]) {
-    if (param.defaultValue != null && param.type != null && param.isTypeExplicit) {
-      final defaultValue = param.defaultValue!;
-      bool isValidType = true;
-      
-      // Normalize type for display and validation
-      var displayType = param.type;
-      if (displayType == 'num') displayType = 'number';
-      if (displayType == 'int') displayType = 'integer';
-      if (displayType == 'bool') displayType = 'boolean';
-
-      if (param.type == 'boolean' || param.type == 'bool') {
-        isValidType = defaultValue == 'true' || defaultValue == 'false';
-      } else if (param.type == 'integer' || param.type == 'int') {
-        isValidType = EnumTypeValidator.isStrictInt(defaultValue);
-      } else if (param.type == 'double') {
-        isValidType = EnumTypeValidator.isStrictDouble(defaultValue);
-      } else if (param.type == 'number' || param.type == 'num') {
-        isValidType = EnumTypeValidator.isValidNumber(defaultValue);
-      }
-
-      if (!isValidType) {
-        final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
-        stderr.writeln(
-          '❌ Parameter $bold$red${param.name}$reset is declared as type $gray[$displayType]$reset, but its default value is $gray[$defaultValueType]$reset',
-        );
-        exit(1);
-      }
-    }
-  }
-
   final positionalArgs = <String>[];
   final passthroughArgs = <String>[];
   final argsCopy = List<String>.from(resolvedArgs);

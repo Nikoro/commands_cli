@@ -822,6 +822,20 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           }
         }
 
+        // Validation: explicit number type with non-number default
+        if (effectiveType == 'number' && currentParamMetadata['isTypeExplicit'] == true) {
+          if (!EnumTypeValidator.isValidNumber(defaultValue)) {
+            final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
+            if (currentCommand != null) {
+              _validationErrors[currentCommand] =
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[number]$reset, but its default value is $gray[$defaultValueType]$reset';
+            }
+            currentParamName = null;
+            currentParamMetadata = {};
+            continue;
+          }
+        }
+
         if (effectiveType == 'double' && type == 'double' && !EnumTypeValidator.isValidDouble(defaultValue)) {
           if (currentCommand != null) {
             _validationErrors[currentCommand] =
