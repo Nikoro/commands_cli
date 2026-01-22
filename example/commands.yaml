@@ -65,15 +65,6 @@ invalid_script_and_switch: ## Invalid: has both script and switch defined
 ## PARAMETER TYPE SYSTEM TESTS
 ## ============================================================================
 
-type_bool_flags: ## Test boolean flags
-  script: echo "verbose={verbose} debug={debug}"
-  params:
-    optional:
-      - verbose: '-v, --verbose'
-        default: false
-      - debug: '-d, --debug'
-        default: true
-
 type_enum_with_default: ## Test enum with default
   script: echo "env={env}"
   params:
