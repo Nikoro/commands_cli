@@ -138,6 +138,32 @@ Future<void> run(String name, List<String> args) async {
     commandValues[param.name] = param.defaultValue;
   }
 
+  // Validate default values for typed parameters
+  for (final param in [...resolvedCommand.requiredParams, ...resolvedCommand.optionalParams]) {
+    if (param.defaultValue != null && param.type != null && param.isTypeExplicit) {
+      final defaultValue = param.defaultValue!;
+      bool isValidType = true;
+
+      if (param.type == 'boolean') {
+        isValidType = defaultValue == 'true' || defaultValue == 'false';
+      } else if (param.type == 'integer') {
+        isValidType = EnumTypeValidator.isStrictInt(defaultValue);
+      } else if (param.type == 'double') {
+        isValidType = EnumTypeValidator.isStrictDouble(defaultValue);
+      } else if (param.type == 'number') {
+        isValidType = EnumTypeValidator.isValidNumber(defaultValue);
+      }
+
+      if (!isValidType) {
+        final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
+        stderr.writeln(
+          '❌ Parameter $bold$red${param.name}$reset is declared as type $gray[${param.type}]$reset, but its default value is $gray[$defaultValueType]$reset',
+        );
+        exit(1);
+      }
+    }
+  }
+
   final positionalArgs = <String>[];
   final passthroughArgs = <String>[];
   final argsCopy = List<String>.from(resolvedArgs);
