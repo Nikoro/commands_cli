@@ -202,6 +202,8 @@ Future<void> run(String name, List<String> args) async {
               isValidType = EnumTypeValidator.isValidInt(value);
             } else if (param.type == 'double') {
               isValidType = EnumTypeValidator.isValidDouble(value);
+            } else if (param.type == 'number') {
+              isValidType = EnumTypeValidator.isValidNumber(value);
             }
 
             if (!isValidType) {
@@ -256,6 +258,14 @@ Future<void> run(String name, List<String> args) async {
               stderr.writeln('💡 Example: $bgGreen$black$name $arg 3.14$reset');
               exit(1);
             }
+          } else if (param.type == 'number') {
+            if (!EnumTypeValidator.isValidNumber(value)) {
+              final valueType = EnumTypeValidator.getValueType(value);
+              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[number]$reset');
+              stderr.writeln('   Got: $value $gray[$valueType]$reset');
+              stderr.writeln('💡 Example: $bgGreen$black$name $arg 3$reset');
+              exit(1);
+            }
           }
 
           commandValues[paramName] = value;
@@ -303,6 +313,8 @@ Future<void> run(String name, List<String> args) async {
           isValidType = EnumTypeValidator.isValidInt(value);
         } else if (param.type == 'double') {
           isValidType = EnumTypeValidator.isValidDouble(value);
+        } else if (param.type == 'number') {
+          isValidType = EnumTypeValidator.isValidNumber(value);
         }
 
         if (!isValidType) {
@@ -366,6 +378,16 @@ Future<void> run(String name, List<String> args) async {
           stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[double]$reset');
           stderr.writeln('   Got: $value $gray[integer]$reset');
           stderr.writeln('💡 Example: $bgGreen$black$name 3.14$reset');
+          exit(1);
+        }
+      }
+
+      if (param.type == 'number') {
+        if (!EnumTypeValidator.isValidNumber(value)) {
+          final valueType = EnumTypeValidator.getValueType(value);
+          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[number]$reset');
+          stderr.writeln('   Got: $value $gray[$valueType]$reset');
+          stderr.writeln('💡 Example: $bgGreen$black$name 3$reset');
           exit(1);
         }
       }

@@ -197,6 +197,11 @@ class EnumTypeValidator {
     return double.tryParse(value) != null;
   }
 
+  /// Checks if a value is a valid number (either integer or double)
+  static bool isValidNumber(String value) {
+    return double.tryParse(value) != null;
+  }
+
   /// Checks if a value is a strict double (must have decimal point, not an integer)
   /// Used when type: double is explicitly specified
   static bool isStrictDouble(String value) {
@@ -261,6 +266,10 @@ class EnumTypeValidator {
         if (!isValidDouble(value)) {
           invalidValues[value] = getValueType(value);
         }
+      } else if (type == 'number') {
+        if (!isValidNumber(value)) {
+          invalidValues[value] = getValueType(value);
+        }
       }
     }
 
@@ -308,6 +317,8 @@ class EnumTypeValidator {
       isValidType = isValidInt(defaultValue);
     } else if (type == 'double') {
       isValidType = isValidDouble(defaultValue);
+    } else if (type == 'number') {
+      isValidType = isValidNumber(defaultValue);
     }
 
     if (isValidType) {

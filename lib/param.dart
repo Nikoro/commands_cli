@@ -55,6 +55,13 @@ class Param {
       case 'double':
         final value = double.tryParse(rawValue);
         if (value == null) {
+          throw FormatException('Parameter "$name" expects a double, got: "$rawValue"');
+        }
+        return value;
+
+      case 'number':
+        final value = num.tryParse(rawValue);
+        if (value == null) {
           throw FormatException('Parameter "$name" expects a number, got: "$rawValue"');
         }
         return value;

@@ -578,8 +578,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
         typeValue = typeValue.substring(1, typeValue.length - 1);
       }
 
-      // Validate type value and normalize 'bool' to 'boolean', 'int' to 'integer'
-      const validTypes = ['boolean', 'bool', 'string', 'int', 'integer', 'double'];
+      // Validate type value and normalize 'bool' to 'boolean', 'int' to 'integer', 'num' to 'number'
+      const validTypes = ['boolean', 'bool', 'string', 'int', 'integer', 'double', 'number', 'num'];
       if (!validTypes.contains(typeValue)) {
         if (currentCommand != null) {
           _validationErrors[currentCommand] =
@@ -598,6 +598,11 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       // Normalize 'int' to 'integer'
       if (typeValue == 'int') {
         typeValue = 'integer';
+      }
+
+      // Normalize 'num' to 'number'
+      if (typeValue == 'num') {
+        typeValue = 'number';
       }
 
       currentParamMetadata['type'] = typeValue;
