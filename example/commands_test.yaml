@@ -1,7 +1,0 @@
-hello:
-  script: echo "Hello {name}"
-  params:
-    optional:
-      - name: '-n, --name'
-        type: number
-        default: 'false'
