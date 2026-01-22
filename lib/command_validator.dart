@@ -198,6 +198,14 @@ class EnumTypeValidator {
     return double.tryParse(value) != null;
   }
 
+  /// Checks if a value is a strict double (must have decimal point, not an integer)
+  /// Used when type: double is explicitly specified
+  static bool isStrictDouble(String value) {
+    // Must contain a decimal point and be parseable as double
+    if (!value.contains('.')) return false;
+    return double.tryParse(value) != null;
+  }
+
   /// Gets the detected type of a value as a display string
   static String getValueType(String value) {
     // Check for boolean first

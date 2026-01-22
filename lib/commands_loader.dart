@@ -745,6 +745,20 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           continue;
         }
 
+        // Validation: explicit double type with non-double default
+        if (effectiveType == 'double' && currentParamMetadata['isTypeExplicit'] == true) {
+          if (!EnumTypeValidator.isStrictDouble(defaultValue)) {
+            final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
+            if (currentCommand != null) {
+              _validationErrors[currentCommand] =
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[double]$reset, but its default value is $gray[$defaultValueType]$reset';
+            }
+            currentParamName = null;
+            currentParamMetadata = {};
+            continue;
+          }
+        }
+
         // Validation: typed enum values - ensure all values match the explicit type
         if (type != null && values != null && values.isNotEmpty && currentParamMetadata['isTypeExplicit'] == true) {
           final enumValidation = EnumTypeValidator.validateEnumValues(currentParamName, type, values);
