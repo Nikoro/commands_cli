@@ -40,7 +40,7 @@ void main() {
           test('prints error when value is boolean', () async {
             final result = await Process.run('hello', [flag, 'true']);
             expect(result.stderr, equals('''
-❌ Parameter $bold${red}name$reset expects a ${gray}[double]$reset
+❌ Parameter $bold${red}name$reset expects an ${gray}[integer]$reset
    Got: true ${gray}[boolean]$reset
 💡 Example: $bgGreen${black}hello $flag 3$reset
 '''));
