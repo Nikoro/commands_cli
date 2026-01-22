@@ -803,19 +803,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           }
         }
 
-        // Validation: numeric types with default (skip if explicitly string type)
-        // Use EnumTypeValidator for consistency with typed enums
-        if (effectiveType == 'integer' && type == 'integer' && !EnumTypeValidator.isValidInt(defaultValue)) {
-          if (currentCommand != null) {
-            _validationErrors[currentCommand] =
-                'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Integer parameters must have a valid integer default';
-          }
-          currentParamName = null;
-          currentParamMetadata = {};
-          continue;
-        }
-
-        // Validation: explicit integer type with non-integer default (reject doubles)
+        // Validation: explicit integer type with non-integer default
         if (effectiveType == 'integer' && currentParamMetadata['isTypeExplicit'] == true) {
           if (!EnumTypeValidator.isStrictInt(defaultValue)) {
             final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
