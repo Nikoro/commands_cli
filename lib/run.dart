@@ -198,19 +198,18 @@ Future<void> run(String name, List<String> args) async {
               param.type != 'string' &&
               param.type != 'boolean') {
             bool isValidType = false;
-            if (param.type == 'int') {
+            if (param.type == 'integer') {
               isValidType = EnumTypeValidator.isValidInt(value);
             } else if (param.type == 'double') {
               isValidType = EnumTypeValidator.isValidDouble(value);
             }
 
             if (!isValidType) {
-              final typeName = param.type == 'int' ? 'integer' : param.type;
               final valueType = EnumTypeValidator.getValueType(value);
-              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[$typeName]$reset');
+              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[${param.type}]$reset');
               stderr.writeln('   Got: "$value" $gray[$valueType]$reset');
               stderr.writeln(
-                  '💡 ${typeName![0].toUpperCase()}${typeName.substring(1)} parameters must have valid $typeName values');
+                  '💡 ${param.type![0].toUpperCase()}${param.type!.substring(1)} parameters must have valid ${param.type} values');
               exit(1);
             }
           }
@@ -225,11 +224,20 @@ Future<void> run(String name, List<String> args) async {
 
           // Validate and parse numeric types
           // Use EnumTypeValidator for consistency (accepts whole number doubles for int type)
-          if (param.type == 'int') {
+          if (param.type == 'integer') {
             if (!EnumTypeValidator.isValidInt(value)) {
+              final valueType = EnumTypeValidator.getValueType(value);
               stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[integer]$reset');
-              stderr.writeln('   Got: "$value" $gray[string]$reset');
-              stderr.writeln('💡 Example: $bgGreen$black$name $arg 42$reset');
+              stderr.writeln('   Got: $value $gray[$valueType]$reset');
+              stderr.writeln('💡 Example: $bgGreen$black$name $arg 3$reset');
+              exit(1);
+            }
+            // For integer type, reject double values (must not have decimal point)
+            final valueType = EnumTypeValidator.getValueType(value);
+            if (valueType == 'double') {
+              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[integer]$reset');
+              stderr.writeln('   Got: $value $gray[double]$reset');
+              stderr.writeln('💡 Example: $bgGreen$black$name $arg 3$reset');
               exit(1);
             }
           } else if (param.type == 'double') {
@@ -291,19 +299,18 @@ Future<void> run(String name, List<String> args) async {
           param.type != 'string' &&
           param.type != 'boolean') {
         bool isValidType = false;
-        if (param.type == 'int') {
+        if (param.type == 'integer') {
           isValidType = EnumTypeValidator.isValidInt(value);
         } else if (param.type == 'double') {
           isValidType = EnumTypeValidator.isValidDouble(value);
         }
 
         if (!isValidType) {
-          final typeName = param.type == 'int' ? 'integer' : param.type;
           final valueType = EnumTypeValidator.getValueType(value);
-          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[$typeName]$reset');
+          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[${param.type}]$reset');
           stderr.writeln('   Got: "$value" $gray[$valueType]$reset');
           stderr.writeln(
-              '💡 ${typeName![0].toUpperCase()}${typeName.substring(1)} parameters must have valid $typeName values');
+              '💡 ${param.type![0].toUpperCase()}${param.type!.substring(1)} parameters must have valid ${param.type} values');
           exit(1);
         }
       }
@@ -327,11 +334,22 @@ Future<void> run(String name, List<String> args) async {
 
       // Validate numeric types
       // Use EnumTypeValidator for consistency (accepts whole number doubles for int type)
-      if (param.type == 'int' && !EnumTypeValidator.isValidInt(value)) {
-        stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[integer]$reset');
-        stderr.writeln('   Got: "$value" $gray[string]$reset');
-        stderr.writeln('💡 Example: $bgGreen$black$name 42$reset');
-        exit(1);
+      if (param.type == 'integer') {
+        if (!EnumTypeValidator.isValidInt(value)) {
+          final valueType = EnumTypeValidator.getValueType(value);
+          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[integer]$reset');
+          stderr.writeln('   Got: $value $gray[$valueType]$reset');
+          stderr.writeln('💡 Example: $bgGreen$black$name 3$reset');
+          exit(1);
+        }
+        // For integer type, reject double values (must not have decimal point)
+        final valueType = EnumTypeValidator.getValueType(value);
+        if (valueType == 'double') {
+          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[integer]$reset');
+          stderr.writeln('   Got: $value $gray[double]$reset');
+          stderr.writeln('💡 Example: $bgGreen$black$name 3$reset');
+          exit(1);
+        }
       }
 
       if (param.type == 'double') {

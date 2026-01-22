@@ -118,9 +118,8 @@ class CommandValidator {
 
     // Rule 1: If default value was quoted and type is explicitly non-string, that's an error
     if (wasQuoted && type != 'string') {
-      final displayType = type == 'int' ? 'integer' : type;
       return ValidationResult.error(
-        'Parameter $bold$red$paramName$reset is declared as type $gray[$displayType]$reset, but its default value is $gray[string]$reset',
+        'Parameter $bold$red$paramName$reset is declared as type $gray[$type]$reset, but its default value is $gray[string]$reset',
         hint:
             'Quoted values are always strings. Either remove quotes (default: $defaultValue) or change type to string',
       );
@@ -206,6 +205,14 @@ class EnumTypeValidator {
     return double.tryParse(value) != null;
   }
 
+  /// Checks if a value is a strict integer (must not have decimal point)
+  /// Used when type: integer is explicitly specified
+  static bool isStrictInt(String value) {
+    // Must not contain a decimal point and be parseable as int
+    if (value.contains('.')) return false;
+    return int.tryParse(value) != null;
+  }
+
   /// Gets the detected type of a value as a display string
   static String getValueType(String value) {
     // Check for boolean first
@@ -246,7 +253,7 @@ class EnumTypeValidator {
         if (!isValidBoolean(value)) {
           invalidValues[value] = getValueType(value);
         }
-      } else if (type == 'int') {
+      } else if (type == 'integer') {
         if (!isValidInt(value)) {
           invalidValues[value] = getValueType(value);
         }
@@ -261,28 +268,23 @@ class EnumTypeValidator {
       return ValidationResult.success();
     }
 
-    // Normalize type name for display
-    final typeName = type == 'int' ? 'integer' : type;
-
     // Build error message - for single invalid value from enum values list, show specific error format for integration tests
     if (invalidValues.length == 1) {
       final entry = invalidValues.entries.first;
-      final valueType = entry.value == 'int' ? 'integer' : entry.value;
       return ValidationResult.error(
-        'Parameter $bold$red$paramName$reset expects a $gray[$typeName]$reset\n   Got: ${entry.key} $gray[$valueType]$reset in values',
+        'Parameter $bold$red$paramName$reset expects a $gray[$type]$reset\n   Got: ${entry.key} $gray[${entry.value}]$reset in values',
       );
     }
 
     // For multiple invalid values, show all of them (unit tests expect quoted values and bracketed types)
     final gotParts = invalidValues.entries.map((e) {
-      final valueType = e.value == 'int' ? 'integer' : e.value;
-      return '"${e.key}" [$valueType]';
+      return '"${e.key}" [${e.value}]';
     }).join(', ');
 
     return ValidationResult.error(
-      'Parameter $bold$red$paramName$reset expects an [$typeName]. Got: $gotParts',
+      'Parameter $bold$red$paramName$reset expects an [$type]. Got: $gotParts',
       hint:
-          '${typeName.substring(0, 1).toUpperCase()}${typeName.substring(1)} parameters must have valid $typeName values',
+          '${type.substring(0, 1).toUpperCase()}${type.substring(1)} parameters must have valid $type values',
     );
   }
 
@@ -302,7 +304,7 @@ class EnumTypeValidator {
     bool isValidType = false;
     if (type == 'boolean') {
       isValidType = isValidBoolean(defaultValue);
-    } else if (type == 'int') {
+    } else if (type == 'integer') {
       isValidType = isValidInt(defaultValue);
     } else if (type == 'double') {
       isValidType = isValidDouble(defaultValue);
@@ -312,11 +314,10 @@ class EnumTypeValidator {
       return ValidationResult.success();
     }
 
-    final typeName = type == 'int' ? 'integer' : type;
     final defaultTypeName = getValueType(defaultValue);
 
     return ValidationResult.error(
-      'Parameter $bold$red$paramName$reset is declared as type $gray[$typeName]$reset, but its default value is $gray[$defaultTypeName]$reset',
+      'Parameter $bold$red$paramName$reset is declared as type $gray[$type]$reset, but its default value is $gray[$defaultTypeName]$reset',
       hint: 'Quoted values are always strings. Either remove quotes (default: $defaultValue) or change type to string',
     );
   }

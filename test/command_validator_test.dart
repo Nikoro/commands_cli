@@ -260,10 +260,10 @@ void main() {
     });
 
     group('CommandValidator.validateParamTypeCompatibility', () {
-      test('returns error when quoted default has explicit int type', () {
+      test('returns error when quoted default has explicit integer type', () {
         final result = CommandValidator.validateParamTypeCompatibility(
           'port',
-          'int',
+          'integer',
           '3000',
           true, // wasQuoted
         );
@@ -329,10 +329,10 @@ void main() {
         expect(result.isValid, isTrue);
       });
 
-      test('returns success when unquoted numeric default has explicit int type', () {
+      test('returns success when unquoted numeric default has explicit integer type', () {
         final result = CommandValidator.validateParamTypeCompatibility(
           'port',
-          'int',
+          'integer',
           '3000',
           false, // wasQuoted
         );
@@ -484,19 +484,19 @@ void main() {
           expect(result.isValid, isTrue);
         });
 
-        test('returns success when all values match int type', () {
+        test('returns success when all values match integer type', () {
           final result = EnumTypeValidator.validateEnumValues(
             'level',
-            'int',
+            'integer',
             ['1', '2', '3'],
           );
           expect(result.isValid, isTrue);
         });
 
-        test('returns success when int enum has whole number doubles', () {
+        test('returns success when integer enum has whole number doubles', () {
           final result = EnumTypeValidator.validateEnumValues(
             'level',
-            'int',
+            'integer',
             ['1', '2.0', '3'],
           );
           expect(result.isValid, isTrue);
@@ -520,10 +520,10 @@ void main() {
           expect(result.isValid, isTrue);
         });
 
-        test('returns error when int enum has string value', () {
+        test('returns error when integer enum has string value', () {
           final result = EnumTypeValidator.validateEnumValues(
             'platform',
-            'int',
+            'integer',
             ['ios', '1', '2'],
           );
           expect(result.isValid, isFalse);
@@ -537,7 +537,7 @@ void main() {
         test('returns error with multiple invalid values', () {
           final result = EnumTypeValidator.validateEnumValues(
             'platform',
-            'int',
+            'integer',
             ['ios', '1', '2.2'],
           );
           expect(result.isValid, isFalse);
@@ -582,30 +582,30 @@ void main() {
           expect(result.isValid, isTrue);
         });
 
-        test('returns success when default matches int type', () {
+        test('returns success when default matches integer type', () {
           final result = EnumTypeValidator.validateEnumDefault(
             'level',
-            'int',
+            'integer',
             '1',
             ['1', '2', '3'],
           );
           expect(result.isValid, isTrue);
         });
 
-        test('returns success when int default is whole number double', () {
+        test('returns success when integer default is whole number double', () {
           final result = EnumTypeValidator.validateEnumDefault(
             'level',
-            'int',
+            'integer',
             '2.0',
             ['1', '2.0', '3'],
           );
           expect(result.isValid, isTrue);
         });
 
-        test('returns error when int default is string', () {
+        test('returns error when integer default is string', () {
           final result = EnumTypeValidator.validateEnumDefault(
             'platform',
-            'int',
+            'integer',
             'text',
             ['1', '2', '3'],
           );

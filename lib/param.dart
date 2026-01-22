@@ -116,7 +116,7 @@ class Param {
     if (!isEnum) return true;
 
     // For numeric types, compare numeric values
-    if (type == 'int' || type == 'double') {
+    if (type == 'integer' || type == 'double') {
       final valueNum = double.tryParse(value);
       if (valueNum == null) return false;
 

@@ -578,8 +578,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
         typeValue = typeValue.substring(1, typeValue.length - 1);
       }
 
-      // Validate type value and normalize 'bool' to 'boolean'
-      const validTypes = ['boolean', 'bool', 'string', 'int', 'double'];
+      // Validate type value and normalize 'bool' to 'boolean', 'int' to 'integer'
+      const validTypes = ['boolean', 'bool', 'string', 'int', 'integer', 'double'];
       if (!validTypes.contains(typeValue)) {
         if (currentCommand != null) {
           _validationErrors[currentCommand] =
@@ -593,6 +593,11 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       // Normalize 'bool' to 'boolean'
       if (typeValue == 'bool') {
         typeValue = 'boolean';
+      }
+
+      // Normalize 'int' to 'integer'
+      if (typeValue == 'int') {
+        typeValue = 'integer';
       }
 
       currentParamMetadata['type'] = typeValue;
@@ -800,7 +805,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
 
         // Validation: numeric types with default (skip if explicitly string type)
         // Use EnumTypeValidator for consistency with typed enums
-        if (effectiveType == 'int' && type == 'int' && !EnumTypeValidator.isValidInt(defaultValue)) {
+        if (effectiveType == 'integer' && type == 'integer' && !EnumTypeValidator.isValidInt(defaultValue)) {
           if (currentCommand != null) {
             _validationErrors[currentCommand] =
                 'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Integer parameters must have a valid integer default';
@@ -808,6 +813,20 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           currentParamName = null;
           currentParamMetadata = {};
           continue;
+        }
+
+        // Validation: explicit integer type with non-integer default (reject doubles)
+        if (effectiveType == 'integer' && currentParamMetadata['isTypeExplicit'] == true) {
+          if (!EnumTypeValidator.isStrictInt(defaultValue)) {
+            final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
+            if (currentCommand != null) {
+              _validationErrors[currentCommand] =
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[integer]$reset, but its default value is $gray[$defaultValueType]$reset';
+            }
+            currentParamName = null;
+            currentParamMetadata = {};
+            continue;
+          }
         }
 
         if (effectiveType == 'double' && type == 'double' && !EnumTypeValidator.isValidDouble(defaultValue)) {
