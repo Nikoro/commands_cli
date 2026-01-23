@@ -1,0 +1,44 @@
+import 'dart:io';
+
+import 'package:commands_cli/colors.dart';
+import 'package:test/test.dart';
+
+import '../../../../../../../integration_tests.dart';
+
+void main() {
+  integrationTests(
+    '''
+        hello:
+          script: echo "Hello {name}"
+          params:
+            required:
+              - name:
+                type: string
+    ''',
+    () {
+      for (Object value in [1.5, 2, true, 'World']) {
+        test('prints "Hello $value', () async {
+          final result = await Process.run('hello', ['$value']);
+          expect(result.stdout, equals('Hello $value\n'));
+        });
+      }
+
+      test('prints error when no required param is specified', () async {
+        final result = await Process.run('hello', []);
+        expect(result.stderr, equals('❌ Missing required positional param: $bold${red}name$reset\n'));
+      });
+
+      for (String flag in ['-h', '--help']) {
+        test('$flag prints help', () async {
+          final result = await Process.run('hello', [flag]);
+          expect(result.stdout, equals('''
+${blue}hello$reset
+params:
+  required:
+    ${magenta}name$reset ${gray}[string]$reset
+'''));
+        });
+      }
+    },
+  );
+}
