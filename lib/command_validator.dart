@@ -125,10 +125,19 @@ class CommandValidator {
       );
     }
 
-    // Rule 2: If type is explicitly string but default is numeric (unquoted), that's an error
+    // Rule 2: If type is explicitly string but default is non-string (unquoted), that's an error
     if (!wasQuoted && type == 'string') {
+      final isBoolean = defaultValue.toLowerCase() == 'true' || defaultValue.toLowerCase() == 'false';
       final isInt = int.tryParse(defaultValue) != null && !defaultValue.contains('.');
       final isDouble = double.tryParse(defaultValue) != null && defaultValue.contains('.');
+
+      if (isBoolean) {
+        return ValidationResult.error(
+          'Parameter $bold$red$paramName$reset is declared as type $gray[string]$reset, but its default value is $gray[boolean]$reset',
+          hint:
+              'Add quotes around boolean values for string type (default: "$defaultValue") or change type to boolean',
+        );
+      }
 
       if (isInt || isDouble) {
         final actualType = isInt ? 'integer' : 'double';
