@@ -35,6 +35,7 @@ void main() {
               equals('''
 
 Select value for ${blue}name$reset:
+${gray}Description of parameter name$reset
 
     ${green}0. false ✓$reset
     1. true
@@ -96,10 +97,10 @@ ${gray}Enter to confirm, Esc to cancel$reset
             test('$flag prints help', () async {
               final result = await Process.run('hello', [flag]);
               expect(result.stdout, equals('''
-${blue}hello$reset
+${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   required:
-    ${magenta}name (-n, --name)$reset ${gray}[boolean]$reset
+    ${magenta}name (-n, --name)$reset ${gray}[boolean] Description of parameter name$reset
     ${bold}values$reset: true, false
 '''));
             });
