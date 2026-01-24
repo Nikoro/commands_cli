@@ -247,23 +247,36 @@ class EnumTypeValidator {
     return 'string';
   }
 
+  /// Checks if a value is a valid string (not a boolean, integer, or double)
+  static bool isValidString(String value) {
+    // If it's a boolean, integer, or double, it's not a valid string
+    if (isValidBoolean(value)) return false;
+    if (int.tryParse(value) != null && !value.contains('.')) return false;
+    if (double.tryParse(value) != null) return false;
+    return true;
+  }
+
   /// Validates enum values against the specified type
   ///
   /// Returns a ValidationResult with error details if any values don't match the type.
-  /// If type is null or 'string', all values are valid.
+  /// If type is null, all values are valid.
   static ValidationResult validateEnumValues(
     String? paramName,
     String? type,
     List<String>? values,
   ) {
-    if (type == null || type == 'string' || values == null || values.isEmpty) {
+    if (type == null || values == null || values.isEmpty) {
       return ValidationResult.success();
     }
 
     final invalidValues = <String, String>{};
 
     for (final value in values) {
-      if (type == 'boolean') {
+      if (type == 'string') {
+        if (!isValidString(value)) {
+          invalidValues[value] = getValueType(value);
+        }
+      } else if (type == 'boolean') {
         if (!isValidBoolean(value)) {
           invalidValues[value] = getValueType(value);
         }
@@ -315,12 +328,14 @@ class EnumTypeValidator {
     String? defaultValue,
     List<String>? values,
   ) {
-    if (type == null || type == 'string' || defaultValue == null) {
+    if (type == null || defaultValue == null) {
       return ValidationResult.success();
     }
 
     bool isValidType = false;
-    if (type == 'boolean') {
+    if (type == 'string') {
+      isValidType = isValidString(defaultValue);
+    } else if (type == 'boolean') {
       isValidType = isValidBoolean(defaultValue);
     } else if (type == 'integer') {
       isValidType = isValidInt(defaultValue);
