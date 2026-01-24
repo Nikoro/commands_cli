@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import '../../../../../../../../../integration_tests.dart';
 
 void main() {
-  for (num def in [2.0, -4.7]) {
+  for (double def in [2.0, -4.7]) {
     integrationTests(
       '''
         hello: ## Description of command hello
@@ -20,7 +20,7 @@ void main() {
     ''',
       () {
         for (String flag in ['-n', '--name']) {
-          for (num value in [2.0, -4.7]) {
+          for (double value in [2.0, -4.7]) {
             test('prints "Hello $value', () async {
               final result = await Process.run('hello', [flag, '$value']);
               expect(result.stdout, equals('Hello $value\n'));
@@ -113,7 +113,7 @@ params:
     ''',
         () {
           for (String flag in ['-n', '--name']) {
-            for (num value in [2.0, -4.7]) {
+            for (double value in [2.0, -4.7]) {
               test('prints error', () async {
                 final result = await Process.run('hello', [flag, '$value']);
                 expect(result.stderr, equals('''
@@ -212,7 +212,7 @@ params:
     ''',
         () {
           for (String flag in ['-n', '--name']) {
-            for (num value in [2.0, -4.7]) {
+            for (double value in [2.0, -4.7]) {
               test('prints error', () async {
                 final result = await Process.run('hello', [flag, '$value']);
                 expect(

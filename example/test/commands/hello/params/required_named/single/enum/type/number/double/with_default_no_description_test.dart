@@ -12,7 +12,7 @@ void main() {
         hello:
           script: echo "Hello {name}"
           params:
-            optional:
+            required:
               - name: '-n, --name'
                 type: double
                 values: [2.0, -4.7]
@@ -28,15 +28,15 @@ void main() {
           }
         }
 
-        test('prints "Hello $def" when no optional param is specified', () async {
+        test('prints "Hello $def" when no required param is specified', () async {
           final result = await Process.run('hello', []);
           expect(result.stdout, equals('Hello $def\n'));
         });
 
         for (String flag in ['-n', '--name']) {
-          test('prints "Hello $def" when no value for optional param is specified', () async {
+          test('prints error when no value for required param is specified', () async {
             final result = await Process.run('hello', [flag]);
-            expect(result.stdout, equals('Hello $def\n'));
+            expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
           });
 
           test('prints error when value is boolean', () async {
@@ -83,7 +83,7 @@ void main() {
             expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
-  optional:
+  required:
     ${magenta}name (-n, --name)$reset ${gray}[double]$reset
     ${bold}values$reset: 2.0, -4.7
     ${bold}default$reset: $bold${orange}$def$reset
@@ -105,7 +105,7 @@ params:
         hello:
           script: echo "Hello {name}"
           params:
-            optional:
+            required:
               - name: '-n, --name'
                 type: double
                 values: [2.0, -4.7, ${invalid.value}]
@@ -204,7 +204,7 @@ params:
         hello:
           script: echo "Hello {name}"
           params:
-            optional:
+            required:
               - name: '-n, --name'
                 type: double
                 values: [2.0, -4.7]
