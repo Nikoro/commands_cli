@@ -116,7 +116,7 @@ class Param {
   /// Validates if the given value is allowed for this parameter
   ///
   /// For enum parameters, validates against the allowed values list
-  /// - For string types: case-insensitive string comparison
+  /// - For string types: case-insensitive string comparison (quotes are stripped)
   /// - For numeric types (int/double): numeric equivalence (e.g., "3.0" == "3" for int)
   /// For non-enum parameters, always returns true
   bool isValidValue(String value) {
@@ -135,7 +135,26 @@ class Param {
     }
 
     // For string/boolean types, use case-insensitive string comparison
+    // Strip quotes from enum values for comparison (quotes are preserved in YAML to
+    // distinguish strings from booleans, but should be ignored when matching input)
     final lowerValue = value.toLowerCase();
-    return values!.any((v) => v.toLowerCase() == lowerValue);
+    return values!.any((v) => _stripQuotes(v).toLowerCase() == lowerValue);
+  }
+
+  /// Strips surrounding single or double quotes from a string value
+  static String _stripQuotes(String value) {
+    if (value.length >= 2) {
+      if ((value.startsWith("'") && value.endsWith("'")) ||
+          (value.startsWith('"') && value.endsWith('"'))) {
+        return value.substring(1, value.length - 1);
+      }
+    }
+    return value;
+  }
+
+  /// Returns the display values for this enum parameter (without quotes)
+  List<String> get displayValues {
+    if (values == null) return [];
+    return values!.map((v) => _stripQuotes(v)).toList();
   }
 }

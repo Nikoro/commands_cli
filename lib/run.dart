@@ -219,7 +219,7 @@ Future<void> run(String name, List<String> args) async {
           // Validate enum values
           if (param.isEnum && !param.isValidValue(value)) {
             stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
-            final allowedValues = param.values!.map((v) => '$bold$green$v$reset').join(', ');
+            final allowedValues = param.displayValues.map((v) => '$bold$green$v$reset').join(', ');
             stderr.writeln('💡 Must be one of: $allowedValues');
             exit(1);
           }
@@ -339,7 +339,7 @@ Future<void> run(String name, List<String> args) async {
       // Validate enum values (skip boolean - handled above with better error messages)
       if (param.isEnum && param.type != 'boolean' && !param.isValidValue(value)) {
         stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
-        final allowedValues = param.values!.map((v) => '$bold$green$v$reset').join(', ');
+        final allowedValues = param.displayValues.map((v) => '$bold$green$v$reset').join(', ');
         stderr.writeln('💡 Must be one of: $allowedValues');
         exit(1);
       }
@@ -538,7 +538,7 @@ void _printSwitchesHelp(Command command, String indent) {
           final description = param.description != null ? ' $gray${param.description}$reset' : '';
           print('$indent      $magenta${param.name}$paramFlags$reset$description');
           if (param.values != null && param.values!.isNotEmpty) {
-            print('$indent      ${bold}values$reset: ${param.values!.join(', ')}');
+            print('$indent      ${bold}values$reset: ${param.displayValues.join(', ')}');
           }
           if (param.defaultValue != null) {
             print('$indent      ${bold}default$reset: $bold$orange${param.defaultValue}$reset');
@@ -552,7 +552,7 @@ void _printSwitchesHelp(Command command, String indent) {
           final description = param.description != null ? ' $gray${param.description}$reset' : '';
           print('$indent      $magenta${param.name}$paramFlags$reset$description');
           if (param.values != null && param.values!.isNotEmpty) {
-            print('$indent      ${bold}values$reset: ${param.values!.join(', ')}');
+            print('$indent      ${bold}values$reset: ${param.displayValues.join(', ')}');
           }
           if (param.defaultValue != null) {
             print('$indent      ${bold}default$reset: $bold$orange${param.defaultValue}$reset');
@@ -686,7 +686,7 @@ void _printParamHelp(Param param) {
     if (param.type == 'boolean' || param.type == 'bool') {
       print('    ${bold}values$reset: true, false');
     } else if (param.values!.isNotEmpty) {
-      print('    ${bold}values$reset: ${param.values!.join(', ')}');
+      print('    ${bold}values$reset: ${param.displayValues.join(', ')}');
     }
   }
 
