@@ -11,12 +11,12 @@ class EnumPicker {
       return null;
     }
 
-    final values = param.values!;
+    final displayValues = param.displayValues;
     int selectedIndex = 0; // Currently selected option (0-based)
 
     // Calculate max value length for alignment
     int maxValueLength = 0;
-    for (final value in values) {
+    for (final value in displayValues) {
       if (value.length > maxValueLength) {
         maxValueLength = value.length;
       }
@@ -31,8 +31,8 @@ class EnumPicker {
       }
       print('');
 
-      for (var i = 0; i < values.length; i++) {
-        final value = values[i];
+      for (var i = 0; i < displayValues.length; i++) {
+        final value = displayValues[i];
         final number = i + 1;
         final isSelected = i == selectedIndex;
         final checkMark = isSelected ? ' ✓' : '  '; // Always 2 chars width
@@ -49,7 +49,7 @@ class EnumPicker {
       }
 
       print('');
-      print('${colors.gray}Press number (1-${values.length}) or press Esc to cancel:${colors.reset}');
+      print('${colors.gray}Press number (1-${displayValues.length}) or press Esc to cancel:${colors.reset}');
     }
 
     // Display initial menu
@@ -79,18 +79,18 @@ class EnumPicker {
 
               // Arrow Up (65 = 'A')
               if (arrowChar == 65) {
-                selectedIndex = (selectedIndex - 1 + values.length) % values.length;
+                selectedIndex = (selectedIndex - 1 + displayValues.length) % displayValues.length;
                 // Clear screen and redraw
-                _clearScreen(values.length + 5);
+                _clearScreen(displayValues.length + 5);
                 displayMenu();
                 continue;
               }
 
               // Arrow Down (66 = 'B')
               if (arrowChar == 66) {
-                selectedIndex = (selectedIndex + 1) % values.length;
+                selectedIndex = (selectedIndex + 1) % displayValues.length;
                 // Clear screen and redraw
-                _clearScreen(values.length + 5);
+                _clearScreen(displayValues.length + 5);
                 displayMenu();
                 continue;
               }
@@ -112,17 +112,17 @@ class EnumPicker {
         stdin.echoMode = true;
         stdin.lineMode = true;
         print('');
-        return values[selectedIndex];
+        return displayValues[selectedIndex];
       }
 
       // Number keys (49-57 correspond to '1'-'9')
       if (charCode >= 49 && charCode <= 57) {
         final number = charCode - 48; // Convert to 1-9
-        if (number >= 1 && number <= values.length) {
+        if (number >= 1 && number <= displayValues.length) {
           stdin.echoMode = true;
           stdin.lineMode = true;
           print('');
-          return values[number - 1];
+          return displayValues[number - 1];
         }
       }
     }
