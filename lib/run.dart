@@ -191,32 +191,7 @@ Future<void> run(String name, List<String> args) async {
         if (argsCopy.isNotEmpty && (!argsCopy.first.startsWith('-') || _isNegativeNumber(argsCopy.first))) {
           final value = argsCopy.removeAt(0);
 
-          // Validate typed enum values at runtime (skip boolean - handled separately with better error messages)
-          if (param.isEnum &&
-              param.isTypeExplicit &&
-              param.type != null &&
-              param.type != 'string' &&
-              param.type != 'boolean') {
-            bool isValidType = false;
-            if (param.type == 'integer') {
-              isValidType = EnumTypeValidator.isValidInt(value);
-            } else if (param.type == 'double') {
-              isValidType = EnumTypeValidator.isValidDouble(value);
-            } else if (param.type == 'number') {
-              isValidType = EnumTypeValidator.isValidNumber(value);
-            }
-
-            if (!isValidType) {
-              final valueType = EnumTypeValidator.getValueType(value);
-              stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[${param.type}]$reset');
-              stderr.writeln('   Got: "$value" $gray[$valueType]$reset');
-              stderr.writeln(
-                  '💡 ${param.type![0].toUpperCase()}${param.type!.substring(1)} parameters must have valid ${param.type} values');
-              exit(1);
-            }
-          }
-
-          // Validate enum values
+          // Validate enum values (this also handles type validation for enums)
           if (param.isEnum && !param.isValidValue(value)) {
             stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
             final allowedValues = param.displayValues.map((v) => '$bold$green$v$reset').join(', ');
@@ -302,33 +277,9 @@ Future<void> run(String name, List<String> args) async {
       final value = positionalArgs[i];
       final param = getParamByName(paramName);
 
-      // Validate typed enum values at runtime (skip boolean - handled below with better error messages)
-      if (param.isEnum &&
-          param.isTypeExplicit &&
-          param.type != null &&
-          param.type != 'string' &&
-          param.type != 'boolean') {
-        bool isValidType = false;
-        if (param.type == 'integer') {
-          isValidType = EnumTypeValidator.isValidInt(value);
-        } else if (param.type == 'double') {
-          isValidType = EnumTypeValidator.isValidDouble(value);
-        } else if (param.type == 'number') {
-          isValidType = EnumTypeValidator.isValidNumber(value);
-        }
-
-        if (!isValidType) {
-          final valueType = EnumTypeValidator.getValueType(value);
-          stderr.writeln('❌ Parameter $bold$red$paramName$reset expects an $gray[${param.type}]$reset');
-          stderr.writeln('   Got: "$value" $gray[$valueType]$reset');
-          stderr.writeln(
-              '💡 ${param.type![0].toUpperCase()}${param.type!.substring(1)} parameters must have valid ${param.type} values');
-          exit(1);
-        }
-      }
-
       // Validate boolean types first (before enum validation for better error messages)
-      if (param.type == 'boolean' && value != 'true' && value != 'false') {
+      // Only for non-enum booleans - enum booleans are handled by enum validation
+      if (param.type == 'boolean' && !param.isEnum && value != 'true' && value != 'false') {
         final valueType = EnumTypeValidator.getValueType(value);
         stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[boolean]$reset');
         stderr.writeln('   Got: $value $gray[$valueType]$reset');
@@ -336,8 +287,8 @@ Future<void> run(String name, List<String> args) async {
         exit(1);
       }
 
-      // Validate enum values (skip boolean - handled above with better error messages)
-      if (param.isEnum && param.type != 'boolean' && !param.isValidValue(value)) {
+      // Validate enum values (this also handles type validation for enums)
+      if (param.isEnum && !param.isValidValue(value)) {
         stderr.writeln('❌ Parameter $bold$red$paramName$reset has invalid value: "$value"');
         final allowedValues = param.displayValues.map((v) => '$bold$green$v$reset').join(', ');
         stderr.writeln('💡 Must be one of: $allowedValues');
