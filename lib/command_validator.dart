@@ -285,7 +285,7 @@ class EnumTypeValidator {
           invalidValues[value] = getValueType(value);
         }
       } else if (type == 'double') {
-        if (!isValidDouble(value)) {
+        if (!isStrictDouble(value)) {
           invalidValues[value] = getValueType(value);
         }
       } else if (type == 'number') {

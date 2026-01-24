@@ -511,13 +511,16 @@ void main() {
           expect(result.isValid, isTrue);
         });
 
-        test('returns success when double enum has integers', () {
+        test('returns error when double enum has integers', () {
           final result = EnumTypeValidator.validateEnumValues(
             'ratio',
             'double',
             ['1', '2', '3'],
           );
-          expect(result.isValid, isTrue);
+          expect(result.isValid, isFalse);
+          expect(result.errorMessage, contains('ratio'));
+          expect(result.errorMessage, contains('[double]'));
+          expect(result.errorMessage, contains('[integer]'));
         });
 
         test('returns error when integer enum has string value', () {
