@@ -795,10 +795,26 @@ Map<String, Command> loadCommandsFrom(File yaml) {
         // Validation: enum with default - ensure default is in values list
         if (values != null && values.isNotEmpty) {
           final lowerDefault = defaultValue.toLowerCase();
-          final isValid = values.any((v) => v.toLowerCase() == lowerDefault);
+          // Strip quotes from values when comparing
+          final isValid = values.any((v) {
+            var stripped = v;
+            if ((stripped.startsWith('"') && stripped.endsWith('"')) ||
+                (stripped.startsWith("'") && stripped.endsWith("'"))) {
+              stripped = stripped.substring(1, stripped.length - 1);
+            }
+            return stripped.toLowerCase() == lowerDefault;
+          });
           if (!isValid) {
             if (currentCommand != null) {
-              final greenValues = values.map((v) => '$bold$green$v$reset').join(', ');
+              // Strip quotes from values for display
+              final strippedValues = values.map((v) {
+                if ((v.startsWith('"') && v.endsWith('"')) ||
+                    (v.startsWith("'") && v.endsWith("'"))) {
+                  return v.substring(1, v.length - 1);
+                }
+                return v;
+              }).toList();
+              final greenValues = strippedValues.map((v) => '$bold$green$v$reset').join(', ');
               _validationErrors[currentCommand] =
                   'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Must be one of: $greenValues';
             }
