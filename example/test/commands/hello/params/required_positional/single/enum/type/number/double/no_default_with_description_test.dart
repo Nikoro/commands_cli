@@ -8,11 +8,11 @@ import '../../../../../../../../../integration_tests.dart';
 void main() {
   integrationTests(
     '''
-        hello:
+        hello: ## Description of command hello
           script: echo "Hello {name}"
           params:
-            optional:
-              - name:
+            required:
+              - name: ## Description of parameter name
                 type: double
                 values: [2.0, -4.7]
     ''',
@@ -24,9 +24,21 @@ void main() {
         });
       }
 
-      test('prints "Hello " when no optional param is specified', () async {
+      test('shows interactive picker when no required param is specified', () async {
         final result = await Process.run('hello', []);
-        expect(result.stdout, equals('Hello \n'));
+        expect(
+          result.stdout,
+          equals('''
+
+Select value for ${blue}name$reset:
+${gray}Description of parameter name$reset
+
+    ${green}1. 2.0  ✓$reset
+    2. -4.7  
+
+${gray}Press number (1-2) or press Esc to cancel:$reset
+'''),
+        );
       });
 
       test('prints error when value is boolean', () async {
@@ -62,10 +74,10 @@ void main() {
         test('$flag prints help', () async {
           final result = await Process.run('hello', [flag]);
           expect(result.stdout, equals('''
-${blue}hello$reset
+${blue}hello$reset: ${gray}Description of command hello$reset
 params:
-  optional:
-    ${magenta}name$reset ${gray}[double]$reset
+  required:
+    ${magenta}name$reset ${gray}[double] Description of parameter name$reset
     ${bold}values$reset: 2.0, -4.7
 '''));
         });
