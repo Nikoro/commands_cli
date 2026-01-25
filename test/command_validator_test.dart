@@ -493,13 +493,17 @@ void main() {
           expect(result.isValid, isTrue);
         });
 
-        test('returns success when integer enum has whole number doubles', () {
+        test('returns error when integer enum has whole number doubles', () {
           final result = EnumTypeValidator.validateEnumValues(
             'level',
             'integer',
             ['1', '2.0', '3'],
           );
-          expect(result.isValid, isTrue);
+          expect(result.isValid, isFalse);
+          expect(result.errorMessage, contains('level'));
+          expect(result.errorMessage, contains('[integer]'));
+          expect(result.errorMessage, contains('2.0'));
+          expect(result.errorMessage, contains('[double]'));
         });
 
         test('returns success when all values match double type', () {
