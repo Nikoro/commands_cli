@@ -302,8 +302,9 @@ class EnumTypeValidator {
     // Build error message - for single invalid value from enum values list, show specific error format for integration tests
     if (invalidValues.length == 1) {
       final entry = invalidValues.entries.first;
+      final article = type.startsWith(RegExp('[aeiou]', caseSensitive: false)) ? 'an' : 'a';
       return ValidationResult.error(
-        'Parameter $bold$red$paramName$reset expects a $gray[$type]$reset\n   Got: ${entry.key} $gray[${entry.value}]$reset in values',
+        'Parameter $bold$red$paramName$reset expects $article $gray[$type]$reset\n   Got: ${entry.key} $gray[${entry.value}]$reset in values',
       );
     }
 
