@@ -339,7 +339,7 @@ class EnumTypeValidator {
     } else if (type == 'boolean') {
       isValidType = isValidBoolean(defaultValue);
     } else if (type == 'integer') {
-      isValidType = isValidInt(defaultValue);
+      isValidType = isStrictInt(defaultValue);
     } else if (type == 'double') {
       isValidType = isValidDouble(defaultValue);
     } else if (type == 'number') {

@@ -595,14 +595,16 @@ void main() {
           expect(result.isValid, isTrue);
         });
 
-        test('returns success when integer default is whole number double', () {
+        test('returns error when integer default is whole number double', () {
           final result = EnumTypeValidator.validateEnumDefault(
             'level',
             'integer',
             '2.0',
             ['1', '2.0', '3'],
           );
-          expect(result.isValid, isTrue);
+          expect(result.isValid, isFalse);
+          expect(result.errorMessage, contains('[integer]'));
+          expect(result.errorMessage, contains('[double]'));
         });
 
         test('returns error when integer default is string', () {
