@@ -120,11 +120,11 @@ params:
   optional:
     ${magenta}alpha (-a, --alpha)$reset
     ${bold}values$reset: A1, A2, A3
-    ${bold}default$reset: $bold${orange}"A1"$reset
+    ${bold}default$reset: $bold${orange}A1$reset
     ${magenta}beta (--beta, -b)$reset
-    ${bold}default$reset: $bold${orange}"B1"$reset
+    ${bold}default$reset: $bold${orange}B1$reset
     ${magenta}charlie (-c, --charlie)$reset
-    ${bold}default$reset: $bold${orange}"C1"$reset
+    ${bold}default$reset: $bold${orange}C1$reset
 '''));
         });
       }

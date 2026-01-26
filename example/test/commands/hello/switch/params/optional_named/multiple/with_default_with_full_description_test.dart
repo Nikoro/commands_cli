@@ -156,11 +156,11 @@ options:
   params:
     optional:
       ${magenta}alpha (-a, --alpha)$reset ${gray}Description of parameter alpha$reset
-      ${bold}default$reset: $bold${orange}"A1"$reset
+      ${bold}default$reset: $bold${orange}A1$reset
       ${magenta}beta (--beta, -b)$reset ${gray}Description of parameter beta$reset
-      ${bold}default$reset: $bold${orange}"B1"$reset
+      ${bold}default$reset: $bold${orange}B1$reset
       ${magenta}charlie (-c, --charlie)$reset ${gray}Description of parameter charlie$reset
-      ${bold}default$reset: $bold${orange}"C1"$reset
+      ${bold}default$reset: $bold${orange}C1$reset
   ${blue}opt3$reset: ${gray}Description of option 3$reset
   ${bold}default$reset: ${blue}opt3$reset
 '''));

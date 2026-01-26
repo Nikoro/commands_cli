@@ -50,10 +50,10 @@ ${blue}hello$reset
 params:
   required:
     ${magenta}beta$reset
-    ${bold}default$reset: $bold${orange}"B1"$reset
+    ${bold}default$reset: $bold${orange}B1$reset
   optional:
     ${magenta}alpha (-a, --alpha)$reset
-    ${bold}default$reset: $bold${orange}"A1"$reset
+    ${bold}default$reset: $bold${orange}A1$reset
 '''));
         });
       }

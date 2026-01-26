@@ -156,11 +156,11 @@ options:
   params:
     optional:
       ${magenta}alpha (-a, --alpha)$reset
-      ${bold}default$reset: $bold${orange}"A1"$reset
+      ${bold}default$reset: $bold${orange}A1$reset
       ${magenta}beta (--beta, -b)$reset
-      ${bold}default$reset: $bold${orange}"B1"$reset
+      ${bold}default$reset: $bold${orange}B1$reset
       ${magenta}charlie (-c, --charlie)$reset
-      ${bold}default$reset: $bold${orange}"C1"$reset
+      ${bold}default$reset: $bold${orange}C1$reset
   ${blue}opt3$reset
   ${bold}default$reset: ${blue}opt3$reset
 '''));

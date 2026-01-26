@@ -49,11 +49,11 @@ ${blue}hello$reset
 params:
   required:
     ${magenta}alpha$reset
-    ${bold}default$reset: $bold${orange}"A1"$reset
+    ${bold}default$reset: $bold${orange}A1$reset
     ${magenta}beta$reset
-    ${bold}default$reset: $bold${orange}"B1"$reset
+    ${bold}default$reset: $bold${orange}B1$reset
     ${magenta}charlie$reset
-    ${bold}default$reset: $bold${orange}"C1"$reset
+    ${bold}default$reset: $bold${orange}C1$reset
 '''));
         });
       }

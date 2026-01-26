@@ -49,11 +49,11 @@ ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
   optional:
     ${magenta}alpha$reset ${gray}Description of parameter alpha$reset
-    ${bold}default$reset: $bold${orange}"A1"$reset
+    ${bold}default$reset: $bold${orange}A1$reset
     ${magenta}beta$reset ${gray}Description of parameter beta$reset
-    ${bold}default$reset: $bold${orange}"B1"$reset
+    ${bold}default$reset: $bold${orange}B1$reset
     ${magenta}charlie$reset ${gray}Description of parameter charlie$reset
-    ${bold}default$reset: $bold${orange}"C1"$reset
+    ${bold}default$reset: $bold${orange}C1$reset
 '''));
         });
       }

@@ -71,14 +71,14 @@ ${blue}hello$reset
 params:
   required:
     ${magenta}alpha (-a, --alpha)$reset ${gray}Description of parameter alpha$reset
-    ${bold}default$reset: $bold${orange}"A1"$reset
+    ${bold}default$reset: $bold${orange}A1$reset
     ${magenta}beta$reset
-    ${bold}default$reset: $bold${orange}"B1"$reset
+    ${bold}default$reset: $bold${orange}B1$reset
   optional:
     ${magenta}charlie (-c, --charlie)$reset
-    ${bold}default$reset: $bold${orange}"C1"$reset
+    ${bold}default$reset: $bold${orange}C1$reset
     ${magenta}delta$reset ${gray}Description of parameter delta$reset
-    ${bold}default$reset: $bold${orange}"D1"$reset
+    ${bold}default$reset: $bold${orange}D1$reset
 '''));
         });
       }

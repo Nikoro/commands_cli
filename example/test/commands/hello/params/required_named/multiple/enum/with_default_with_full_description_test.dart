@@ -122,11 +122,11 @@ params:
   required:
     ${magenta}alpha (-a, --alpha)$reset ${gray}Description of parameter alpha$reset
     ${bold}values$reset: A1, A2, A3
-    ${bold}default$reset: $bold${orange}"A1"$reset
+    ${bold}default$reset: $bold${orange}A1$reset
     ${magenta}beta (--beta, -b)$reset ${gray}Description of parameter beta$reset
-    ${bold}default$reset: $bold${orange}"B1"$reset
+    ${bold}default$reset: $bold${orange}B1$reset
     ${magenta}charlie (-c, --charlie)$reset ${gray}Description of parameter charlie$reset
-    ${bold}default$reset: $bold${orange}"C1"$reset
+    ${bold}default$reset: $bold${orange}C1$reset
 '''));
         });
       }
