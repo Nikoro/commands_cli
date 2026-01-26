@@ -181,7 +181,10 @@ Future<void> main(List<String> args) async {
     await activatePackage(GeneratedCommands.dir);
   }
 
-  final maxNameLength = yamlContent.keys.map((name) => name.length).reduce((a, b) => a > b ? a : b);
+  // Calculate max name length from ALL commands (valid, invalid names, and validation errors)
+  // to ensure consistent alignment across all output lines
+  final allCommandNames = {...yamlContent.keys, ...validationErrorKeys};
+  final maxNameLength = allCommandNames.map((name) => name.length).reduce((a, b) => a > b ? a : b);
 
   // Track if we have warnings or errors
   final hasWarnings = reservedCommandKeys.isNotEmpty;
