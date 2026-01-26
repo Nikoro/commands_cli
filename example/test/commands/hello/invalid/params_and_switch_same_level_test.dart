@@ -25,7 +25,7 @@ void main() {
           expect(
               result.stderr,
               equals('❌ Cannot use both $bold${red}params$reset and $bold${red}switch$reset at the same time\n'
-                  '💡 Hint: Parameters should be defined within individual switch cases, not at the switch level\n'));
+                  '💡 Parameters should be defined within individual switch cases, not at the switch level\n'));
         });
       }
     },

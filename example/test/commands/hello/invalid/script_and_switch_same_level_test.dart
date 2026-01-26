@@ -23,7 +23,7 @@ void main() {
           expect(
               result.stderr,
               equals('❌ Cannot use both $bold${red}script$reset and $bold${red}switch$reset at the same time\n'
-                  '💡 Hint: Move your script content into a \'default\' switch case\n'));
+                  '💡 Move your script content into a \'default\' switch case\n'));
         });
       }
     },

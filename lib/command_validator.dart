@@ -191,7 +191,7 @@ class ValidationResult {
       buffer.writeln('   $gotPart');
     }
     if (hint != null) {
-      buffer.writeln('💡 Hint: $hint');
+      buffer.writeln('💡 $hint');
     }
     return buffer.toString().trimRight();
   }
@@ -202,7 +202,7 @@ class ValidationResult {
       buffer.writeln('❌ $errorMessage');
     }
     if (hint != null) {
-      buffer.writeln('💡 Hint: $hint');
+      buffer.writeln('💡 $hint');
     }
     return buffer.toString().trimRight();
   }
