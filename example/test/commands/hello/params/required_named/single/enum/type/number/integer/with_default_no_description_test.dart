@@ -10,11 +10,11 @@ void main() {
     for (int def in [1, -3]) {
       integrationTests(
         '''
-        hello: ## Description of command hello
+        hello:
           script: echo "Hello {name}"
           params:
-            optional:
-              - name: '-n, --name' ## Description of parameter name
+            required:
+              - name: '-n, --name'
                 type: $type
                 values: [1, -3]
                 default: $def
@@ -29,15 +29,15 @@ void main() {
             }
           }
 
-          test('prints "Hello $def" when no optional param is specified', () async {
+          test('prints "Hello $def" when no required param is specified', () async {
             final result = await Process.run('hello', []);
             expect(result.stdout, equals('Hello $def\n'));
           });
 
           for (String flag in ['-n', '--name']) {
-            test('prints "Hello $def" when no value for optional param is specified', () async {
+            test('prints error when no value for required param is specified', () async {
               final result = await Process.run('hello', [flag]);
-              expect(result.stdout, equals('Hello $def\n'));
+              expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
             });
 
             test('prints error when value is boolean', () async {
@@ -74,10 +74,10 @@ void main() {
             test('$flag prints help', () async {
               final result = await Process.run('hello', [flag]);
               expect(result.stdout, equals('''
-${blue}hello$reset: ${gray}Description of command hello$reset
+${blue}hello$reset
 params:
-  optional:
-    ${magenta}name (-n, --name)$reset ${gray}[integer] Description of parameter name$reset
+  required:
+    ${magenta}name (-n, --name)$reset ${gray}[integer]$reset
     ${bold}values$reset: 1, -3
     ${bold}default$reset: $bold${orange}$def$reset
 '''));
@@ -88,17 +88,18 @@ params:
 
       for (final invalid in [
         (value: true, type: 'boolean'),
+        (value: 2.0, type: 'double'),
         (value: "'false'", type: 'string'),
         (value: '"true"', type: 'string'),
         (value: 'text', type: 'string'),
       ]) {
         integrationTests(
           '''
-        hello: ## Description of command hello
+        hello:
           script: echo "Hello {name}"
           params:
-            optional:
-              - name: '-n, --name' ## Description of parameter name
+            required:
+              - name: '-n, --name'
                 type: $type
                 values: [1, -3, ${invalid.value}]
                 default: $def
@@ -186,17 +187,18 @@ params:
 
       for (final invalid in [
         (input: true, type: 'boolean'),
+        (input: 2.0, type: 'double'),
         (input: "'false'", type: 'string'),
         (input: '"true"', type: 'string'),
         (input: 'text', type: 'string'),
       ]) {
         integrationTests(
           '''
-        hello: ## Description of command hello
+        hello:
           script: echo "Hello {name}"
           params:
-            optional:
-              - name: '-n, --name' ## Description of parameter name
+            required:
+              - name: '-n, --name'
                 type: $type
                 values: [1, -3]
                 default: ${invalid.input}

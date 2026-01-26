@@ -13,7 +13,7 @@ void main() {
         hello: ## Description of command hello
           script: echo "Hello {name}"
           params:
-            optional:
+            required:
               - name: '-n, --name' ## Description of parameter name
                 type: $type
                 values: [1, -3]
@@ -29,15 +29,15 @@ void main() {
             }
           }
 
-          test('prints "Hello $def" when no optional param is specified', () async {
+          test('prints "Hello $def" when no required param is specified', () async {
             final result = await Process.run('hello', []);
             expect(result.stdout, equals('Hello $def\n'));
           });
 
           for (String flag in ['-n', '--name']) {
-            test('prints "Hello $def" when no value for optional param is specified', () async {
+            test('prints error when no value for required param is specified', () async {
               final result = await Process.run('hello', [flag]);
-              expect(result.stdout, equals('Hello $def\n'));
+              expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
             });
 
             test('prints error when value is boolean', () async {
@@ -76,7 +76,7 @@ void main() {
               expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
-  optional:
+  required:
     ${magenta}name (-n, --name)$reset ${gray}[integer] Description of parameter name$reset
     ${bold}values$reset: 1, -3
     ${bold}default$reset: $bold${orange}$def$reset
@@ -97,7 +97,7 @@ params:
         hello: ## Description of command hello
           script: echo "Hello {name}"
           params:
-            optional:
+            required:
               - name: '-n, --name' ## Description of parameter name
                 type: $type
                 values: [1, -3, ${invalid.value}]
@@ -195,7 +195,7 @@ params:
         hello: ## Description of command hello
           script: echo "Hello {name}"
           params:
-            optional:
+            required:
               - name: '-n, --name' ## Description of parameter name
                 type: $type
                 values: [1, -3]

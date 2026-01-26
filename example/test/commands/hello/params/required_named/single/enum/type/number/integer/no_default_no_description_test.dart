@@ -12,7 +12,7 @@ void main() {
         hello:
           script: echo "Hello {name}"
           params:
-            optional:
+            required:
               - name: '-n, --name'
                 type: $type
                 values: [1, -3]
@@ -27,15 +27,26 @@ void main() {
           }
         }
 
-        test('prints "Hello " when no optional param is specified', () async {
+        test('shows interactive picker when no required param is specified', () async {
           final result = await Process.run('hello', []);
-          expect(result.stdout, equals('Hello \n'));
+          expect(
+            result.stdout,
+            equals('''
+
+Select value for ${blue}name$reset:
+
+    ${green}1. 1  ✓$reset
+    2. -3  
+
+${gray}Press number (1-2) or press Esc to cancel:$reset
+'''),
+          );
         });
 
         for (String flag in ['-n', '--name']) {
-          test('prints "Hello " when no value for optional param is specified', () async {
-            final result = await Process.run('hello', ['$flag']);
-            expect(result.stdout, equals('Hello \n'));
+          test('prints error when no value for required param is specified', () async {
+            final result = await Process.run('hello', [flag]);
+            expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
           });
 
           test('prints error when value is boolean', () async {
@@ -74,7 +85,7 @@ void main() {
             expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
-  optional:
+  required:
     ${magenta}name (-n, --name)$reset ${gray}[integer]$reset
     ${bold}values$reset: 1, -3
 '''));

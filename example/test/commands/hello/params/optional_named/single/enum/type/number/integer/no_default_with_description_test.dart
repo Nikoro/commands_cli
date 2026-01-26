@@ -19,7 +19,7 @@ void main() {
     ''',
       () {
         for (String flag in ['-n', '--name']) {
-          for (num value in [1, -3]) {
+          for (int value in [1, -3]) {
             test('prints "Hello $value', () async {
               final result = await Process.run('hello', [flag, '$value']);
               expect(result.stdout, equals('Hello $value\n'));

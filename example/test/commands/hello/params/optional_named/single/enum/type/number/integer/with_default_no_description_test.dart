@@ -7,7 +7,7 @@ import '../../../../../../../../../integration_tests.dart';
 
 void main() {
   for (String type in ['integer', 'int']) {
-    for (num def in [1, -3]) {
+    for (int def in [1, -3]) {
       integrationTests(
         '''
         hello:
@@ -21,7 +21,7 @@ void main() {
     ''',
         () {
           for (String flag in ['-n', '--name']) {
-            for (num value in [1, -3]) {
+            for (int value in [1, -3]) {
               test('prints "Hello $value', () async {
                 final result = await Process.run('hello', [flag, '$value']);
                 expect(result.stdout, equals('Hello $value\n'));
@@ -106,7 +106,7 @@ params:
     ''',
           () {
             for (String flag in ['-n', '--name']) {
-              for (num value in [1, -3]) {
+              for (int value in [1, -3]) {
                 test('prints error', () async {
                   final result = await Process.run('hello', [flag, '$value']);
                   expect(result.stderr, equals('''
@@ -205,7 +205,7 @@ params:
     ''',
           () {
             for (String flag in ['-n', '--name']) {
-              for (num value in [1, -3]) {
+              for (int value in [1, -3]) {
                 test('prints error', () async {
                   final result = await Process.run('hello', [flag, '$value']);
                   expect(
