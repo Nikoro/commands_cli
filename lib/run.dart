@@ -278,8 +278,7 @@ Future<void> run(String name, List<String> args) async {
       final param = getParamByName(paramName);
 
       // Validate boolean types first (before enum validation for better error messages)
-      // Only for non-enum booleans - enum booleans are handled by enum validation
-      if (param.type == 'boolean' && !param.isEnum && value != 'true' && value != 'false') {
+      if (param.type == 'boolean' && value != 'true' && value != 'false') {
         final valueType = EnumTypeValidator.getValueType(value);
         stderr.writeln('❌ Parameter $bold$red$paramName$reset expects a $gray[boolean]$reset');
         stderr.writeln('   Got: $value $gray[$valueType]$reset');
