@@ -304,7 +304,7 @@ class EnumTypeValidator {
       final entry = invalidValues.entries.first;
       final article = type.startsWith(RegExp('[aeiou]', caseSensitive: false)) ? 'an' : 'a';
       return ValidationResult.error(
-        'Parameter $bold$red$paramName$reset expects $article $gray[$type]$reset\n   Got: ${entry.key} $gray[${entry.value}]$reset in values',
+        'Parameter $bold$red$paramName$reset expects $article $gray[$type]$reset. Got: ${entry.key} $gray[${entry.value}]$reset in values',
       );
     }
 

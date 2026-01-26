@@ -29,11 +29,9 @@ void main() {
             '❌ ${bold}${red}invalid_double_string$reset:                 Parameter ${bold}${red}version$reset is declared as type ${gray}[string]$reset, but its default value is ${gray}[double]$reset\n'
             '❌ ${bold}${red}invalid_boolean_string$reset:                Parameter ${bold}${red}timeout$reset is declared as type ${gray}[string]$reset, but its default value is ${gray}[boolean]$reset\n'
             '❌ ${bold}${red}invalid_script_and_switch$reset:             Cannot use both ${bold}${red}script$reset and ${bold}${red}switch$reset at the same time\n'
-            '❌ ${bold}${red}invalid_typed_enum_integer_string$reset:     Parameter ${bold}${red}platform$reset expects an ${gray}[integer]$reset\n'
-            '   Got: text ${gray}[string]$reset in values\n'
+            '❌ ${bold}${red}invalid_typed_enum_integer_string$reset:     Parameter ${bold}${red}platform$reset expects an ${gray}[integer]$reset. Got: text ${gray}[string]$reset in values\n'
             '❌ ${bold}${red}invalid_typed_enum_int_default_string$reset: Parameter ${bold}${red}platform$reset is declared as type ${gray}[integer]$reset, but its default value is ${gray}[string]$reset\n'
-            '❌ ${bold}${red}invalid_typed_enum_integer_double$reset:     Parameter ${bold}${red}platform$reset expects an ${gray}[integer]$reset\n'
-            '   Got: 3.3 ${gray}[double]$reset in values\n'
+            '❌ ${bold}${red}invalid_typed_enum_integer_double$reset:     Parameter ${bold}${red}platform$reset expects an ${gray}[integer]$reset. Got: 3.3 ${gray}[double]$reset in values\n'
             '❌ ${bold}${red}invalid_typed_enum_int_default_double$reset: Parameter ${bold}${red}platform$reset is declared as type ${gray}[integer]$reset, but its default value is ${gray}[double]$reset\n'),
       );
 
