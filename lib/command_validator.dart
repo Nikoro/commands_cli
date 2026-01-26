@@ -120,8 +120,6 @@ class CommandValidator {
     if (wasQuoted && type != 'string') {
       return ValidationResult.error(
         'Parameter $bold$red$paramName$reset is declared as type $gray[$type]$reset, but its default value is $gray[string]$reset',
-        hint:
-            'Quoted values are always strings. Either remove quotes (default: $defaultValue) or change type to string',
       );
     }
 
@@ -134,7 +132,6 @@ class CommandValidator {
       if (isBoolean) {
         return ValidationResult.error(
           'Parameter $bold$red$paramName$reset is declared as type $gray[string]$reset, but its default value is $gray[boolean]$reset',
-          hint: 'Add quotes around boolean values for string type (default: "$defaultValue") or change type to boolean',
         );
       }
 
@@ -142,8 +139,6 @@ class CommandValidator {
         final actualType = isInt ? 'integer' : 'double';
         return ValidationResult.error(
           'Parameter $bold$red$paramName$reset is declared as type $gray[string]$reset, but its default value is $gray[$actualType]$reset',
-          hint:
-              'Add quotes around numeric values for string type (default: "$defaultValue") or change type to $actualType',
         );
       }
     }

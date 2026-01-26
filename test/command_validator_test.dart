@@ -273,8 +273,6 @@ void main() {
         expect(result.errorMessage, contains('port'));
         expect(result.errorMessage, contains('[integer]'));
         expect(result.errorMessage, contains('[string]'));
-        expect(result.hint, contains('Quoted values are always strings'));
-        expect(result.hint, contains('default: 3000'));
       });
 
       test('returns error when quoted default has explicit double type', () {
@@ -364,8 +362,6 @@ void main() {
         expect(result.errorMessage, contains('code'));
         expect(result.errorMessage, contains('[string]'));
         expect(result.errorMessage, contains('[integer]'));
-        expect(result.hint, contains('Add quotes around numeric values'));
-        expect(result.hint, contains('default: "123"'));
       });
 
       test('returns error when unquoted double default has explicit string type', () {
@@ -381,8 +377,6 @@ void main() {
         expect(result.errorMessage, contains('version'));
         expect(result.errorMessage, contains('[string]'));
         expect(result.errorMessage, contains('[double]'));
-        expect(result.hint, contains('Add quotes around numeric values'));
-        expect(result.hint, contains('default: "1.5"'));
       });
 
       test('returns success when unquoted non-numeric default has explicit string type', () {
