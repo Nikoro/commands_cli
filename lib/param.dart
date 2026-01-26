@@ -144,8 +144,7 @@ class Param {
   /// Strips surrounding single or double quotes from a string value
   static String _stripQuotes(String value) {
     if (value.length >= 2) {
-      if ((value.startsWith("'") && value.endsWith("'")) ||
-          (value.startsWith('"') && value.endsWith('"'))) {
+      if ((value.startsWith("'") && value.endsWith("'")) || (value.startsWith('"') && value.endsWith('"'))) {
         return value.substring(1, value.length - 1);
       }
     }

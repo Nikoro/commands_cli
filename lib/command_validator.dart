@@ -134,8 +134,7 @@ class CommandValidator {
       if (isBoolean) {
         return ValidationResult.error(
           'Parameter $bold$red$paramName$reset is declared as type $gray[string]$reset, but its default value is $gray[boolean]$reset',
-          hint:
-              'Add quotes around boolean values for string type (default: "$defaultValue") or change type to boolean',
+          hint: 'Add quotes around boolean values for string type (default: "$defaultValue") or change type to boolean',
         );
       }
 
@@ -155,17 +154,47 @@ class CommandValidator {
 
 /// Result of a validation operation
 class ValidationResult {
-  const ValidationResult({required this.isValid, this.errorMessage, this.hint});
+  const ValidationResult({
+    required this.isValid,
+    this.errorMessage,
+    this.gotPart,
+    this.hint,
+  });
 
   factory ValidationResult.success() => const ValidationResult(isValid: true);
 
-  factory ValidationResult.error(String message, {String? hint}) {
-    return ValidationResult(isValid: false, errorMessage: message, hint: hint);
+  factory ValidationResult.error(String message, {String? gotPart, String? hint}) {
+    return ValidationResult(isValid: false, errorMessage: message, gotPart: gotPart, hint: hint);
   }
 
   final bool isValid;
   final String? errorMessage;
+  final String? gotPart;
   final String? hint;
+
+  /// Single-line format for command listing (e.g., "Parameter X expects [type]. Got: Y [type] in values")
+  String get singleLineMessage {
+    if (errorMessage == null) return '';
+    if (gotPart != null) {
+      return '$errorMessage. $gotPart';
+    }
+    return errorMessage!;
+  }
+
+  /// Multi-line format for runtime display (user-friendly)
+  String get multiLineMessage {
+    final buffer = StringBuffer();
+    if (errorMessage != null) {
+      buffer.writeln('❌ $errorMessage');
+    }
+    if (gotPart != null) {
+      buffer.writeln('   $gotPart');
+    }
+    if (hint != null) {
+      buffer.writeln('💡 Hint: $hint');
+    }
+    return buffer.toString().trimRight();
+  }
 
   String get fullMessage {
     final buffer = StringBuffer();
@@ -299,12 +328,13 @@ class EnumTypeValidator {
       return ValidationResult.success();
     }
 
-    // Build error message - for single invalid value from enum values list, show specific error format for integration tests
+    // Build error message - for single invalid value from enum values list
     if (invalidValues.length == 1) {
       final entry = invalidValues.entries.first;
       final article = type.startsWith(RegExp('[aeiou]', caseSensitive: false)) ? 'an' : 'a';
       return ValidationResult.error(
-        'Parameter $bold$red$paramName$reset expects $article $gray[$type]$reset. Got: ${entry.key} $gray[${entry.value}]$reset in values',
+        'Parameter $bold$red$paramName$reset expects $article $gray[$type]$reset',
+        gotPart: 'Got: ${entry.key} $gray[${entry.value}]$reset in values',
       );
     }
 
@@ -314,9 +344,9 @@ class EnumTypeValidator {
     }).join(', ');
 
     return ValidationResult.error(
-      'Parameter $bold$red$paramName$reset expects an [$type]. Got: $gotParts',
-      hint:
-          '${type.substring(0, 1).toUpperCase()}${type.substring(1)} parameters must have valid $type values',
+      'Parameter $bold$red$paramName$reset expects an [$type]',
+      gotPart: 'Got: $gotParts',
+      hint: '${type.substring(0, 1).toUpperCase()}${type.substring(1)} parameters must have valid $type values',
     );
   }
 

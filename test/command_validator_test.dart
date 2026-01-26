@@ -500,10 +500,10 @@ void main() {
             ['1', '2.0', '3'],
           );
           expect(result.isValid, isFalse);
-          expect(result.errorMessage, contains('level'));
-          expect(result.errorMessage, contains('[integer]'));
-          expect(result.errorMessage, contains('2.0'));
-          expect(result.errorMessage, contains('[double]'));
+          expect(result.singleLineMessage, contains('level'));
+          expect(result.singleLineMessage, contains('[integer]'));
+          expect(result.singleLineMessage, contains('2.0'));
+          expect(result.singleLineMessage, contains('[double]'));
         });
 
         test('returns success when all values match double type', () {
@@ -522,9 +522,9 @@ void main() {
             ['1', '2', '3'],
           );
           expect(result.isValid, isFalse);
-          expect(result.errorMessage, contains('ratio'));
-          expect(result.errorMessage, contains('[double]'));
-          expect(result.errorMessage, contains('[integer]'));
+          expect(result.singleLineMessage, contains('ratio'));
+          expect(result.singleLineMessage, contains('[double]'));
+          expect(result.singleLineMessage, contains('[integer]'));
         });
 
         test('returns error when integer enum has string value', () {
@@ -534,11 +534,11 @@ void main() {
             ['ios', '1', '2'],
           );
           expect(result.isValid, isFalse);
-          expect(result.errorMessage, contains('platform'));
-          expect(result.errorMessage, contains('[integer]'));
-          expect(result.errorMessage, contains('ios'));
-          expect(result.errorMessage, contains('[string]'));
-          expect(result.errorMessage, contains('in values'));
+          expect(result.singleLineMessage, contains('platform'));
+          expect(result.singleLineMessage, contains('[integer]'));
+          expect(result.singleLineMessage, contains('ios'));
+          expect(result.singleLineMessage, contains('[string]'));
+          expect(result.singleLineMessage, contains('in values'));
         });
 
         test('returns error with multiple invalid values', () {
@@ -548,10 +548,10 @@ void main() {
             ['ios', '1', '2.2'],
           );
           expect(result.isValid, isFalse);
-          expect(result.errorMessage, contains('"ios"'));
-          expect(result.errorMessage, contains('"2.2"'));
-          expect(result.errorMessage, contains('[string]'));
-          expect(result.errorMessage, contains('[double]'));
+          expect(result.singleLineMessage, contains('"ios"'));
+          expect(result.singleLineMessage, contains('"2.2"'));
+          expect(result.singleLineMessage, contains('[string]'));
+          expect(result.singleLineMessage, contains('[double]'));
         });
 
         test('returns error when double enum has string value', () {
@@ -561,10 +561,10 @@ void main() {
             ['text', '1.5', '2.0'],
           );
           expect(result.isValid, isFalse);
-          expect(result.errorMessage, contains('ratio'));
-          expect(result.errorMessage, contains('[double]'));
-          expect(result.errorMessage, contains('text'));
-          expect(result.errorMessage, contains('in values'));
+          expect(result.singleLineMessage, contains('ratio'));
+          expect(result.singleLineMessage, contains('[double]'));
+          expect(result.singleLineMessage, contains('text'));
+          expect(result.singleLineMessage, contains('in values'));
         });
       });
 

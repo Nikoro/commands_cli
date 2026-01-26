@@ -28,7 +28,7 @@ Future<void> run(String name, List<String> args) async {
   // Check if this command has validation errors (was invalid during loading)
   if (commandValidationErrors.containsKey(name)) {
     final error = commandValidationErrors[name]!;
-    stderr.writeln('❌ $error');
+    stderr.writeln(error.multiLineMessage);
     exit(1);
   }
 

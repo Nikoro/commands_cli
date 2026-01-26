@@ -6,9 +6,9 @@ import 'package:commands_cli/command_validator.dart';
 import 'package:commands_cli/param.dart';
 
 // Track commands with validation errors
-final Map<String, String> _validationErrors = {};
+final Map<String, ValidationResult> _validationErrors = {};
 
-Map<String, String> get commandValidationErrors => Map.unmodifiable(_validationErrors);
+Map<String, ValidationResult> get commandValidationErrors => Map.unmodifiable(_validationErrors);
 
 Map<String, Command> loadCommandsFrom(File yaml) {
   _validationErrors.clear(); // Clear previous errors
@@ -67,7 +67,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
     if (type != null && values != null && values.isNotEmpty && currentParamMetadata['isTypeExplicit'] == true) {
       final enumValidation = EnumTypeValidator.validateEnumValues(currentParamName, type, values);
       if (!enumValidation.isValid && currentCommand != null) {
-        _validationErrors[currentCommand] = enumValidation.errorMessage ?? 'validation error';
+        _validationErrors[currentCommand] = enumValidation;
         currentParamName = null;
         currentParamMetadata = {};
         return;
@@ -125,7 +125,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       final validationResult = CommandValidator.validate(currentCommand, tempCommandMap);
       if (!validationResult.isValid) {
         // Store error and skip this command
-        _validationErrors[currentCommand] = validationResult.errorMessage ?? 'validation error';
+        _validationErrors[currentCommand] = validationResult;
         return;
       }
     }
@@ -582,8 +582,10 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       const validTypes = ['boolean', 'bool', 'string', 'int', 'integer', 'double', 'number', 'num'];
       if (!validTypes.contains(typeValue)) {
         if (currentCommand != null) {
-          _validationErrors[currentCommand] =
-              'Invalid type "$typeValue" for parameter $bold$red$currentParamName$reset.\n💡 Must be one of: $bold${green}boolean$reset, $bold${green}string$reset, $bold${green}number$reset, $bold${green}integer$reset, $bold${green}double$reset';
+          _validationErrors[currentCommand] = ValidationResult.error(
+              'Invalid type "$typeValue" for parameter $bold$red$currentParamName$reset',
+              hint:
+                  'Must be one of: $bold${green}boolean$reset, $bold${green}string$reset, $bold${green}number$reset, $bold${green}integer$reset, $bold${green}double$reset');
         }
         currentParamName = null;
         currentParamMetadata = {};
@@ -641,7 +643,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
 
       if (valuesList.isEmpty && !isBooleanType) {
         if (currentCommand != null) {
-          _validationErrors[currentCommand] = 'Parameter "$currentParamName" has empty values list';
+          _validationErrors[currentCommand] =
+              ValidationResult.error('Parameter "$currentParamName" has empty values list');
         }
         currentParamName = null;
         currentParamMetadata = {};
@@ -654,7 +657,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       if (type != null && currentParamMetadata['isTypeExplicit'] == true) {
         final enumValidation = EnumTypeValidator.validateEnumValues(currentParamName, type, valuesList);
         if (!enumValidation.isValid && currentCommand != null) {
-          _validationErrors[currentCommand] = enumValidation.errorMessage ?? 'validation error';
+          _validationErrors[currentCommand] = enumValidation;
           currentParamName = null;
           currentParamMetadata = {};
           continue;
@@ -726,7 +729,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
       final hasValidationError = !validationResult.isValid && currentCommand != null;
       if (hasValidationError) {
         // Store validation error for this command
-        _validationErrors[currentCommand] = validationResult.errorMessage ?? 'validation error';
+        _validationErrors[currentCommand] = validationResult;
       }
 
       // Skip the rest of param building if there was a validation error
@@ -740,14 +743,15 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           if (currentParamMetadata['isTypeExplicit'] == true) {
             final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
             if (currentCommand != null) {
-              _validationErrors[currentCommand] =
-                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[boolean]$reset, but its default value is $gray[$defaultValueType]$reset';
+              _validationErrors[currentCommand] = ValidationResult.error(
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[boolean]$reset, but its default value is $gray[$defaultValueType]$reset');
             }
           } else {
             // Type was inferred, use the old error message
             if (currentCommand != null) {
-              _validationErrors[currentCommand] =
-                  'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Boolean parameters must have default: true or false';
+              _validationErrors[currentCommand] = ValidationResult.error(
+                  'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"',
+                  hint: 'Boolean parameters must have default: true or false');
             }
           }
           currentParamName = null;
@@ -760,8 +764,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           if (!EnumTypeValidator.isStrictDouble(defaultValue)) {
             final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
             if (currentCommand != null) {
-              _validationErrors[currentCommand] =
-                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[double]$reset, but its default value is $gray[$defaultValueType]$reset';
+              _validationErrors[currentCommand] = ValidationResult.error(
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[double]$reset, but its default value is $gray[$defaultValueType]$reset');
             }
             currentParamName = null;
             currentParamMetadata = {};
@@ -773,7 +777,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
         if (type != null && values != null && values.isNotEmpty && currentParamMetadata['isTypeExplicit'] == true) {
           final enumValidation = EnumTypeValidator.validateEnumValues(currentParamName, type, values);
           if (!enumValidation.isValid && currentCommand != null) {
-            _validationErrors[currentCommand] = enumValidation.errorMessage ?? 'validation error';
+            _validationErrors[currentCommand] = enumValidation;
             currentParamName = null;
             currentParamMetadata = {};
             continue;
@@ -785,7 +789,7 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           final enumDefaultValidation =
               EnumTypeValidator.validateEnumDefault(currentParamName, type, defaultValue, values);
           if (!enumDefaultValidation.isValid && currentCommand != null) {
-            _validationErrors[currentCommand] = enumDefaultValidation.errorMessage ?? 'validation error';
+            _validationErrors[currentCommand] = enumDefaultValidation;
             currentParamName = null;
             currentParamMetadata = {};
             continue;
@@ -808,15 +812,15 @@ Map<String, Command> loadCommandsFrom(File yaml) {
             if (currentCommand != null) {
               // Strip quotes from values for display
               final strippedValues = values.map((v) {
-                if ((v.startsWith('"') && v.endsWith('"')) ||
-                    (v.startsWith("'") && v.endsWith("'"))) {
+                if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
                   return v.substring(1, v.length - 1);
                 }
                 return v;
               }).toList();
               final greenValues = strippedValues.map((v) => '$bold$green$v$reset').join(', ');
-              _validationErrors[currentCommand] =
-                  'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Must be one of: $greenValues';
+              _validationErrors[currentCommand] = ValidationResult.error(
+                  'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"',
+                  hint: 'Must be one of: $greenValues');
             }
             currentParamName = null;
             currentParamMetadata = {};
@@ -829,8 +833,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           if (!EnumTypeValidator.isStrictInt(defaultValue)) {
             final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
             if (currentCommand != null) {
-              _validationErrors[currentCommand] =
-                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[integer]$reset, but its default value is $gray[$defaultValueType]$reset';
+              _validationErrors[currentCommand] = ValidationResult.error(
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[integer]$reset, but its default value is $gray[$defaultValueType]$reset');
             }
             currentParamName = null;
             currentParamMetadata = {};
@@ -843,8 +847,8 @@ Map<String, Command> loadCommandsFrom(File yaml) {
           if (!EnumTypeValidator.isValidNumber(defaultValue)) {
             final defaultValueType = EnumTypeValidator.getValueType(defaultValue);
             if (currentCommand != null) {
-              _validationErrors[currentCommand] =
-                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[number]$reset, but its default value is $gray[$defaultValueType]$reset';
+              _validationErrors[currentCommand] = ValidationResult.error(
+                  'Parameter $bold$red$currentParamName$reset is declared as type $gray[number]$reset, but its default value is $gray[$defaultValueType]$reset');
             }
             currentParamName = null;
             currentParamMetadata = {};
@@ -854,8 +858,9 @@ Map<String, Command> loadCommandsFrom(File yaml) {
 
         if (effectiveType == 'double' && type == 'double' && !EnumTypeValidator.isValidDouble(defaultValue)) {
           if (currentCommand != null) {
-            _validationErrors[currentCommand] =
-                'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"\n💡 Numeric parameters must have a valid number default';
+            _validationErrors[currentCommand] = ValidationResult.error(
+                'Parameter $bold$red$currentParamName$reset has invalid default: "$defaultValue"',
+                hint: 'Numeric parameters must have a valid number default');
           }
           currentParamName = null;
           currentParamMetadata = {};

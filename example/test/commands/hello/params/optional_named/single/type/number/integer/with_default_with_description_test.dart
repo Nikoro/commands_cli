@@ -113,7 +113,7 @@ params:
     ''',
         () {
           for (String flag in ['-n', '--name']) {
-             for (int value in [1, 2, -3]) {
+            for (int value in [1, 2, -3]) {
               test('prints error', () async {
                 final result = await Process.run('hello', [flag, '$value']);
                 expect(

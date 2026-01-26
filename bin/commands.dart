@@ -227,7 +227,7 @@ Future<void> main(List<String> args) async {
 
     for (final name in validationErrorKeys) {
       final padding = ' ' * (maxNameLength - name.length + 1);
-      final error = commandValidationErrors[name] ?? 'validation error';
+      final error = commandValidationErrors[name]?.singleLineMessage ?? 'validation error';
 
       print('❌ $bold$red$name$reset:$padding$error');
     }
