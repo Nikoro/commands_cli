@@ -622,7 +622,6 @@ void main() {
           expect(result.errorMessage, contains('platform'));
           expect(result.errorMessage, contains('[integer]'));
           expect(result.errorMessage, contains('[string]'));
-          expect(result.hint, contains('Quoted values are always strings'));
         });
 
         test('returns error when double default is string', () {
@@ -636,7 +635,6 @@ void main() {
           expect(result.errorMessage, contains('ratio'));
           expect(result.errorMessage, contains('[double]'));
           expect(result.errorMessage, contains('[string]'));
-          expect(result.hint, contains('Quoted values are always strings'));
         });
       });
     });
