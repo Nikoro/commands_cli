@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -19,49 +17,49 @@ void main() {
               - charlie: '-c, --charlie' ## Description of parameter charlie
               - delta: ## Description of parameter delta
     ''',
-    () {
+    (runCommand) {
       for (String alpha in ['-a', '--alpha']) {
         test('prints error when required param is not specified', () async {
-          final result = await Process.run('hello', [alpha, 'x']);
+          final result = await runCommand('hello', [alpha, 'x']);
           expect(result.stderr, equals('❌ Missing required positional param: $bold${red}beta$reset\n'));
         });
 
         test('prints "A: x, B: y, C: , D: "', () async {
-          final result = await Process.run('hello', [alpha, 'x', 'y']);
+          final result = await runCommand('hello', [alpha, 'x', 'y']);
           expect(result.stdout, equals('A: x, B: y, C: , D: \n'));
         });
 
         test('prints "A: x, B: y, C: , D: z"', () async {
-          final result = await Process.run('hello', [alpha, 'x', 'y', 'z']);
+          final result = await runCommand('hello', [alpha, 'x', 'y', 'z']);
           expect(result.stdout, equals('A: x, B: y, C: , D: z\n'));
         });
 
         for (String charlie in ['-c', '--charlie']) {
           test('prints "A: x, B: y, C: z, D: "', () async {
-            final result = await Process.run('hello', [alpha, 'x', 'y', charlie, 'z']);
+            final result = await runCommand('hello', [alpha, 'x', 'y', charlie, 'z']);
             expect(result.stdout, equals('A: x, B: y, C: z, D: \n'));
           });
 
           test('prints "A: x, B: y, C: z, D: a"', () async {
-            final result = await Process.run('hello', [alpha, 'x', 'y', charlie, 'z', 'a']);
+            final result = await runCommand('hello', [alpha, 'x', 'y', charlie, 'z', 'a']);
             expect(result.stdout, equals('A: x, B: y, C: z, D: a\n'));
           });
         }
       }
 
       test('prints error when required param is not specified', () async {
-        final result = await Process.run('hello', ['y']);
+        final result = await runCommand('hello', ['y']);
         expect(result.stderr, equals('❌ Missing required named param: $bold${red}alpha$reset\n'));
       });
 
       test('prints error when no required param is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stderr, equals('❌ Missing required positional param: $bold${red}beta$reset\n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:

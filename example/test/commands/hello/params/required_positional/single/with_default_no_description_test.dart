@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -15,22 +13,22 @@ void main() {
               - name:
                 default: Bob
     ''',
-    () {
+    (runCommand) {
       for (Object param in ['World', 1, 2.2, true]) {
         test('prints "Hello $param"', () async {
-          final result = await Process.run('hello', ['$param']);
+          final result = await runCommand('hello', ['$param']);
           expect(result.stdout, equals('Hello $param\n'));
         });
       }
 
       test('prints with default value if none specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('Hello Bob\n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset
 params:

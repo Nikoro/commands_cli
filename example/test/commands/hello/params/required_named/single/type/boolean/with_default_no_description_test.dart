@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -17,29 +15,29 @@ void main() {
                 type: $type 
                 default: false
     ''',
-      () {
+      (runCommand) {
         for (String flag in ['-n', '--name']) {
           for (bool value in [true, false]) {
             test('prints "Hello $value', () async {
-              final result = await Process.run('hello', [flag, '$value']);
+              final result = await runCommand('hello', [flag, '$value']);
               expect(result.stdout, equals('Hello $value\n'));
             });
           }
         }
 
         test('prints "Hello false" when no required param is specified', () async {
-          final result = await Process.run('hello', []);
+          final result = await runCommand('hello', []);
           expect(result.stdout, equals('Hello false\n'));
         });
 
         for (String flag in ['-n', '--name']) {
           test('prints "Hello true" when no value for required param is specified', () async {
-            final result = await Process.run('hello', [flag]);
+            final result = await runCommand('hello', [flag]);
             expect(result.stdout, equals('Hello true\n'));
           });
 
           test('prints error when value is integer', () async {
-            final result = await Process.run('hello', [flag, '2']);
+            final result = await runCommand('hello', [flag, '2']);
             expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 2 ${gray}[integer]$reset
@@ -48,7 +46,7 @@ void main() {
           });
 
           test('prints error when value is double', () async {
-            final result = await Process.run('hello', [flag, '1.5']);
+            final result = await runCommand('hello', [flag, '1.5']);
             expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 1.5 ${gray}[double]$reset
@@ -69,7 +67,7 @@ void main() {
             "'false'"
           ]) {
             test('prints error when value is string ($value)', () async {
-              final result = await Process.run('hello', [flag, value]);
+              final result = await runCommand('hello', [flag, value]);
               expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: $value ${gray}[string]$reset
@@ -81,7 +79,7 @@ void main() {
 
         for (String flag in ['-h', '--help']) {
           test('$flag prints help', () async {
-            final result = await Process.run('hello', [flag]);
+            final result = await runCommand('hello', [flag]);
             expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
@@ -104,29 +102,29 @@ params:
                 type: $type 
                 default: true
     ''',
-      () {
+      (runCommand) {
         for (String flag in ['-n', '--name']) {
           for (bool value in [true, false]) {
             test('prints "Hello $value', () async {
-              final result = await Process.run('hello', [flag, '$value']);
+              final result = await runCommand('hello', [flag, '$value']);
               expect(result.stdout, equals('Hello $value\n'));
             });
           }
         }
 
         test('prints "Hello true" when no required param is specified', () async {
-          final result = await Process.run('hello', []);
+          final result = await runCommand('hello', []);
           expect(result.stdout, equals('Hello true\n'));
         });
 
         for (String flag in ['-n', '--name']) {
           test('prints "Hello true" when no value for required param is specified', () async {
-            final result = await Process.run('hello', [flag]);
+            final result = await runCommand('hello', [flag]);
             expect(result.stdout, equals('Hello false\n'));
           });
 
           test('prints error when value is integer', () async {
-            final result = await Process.run('hello', [flag, '2']);
+            final result = await runCommand('hello', [flag, '2']);
             expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 2 ${gray}[integer]$reset
@@ -135,7 +133,7 @@ params:
           });
 
           test('prints error when value is double', () async {
-            final result = await Process.run('hello', [flag, '1.5']);
+            final result = await runCommand('hello', [flag, '1.5']);
             expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 1.5 ${gray}[double]$reset
@@ -156,7 +154,7 @@ params:
             "'false'"
           ]) {
             test('prints error when value is string ($value)', () async {
-              final result = await Process.run('hello', [flag, value]);
+              final result = await runCommand('hello', [flag, value]);
               expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: $value ${gray}[string]$reset
@@ -168,7 +166,7 @@ params:
 
         for (String flag in ['-h', '--help']) {
           test('$flag prints help', () async {
-            final result = await Process.run('hello', [flag]);
+            final result = await runCommand('hello', [flag]);
             expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
@@ -198,11 +196,11 @@ params:
                 type: $type 
                 default: ${invalid.input}
     ''',
-        () {
+        (runCommand) {
           for (String flag in ['-n', '--name']) {
             for (bool value in [true, false]) {
               test('prints error', () async {
-                final result = await Process.run('hello', [flag, '$value']);
+                final result = await runCommand('hello', [flag, '$value']);
                 expect(
                     result.stderr,
                     equals(
@@ -212,7 +210,7 @@ params:
           }
 
           test('prints error', () async {
-            final result = await Process.run('hello', []);
+            final result = await runCommand('hello', []);
             expect(
                 result.stderr,
                 equals(
@@ -221,7 +219,7 @@ params:
 
           for (String flag in ['-n', '--name']) {
             test('prints error', () async {
-              final result = await Process.run('hello', [flag]);
+              final result = await runCommand('hello', [flag]);
               expect(
                   result.stderr,
                   equals(
@@ -229,7 +227,7 @@ params:
             });
 
             test('prints error', () async {
-              final result = await Process.run('hello', [flag, '2']);
+              final result = await runCommand('hello', [flag, '2']);
               expect(
                   result.stderr,
                   equals(
@@ -237,7 +235,7 @@ params:
             });
 
             test('prints error', () async {
-              final result = await Process.run('hello', [flag, '1.5']);
+              final result = await runCommand('hello', [flag, '1.5']);
               expect(
                   result.stderr,
                   equals(
@@ -257,7 +255,7 @@ params:
               "'false'"
             ]) {
               test('prints error', () async {
-                final result = await Process.run('hello', [flag, value]);
+                final result = await runCommand('hello', [flag, value]);
                 expect(
                     result.stderr,
                     equals(
@@ -268,7 +266,7 @@ params:
 
           for (String flag in ['-h', '--help']) {
             test('prints error', () async {
-              final result = await Process.run('hello', [flag]);
+              final result = await runCommand('hello', [flag]);
               expect(
                   result.stderr,
                   equals(

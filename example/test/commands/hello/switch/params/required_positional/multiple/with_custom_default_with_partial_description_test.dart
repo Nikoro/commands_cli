@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -28,21 +26,21 @@ void main() {
             - default:
               script: echo "Custom"
     ''',
-    () {
+    (runCommand) {
       for (Object param in ['World', 1, 2.2, true]) {
         test('prints "Hello $param"', () async {
-          final result = await Process.run('hello', ['opt1', '$param']);
+          final result = await runCommand('hello', ['opt1', '$param']);
           expect(result.stdout, equals('Hello $param\n'));
         });
       }
 
       test('prints error when no required param is specified', () async {
-        final result = await Process.run('hello', ['opt1']);
+        final result = await runCommand('hello', ['opt1']);
         expect(result.stderr, equals('❌ Missing required positional param: $bold${red}name$reset\n'));
       });
 
       test('prints error when no required param is specified', () async {
-        final result = await Process.run('hello', ['opt2']);
+        final result = await runCommand('hello', ['opt2']);
         expect(
             result.stderr,
             equals(
@@ -50,34 +48,34 @@ void main() {
       });
 
       test('prints error when required param is not specified', () async {
-        final result = await Process.run('hello', ['opt2', 'x']);
+        final result = await runCommand('hello', ['opt2', 'x']);
         expect(result.stderr,
             equals('❌ Missing required positional params: $bold${red}beta$reset, $bold${red}charlie$reset\n'));
       });
 
       test('prints error when required param is not specified', () async {
-        final result = await Process.run('hello', ['opt2', 'x', 'y']);
+        final result = await runCommand('hello', ['opt2', 'x', 'y']);
         expect(result.stderr, equals('❌ Missing required positional param: $bold${red}charlie$reset\n'));
       });
 
       test('prints "A: x, B: y, C: z"', () async {
-        final result = await Process.run('hello', ['opt2', 'x', 'y', 'z']);
+        final result = await runCommand('hello', ['opt2', 'x', 'y', 'z']);
         expect(result.stdout, equals('A: x, B: y, C: z\n'));
       });
 
       test('prints "Option 3"', () async {
-        final result = await Process.run('hello', ['opt3']);
+        final result = await runCommand('hello', ['opt3']);
         expect(result.stdout, equals('Option 3\n'));
       });
 
       test('runs default option when no option is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('Custom\n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 options:

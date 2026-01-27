@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -16,10 +14,10 @@ void main() {
             - opt2:
               script: echo "This should not work"
     ''',
-    () {
+    (runCommand) {
       for (String arg in ['', 'opt1', 'opt2', '-h', '--help']) {
         test('prints error', () async {
-          final result = await Process.run('hello', [arg]);
+          final result = await runCommand('hello', [arg]);
           expect(
               result.stderr,
               equals('❌ Cannot use both $bold${red}script$reset and $bold${red}switch$reset at the same time\n'

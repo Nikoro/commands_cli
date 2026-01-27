@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -11,15 +9,15 @@ void main() {
         hello:
           script: echo "Hello World"
     ''',
-    () {
+    (runCommand) {
       test('prints "Hello World"', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('Hello World\n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('${blue}hello$reset\n'));
         });
       }

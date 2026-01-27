@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 import '../../../../../../../integration_tests.dart';
@@ -22,18 +20,18 @@ void main() {
             - default:
               script: echo "Custom"
     ''',
-    () {
+    (runCommand) {
       for (String flag in ['-n', '--name', 'nm']) {
         for (Object param in ['Alpha', 'Bravo', 'Charlie']) {
           test('prints "Hello $param"', () async {
-            final result = await Process.run('hello', ['opt1', flag, '$param']);
+            final result = await runCommand('hello', ['opt1', flag, '$param']);
             expect(result.stdout, equals('Hello $param\n'));
           });
         }
       }
 
       test('shows interactive picker when no required param is specified', () async {
-        final result = await Process.run('hello', ['opt1']);
+        final result = await runCommand('hello', ['opt1']);
         expect(
           result.stdout,
           equals('''
@@ -51,13 +49,13 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
 
       for (String flag in ['-n', '--name', 'nm']) {
         test('prints error when no value for required param is specified', () async {
-          final result = await Process.run('hello', ['opt1', flag]);
+          final result = await runCommand('hello', ['opt1', flag]);
           expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
         });
       }
       for (String flag in ['-n', '--name', 'nm']) {
         test('prints error when invalid value for required param is specified', () async {
-          final result = await Process.run('hello', ['opt1', flag, 'Delta']);
+          final result = await runCommand('hello', ['opt1', flag, 'Delta']);
           expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid value: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset
@@ -66,23 +64,23 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
       }
 
       test('prints "Option 2"', () async {
-        final result = await Process.run('hello', ['opt2']);
+        final result = await runCommand('hello', ['opt2']);
         expect(result.stdout, equals('Option 2\n'));
       });
 
       test('prints "Option 3"', () async {
-        final result = await Process.run('hello', ['opt3']);
+        final result = await runCommand('hello', ['opt3']);
         expect(result.stdout, equals('Option 3\n'));
       });
 
       test('runs default option when no option is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('Custom\n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset
 options:

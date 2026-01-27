@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -14,27 +12,27 @@ void main() {
             optional:
               - name: -n
     ''',
-    () {
+    (runCommand) {
       for (Object param in ['World', 1, 2.2, true]) {
         test('prints "Hello $param"', () async {
-          final result = await Process.run('hello', ['-n', '$param']);
+          final result = await runCommand('hello', ['-n', '$param']);
           expect(result.stdout, equals('Hello $param\n'));
         });
       }
 
       test('prints "Hello " when no optional param is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('Hello \n'));
       });
 
       test('prints "Hello " when no value for optional param is specified', () async {
-        final result = await Process.run('hello', ['-n']);
+        final result = await runCommand('hello', ['-n']);
         expect(result.stdout, equals('Hello \n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset
 params:
@@ -54,31 +52,31 @@ params:
             optional:
               - name: '-n, --name, nm'
     ''',
-    () {
+    (runCommand) {
       for (String flag in ['-n', '--name', 'nm']) {
         for (Object param in ['World', 1, 2.2, true]) {
           test('prints "Hello $param"', () async {
-            final result = await Process.run('hello', [flag, '$param']);
+            final result = await runCommand('hello', [flag, '$param']);
             expect(result.stdout, equals('Hello $param\n'));
           });
         }
       }
 
       test('prints "Hello " when no optional param is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('Hello \n'));
       });
 
       for (String flag in ['-n', '--name', 'nm']) {
         test('prints "Hello " when no value for optional param is specified', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('Hello \n'));
         });
       }
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset
 params:

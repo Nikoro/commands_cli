@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -15,10 +13,10 @@ void main() {
               - name: '-n, --name'
                 type: boole
     ''',
-    () {
+    (runCommand) {
       for (String arg in ['', '-n', '--name', '-h', '--help']) {
         test('prints error', () async {
-          final result = await Process.run('hello', [arg]);
+          final result = await runCommand('hello', [arg]);
           expect(result.stderr, equals('''
 ❌ Invalid type "boole" for parameter $bold${red}name$reset
 💡 Must be one of: $bold${green}boolean$reset, $bold${green}string$reset, $bold${green}number$reset, $bold${green}integer$reset, $bold${green}double$reset

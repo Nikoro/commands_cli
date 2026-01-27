@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -17,9 +15,9 @@ void main() {
               - beta: ## Description of parameter beta
               - charlie: ## Description of parameter charlie
     ''',
-    () {
+    (runCommand) {
       test('prints error when no required param is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(
             result.stderr,
             equals(
@@ -27,24 +25,24 @@ void main() {
       });
 
       test('prints error when required param is not specified', () async {
-        final result = await Process.run('hello', ['x']);
+        final result = await runCommand('hello', ['x']);
         expect(result.stderr,
             equals('❌ Missing required positional params: $bold${red}beta$reset, $bold${red}charlie$reset\n'));
       });
 
       test('prints error when required param is not specified', () async {
-        final result = await Process.run('hello', ['x', 'y']);
+        final result = await runCommand('hello', ['x', 'y']);
         expect(result.stderr, equals('❌ Missing required positional param: $bold${red}charlie$reset\n'));
       });
 
       test('prints "A: x, B: y, C: z"', () async {
-        final result = await Process.run('hello', ['x', 'y', 'z']);
+        final result = await runCommand('hello', ['x', 'y', 'z']);
         expect(result.stdout, equals('A: x, B: y, C: z\n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:

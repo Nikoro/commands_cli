@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -17,22 +15,22 @@ void main() {
                 type: string
                 default: $def
     ''',
-      () {
+      (runCommand) {
         for (Object value in [1.5, 2, true, 'World']) {
           test('prints "Hello $value', () async {
-            final result = await Process.run('hello', ['$value']);
+            final result = await runCommand('hello', ['$value']);
             expect(result.stdout, equals('Hello $value\n'));
           });
         }
 
         test('prints "Hello text" when no optional param is specified', () async {
-          final result = await Process.run('hello', []);
+          final result = await runCommand('hello', []);
           expect(result.stdout, equals('Hello text\n'));
         });
 
         for (String flag in ['-h', '--help']) {
           test('$flag prints help', () async {
-            final result = await Process.run('hello', [flag]);
+            final result = await runCommand('hello', [flag]);
             expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
@@ -61,10 +59,10 @@ params:
                 type: string
                 default: ${invalid.input}
     ''',
-      () {
+      (runCommand) {
         for (Object value in [1.5, 2, true, 'World']) {
           test('prints error', () async {
-            final result = await Process.run('hello', ['$value']);
+            final result = await runCommand('hello', ['$value']);
             expect(
                 result.stderr,
                 equals(
@@ -73,7 +71,7 @@ params:
         }
 
         test('prints error', () async {
-          final result = await Process.run('hello', []);
+          final result = await runCommand('hello', []);
           expect(
               result.stderr,
               equals(
@@ -82,7 +80,7 @@ params:
 
         for (String flag in ['-h', '--help']) {
           test('prints error', () async {
-            final result = await Process.run('hello', [flag]);
+            final result = await runCommand('hello', [flag]);
             expect(
                 result.stderr,
                 equals(

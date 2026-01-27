@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -30,51 +28,51 @@ void main() {
               script: echo "Option 3"
             - default: opt3
     ''',
-    () {
+    (runCommand) {
       for (String flag in ['-n', '--name', 'nm']) {
         for (Object param in ['World', 1, 2.2, true]) {
           test('prints "Hello $param"', () async {
-            final result = await Process.run('hello', ['opt1', flag, '$param']);
+            final result = await runCommand('hello', ['opt1', flag, '$param']);
             expect(result.stdout, equals('Hello $param\n'));
           });
         }
       }
 
       test('prints "Hello " when no optional param is specified', () async {
-        final result = await Process.run('hello', ['opt1']);
+        final result = await runCommand('hello', ['opt1']);
         expect(result.stdout, equals('Hello \n'));
       });
 
       for (String alpha in ['-a', '--alpha']) {
         test('prints "A: x, B: B1, C: C1"', () async {
-          final result = await Process.run('hello', ['opt2', alpha, 'x']);
+          final result = await runCommand('hello', ['opt2', alpha, 'x']);
           expect(result.stdout, equals('A: x, B: B1, C: C1\n'));
         });
         for (String beta in ['-b', '--beta']) {
           test('prints "A: A1, B: y, C: C1"', () async {
-            final result = await Process.run('hello', ['opt2', beta, 'y']);
+            final result = await runCommand('hello', ['opt2', beta, 'y']);
             expect(result.stdout, equals('A: A1, B: y, C: C1\n'));
           });
           test('prints "A: x, B: y, C: C1"', () async {
-            final result = await Process.run('hello', ['opt2', alpha, 'x', beta, 'y']);
+            final result = await runCommand('hello', ['opt2', alpha, 'x', beta, 'y']);
             expect(result.stdout, equals('A: x, B: y, C: C1\n'));
           });
 
           for (String charlie in ['-c', '--charlie']) {
             test('prints "A: A1, B: C1, C: z"', () async {
-              final result = await Process.run('hello', ['opt2', charlie, 'z']);
+              final result = await runCommand('hello', ['opt2', charlie, 'z']);
               expect(result.stdout, equals('A: A1, B: B1, C: z\n'));
             });
             test('prints "A: x, B: B1, C: z"', () async {
-              final result = await Process.run('hello', ['opt2', alpha, 'x', charlie, 'z']);
+              final result = await runCommand('hello', ['opt2', alpha, 'x', charlie, 'z']);
               expect(result.stdout, equals('A: x, B: B1, C: z\n'));
             });
             test('prints "A: A1, B: y, C: z"', () async {
-              final result = await Process.run('hello', ['opt2', beta, 'y', charlie, 'z']);
+              final result = await runCommand('hello', ['opt2', beta, 'y', charlie, 'z']);
               expect(result.stdout, equals('A: A1, B: y, C: z\n'));
             });
             test('prints "A: x, B: y, C: z"', () async {
-              final result = await Process.run('hello', ['opt2', alpha, 'x', beta, 'y', charlie, 'z']);
+              final result = await runCommand('hello', ['opt2', alpha, 'x', beta, 'y', charlie, 'z']);
               expect(result.stdout, equals('A: x, B: y, C: z\n'));
             });
           }
@@ -82,50 +80,50 @@ void main() {
       }
 
       test('prints "A: A1, B: B1, C: C1" when no optional param is specified', () async {
-        final result = await Process.run('hello', ['opt2']);
+        final result = await runCommand('hello', ['opt2']);
         expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
       });
 
       for (String alpha in ['-a', '--alpha']) {
         test('prints "A: A1, B: B1, C: C1" when no value for optional param [$alpha] is specified', () async {
-          final result = await Process.run('hello', ['opt2', alpha]);
+          final result = await runCommand('hello', ['opt2', alpha]);
           expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
         });
 
         for (String beta in ['-b', '--beta']) {
           test('prints "A: A1, B: B1, C: C1" when no value for optional param [$beta] is specified', () async {
-            final result = await Process.run('hello', ['opt2', beta]);
+            final result = await runCommand('hello', ['opt2', beta]);
             expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
           });
 
           test('prints "A: A1, B: B1, C: C1" when no value for optional params [$alpha] and [$beta] is specified',
               () async {
-            final result = await Process.run('hello', ['opt2', alpha, beta]);
+            final result = await runCommand('hello', ['opt2', alpha, beta]);
             expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
           });
 
           for (String charlie in ['-c', '--charlie']) {
             test('prints "A: A1, B: B1, C: C1" when no value for optional param [$charlie] is specified', () async {
-              final result = await Process.run('hello', ['opt2', charlie]);
+              final result = await runCommand('hello', ['opt2', charlie]);
               expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
             });
 
             test('prints "A: A1, B: B1, C: C1" when no value for optional params [$alpha] and [$charlie] is specified',
                 () async {
-              final result = await Process.run('hello', ['opt2', alpha, charlie]);
+              final result = await runCommand('hello', ['opt2', alpha, charlie]);
               expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
             });
 
             test('prints "A: A1, B: B1, C: C1" when no value for optional params [$beta] and [$charlie] is specified',
                 () async {
-              final result = await Process.run('hello', ['opt2', beta, charlie]);
+              final result = await runCommand('hello', ['opt2', beta, charlie]);
               expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
             });
 
             test(
                 'prints "A: A1, B: B1, C: C1" when no value for optional params [$alpha], [$beta] and [$charlie] is specified',
                 () async {
-              final result = await Process.run('hello', ['opt2', alpha, beta, charlie]);
+              final result = await runCommand('hello', ['opt2', alpha, beta, charlie]);
               expect(result.stdout, equals('A: A1, B: B1, C: C1\n'));
             });
           }
@@ -133,18 +131,18 @@ void main() {
       }
 
       test('prints "Option 3"', () async {
-        final result = await Process.run('hello', ['opt3']);
+        final result = await runCommand('hello', ['opt3']);
         expect(result.stdout, equals('Option 3\n'));
       });
 
       test('runs default option when no option is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('Option 3\n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 options:

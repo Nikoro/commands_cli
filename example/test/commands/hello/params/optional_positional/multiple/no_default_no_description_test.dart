@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -17,30 +15,30 @@ void main() {
               - beta:
               - charlie:
     ''',
-    () {
+    (runCommand) {
       test('prints "A: x, B: , C: "', () async {
-        final result = await Process.run('hello', ['x']);
+        final result = await runCommand('hello', ['x']);
         expect(result.stdout, equals('A: x, B: , C: \n'));
       });
 
       test('prints "A: x, B: y, C: "', () async {
-        final result = await Process.run('hello', ['x', 'y']);
+        final result = await runCommand('hello', ['x', 'y']);
         expect(result.stdout, equals('A: x, B: y, C: \n'));
       });
 
       test('prints "A: x, B: y, C: z"', () async {
-        final result = await Process.run('hello', ['x', 'y', 'z']);
+        final result = await runCommand('hello', ['x', 'y', 'z']);
         expect(result.stdout, equals('A: x, B: y, C: z\n'));
       });
 
       test('prints "A: , B: , C: " when no optional param is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(result.stdout, equals('A: , B: , C: \n'));
       });
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset
 params:

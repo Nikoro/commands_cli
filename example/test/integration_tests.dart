@@ -1,42 +1,41 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:meta/meta.dart' show isTestGroup;
 import 'package:test/test.dart';
 
-final _commandsYaml = File('commands.yaml');
-final _lock = _FileLock();
+/// Typedef for the runCommand helper function passed to test bodies
+typedef RunCommand = Future<ProcessResult> Function(String command, List<String> args);
 
-/// Simple lock to serialize file access across test groups
-class _FileLock {
-  var _current = Future<void>.value();
-
-  Future<T> synchronized<T>(Future<T> Function() action) async {
-    final previous = _current;
-    final completer = Completer<void>();
-    _current = completer.future;
-
-    await previous;
-    try {
-      return await action();
-    } finally {
-      completer.complete();
-    }
-  }
-}
-
+/// Creates an isolated test environment with its own commands.yaml file.
+///
+/// Each test group gets a unique temp directory with its own commands.yaml,
+/// allowing tests to run in parallel without conflicts.
 @isTestGroup
-void integrationTests(String description, dynamic Function() body) => group(description, () {
-      late String originalContent;
+void integrationTests(
+  String description,
+  dynamic Function(RunCommand runCommand) body,
+) =>
+    group(description, () {
+      late Directory tempDir;
 
-      setUpAll(() async => await _lock.synchronized(() async {
-            originalContent = await _commandsYaml.readAsString();
-            await _commandsYaml.writeAsString(description);
-          }));
+      setUpAll(() async {
+        // Create unique temp directory for this test group
+        tempDir = Directory.systemTemp.createTempSync('commands_test_');
+        // Write test-specific YAML to this directory
+        await File('${tempDir.path}/commands.yaml').writeAsString(description);
+      });
 
-      tearDownAll(() async => await _lock.synchronized(() async {
-            await _commandsYaml.writeAsString(originalContent);
-          }));
+      tearDownAll(() async {
+        // Cleanup temp directory
+        if (tempDir.existsSync()) {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
 
-      body();
+      // Helper runs commands from the temp directory (where its own commands.yaml lives)
+      Future<ProcessResult> runCommand(String command, List<String> args) {
+        return Process.run(command, args, workingDirectory: tempDir.path);
+      }
+
+      body(runCommand);
     });

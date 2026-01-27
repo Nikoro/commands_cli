@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -15,16 +13,16 @@ void main() {
               - name: -n ## Description of parameter name
                 values: [Alpha, Bravo, Charlie]
     ''',
-    () {
+    (runCommand) {
       for (String param in ['Alpha', 'Bravo', 'Charlie']) {
         test('prints "Hello $param"', () async {
-          final result = await Process.run('hello', ['-n', param]);
+          final result = await runCommand('hello', ['-n', param]);
           expect(result.stdout, equals('Hello $param\n'));
         });
       }
 
       test('shows interactive picker when no required param is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(
           result.stdout,
           equals('''
@@ -42,12 +40,12 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
       });
 
       test('prints error when no value for required param is specified', () async {
-        final result = await Process.run('hello', ['-n']);
+        final result = await runCommand('hello', ['-n']);
         expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
       });
 
       test('prints error when invalid value for required param is specified', () async {
-        final result = await Process.run('hello', ['-n', 'Delta']);
+        final result = await runCommand('hello', ['-n', 'Delta']);
         expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid value: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset
@@ -56,7 +54,7 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:
@@ -78,18 +76,18 @@ params:
               - name: '-n, --name, nm' ## Description of parameter name
                 values: [Alpha, Bravo, Charlie]
     ''',
-    () {
+    (runCommand) {
       for (String flag in ['-n', '--name', 'nm']) {
         for (Object param in ['Alpha', 'Bravo', 'Charlie']) {
           test('prints "Hello $param"', () async {
-            final result = await Process.run('hello', [flag, '$param']);
+            final result = await runCommand('hello', [flag, '$param']);
             expect(result.stdout, equals('Hello $param\n'));
           });
         }
       }
 
       test('shows interactive picker when no required param is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(
           result.stdout,
           equals('''
@@ -108,14 +106,14 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
 
       for (String flag in ['-n', '--name', 'nm']) {
         test('prints error when no value for required param is specified', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
         });
       }
 
       for (String flag in ['-n', '--name', 'nm']) {
         test('prints error when invalid value for required param is specified', () async {
-          final result = await Process.run('hello', [flag, 'Delta']);
+          final result = await runCommand('hello', [flag, 'Delta']);
           expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid value: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset
@@ -125,7 +123,7 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:

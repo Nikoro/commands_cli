@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -16,21 +14,21 @@ void main() {
               - name: ## Description of parameter name
                 type: $type
     ''',
-      () {
+      (runCommand) {
         for (bool value in [true, false]) {
           test('prints "Hello $value', () async {
-            final result = await Process.run('hello', ['$value']);
+            final result = await runCommand('hello', ['$value']);
             expect(result.stdout, equals('Hello $value\n'));
           });
         }
 
         test('prints "Hello " when no optional param is specified', () async {
-          final result = await Process.run('hello', []);
+          final result = await runCommand('hello', []);
           expect(result.stdout, equals('Hello \n'));
         });
 
         test('prints error when value is integer', () async {
-          final result = await Process.run('hello', ['2']);
+          final result = await runCommand('hello', ['2']);
           expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 2 ${gray}[integer]$reset
@@ -39,7 +37,7 @@ void main() {
         });
 
         test('prints error when value is double', () async {
-          final result = await Process.run('hello', ['1.5']);
+          final result = await runCommand('hello', ['1.5']);
           expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: 1.5 ${gray}[double]$reset
@@ -60,7 +58,7 @@ void main() {
           "'false'"
         ]) {
           test('prints error when value is string ($value)', () async {
-            final result = await Process.run('hello', [value]);
+            final result = await runCommand('hello', [value]);
             expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset expects a ${gray}[boolean]$reset
    Got: $value ${gray}[string]$reset
@@ -71,7 +69,7 @@ void main() {
 
         for (String flag in ['-h', '--help']) {
           test('$flag prints help', () async {
-            final result = await Process.run('hello', [flag]);
+            final result = await runCommand('hello', [flag]);
             expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 params:

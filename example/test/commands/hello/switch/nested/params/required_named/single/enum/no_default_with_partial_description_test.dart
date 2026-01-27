@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:commands_cli/colors.dart';
 import 'package:test/test.dart';
 
@@ -27,9 +25,9 @@ void main() {
             - level1c: ## Description of level 1c
               script: echo "Level 1c"
     ''',
-    () {
+    (runCommand) {
       test('shows interactive picker when option with nested switch is not specified', () async {
-        final result = await Process.run('hello', ['level1a']);
+        final result = await runCommand('hello', ['level1a']);
         expect(
           result.stdout,
           equals('''
@@ -48,14 +46,14 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
       for (String flag in ['-n', '--name', 'nm']) {
         for (Object param in ['Alpha', 'Bravo', 'Charlie']) {
           test('prints "Hello $param"', () async {
-            final result = await Process.run('hello', ['level1a', 'level2a', flag, '$param']);
+            final result = await runCommand('hello', ['level1a', 'level2a', flag, '$param']);
             expect(result.stdout, equals('Hello $param\n'));
           });
         }
       }
 
       test('shows interactive picker when no required param is specified', () async {
-        final result = await Process.run('hello', ['level1a', 'level2a']);
+        final result = await runCommand('hello', ['level1a', 'level2a']);
         expect(
           result.stdout,
           equals('''
@@ -73,13 +71,13 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
 
       for (String flag in ['-n', '--name', 'nm']) {
         test('prints error when no value for required param is specified', () async {
-          final result = await Process.run('hello', ['level1a', 'level2a', flag]);
+          final result = await runCommand('hello', ['level1a', 'level2a', flag]);
           expect(result.stderr, equals('❌ Missing value for param: $bold${red}name$reset\n'));
         });
       }
       for (String flag in ['-n', '--name', 'nm']) {
         test('prints error when invalid value for required param is specified', () async {
-          final result = await Process.run('hello', ['level1a', 'level2a', flag, 'Delta']);
+          final result = await runCommand('hello', ['level1a', 'level2a', flag, 'Delta']);
           expect(result.stderr, equals('''
 ❌ Parameter $bold${red}name$reset has invalid value: "Delta"
 💡 Must be one of: $bold${green}Alpha$reset, $bold${green}Bravo$reset, $bold${green}Charlie$reset
@@ -88,27 +86,27 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
       }
 
       test('prints "Level 1a 2b"', () async {
-        final result = await Process.run('hello', ['level1a', 'level2b']);
+        final result = await runCommand('hello', ['level1a', 'level2b']);
         expect(result.stdout, equals('Level 1a 2b\n'));
       });
 
       test('prints "Level 1a 2c"', () async {
-        final result = await Process.run('hello', ['level1a', 'level2c']);
+        final result = await runCommand('hello', ['level1a', 'level2c']);
         expect(result.stdout, equals('Level 1a 2c\n'));
       });
 
       test('prints "Level 1b"', () async {
-        final result = await Process.run('hello', ['level1b']);
+        final result = await runCommand('hello', ['level1b']);
         expect(result.stdout, equals('Level 1b\n'));
       });
 
       test('prints "Level 1c"', () async {
-        final result = await Process.run('hello', ['level1c']);
+        final result = await runCommand('hello', ['level1c']);
         expect(result.stdout, equals('Level 1c\n'));
       });
 
       test('shows interactive picker when no option is specified', () async {
-        final result = await Process.run('hello', []);
+        final result = await runCommand('hello', []);
         expect(
           result.stdout,
           equals('''
@@ -126,7 +124,7 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
 
       for (String flag in ['-h', '--help']) {
         test('$flag prints help', () async {
-          final result = await Process.run('hello', [flag]);
+          final result = await runCommand('hello', [flag]);
           expect(result.stdout, equals('''
 ${blue}hello$reset: ${gray}Description of command hello$reset
 options:
