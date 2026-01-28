@@ -4,29 +4,32 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
+    title: 'Simple YAML Configuration',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Define your commands in a clean, human-readable <code>commands.yaml</code> file.
+        No complex syntax to learn—just write your scripts and parameters in a
+        format that&apos;s easy to read and maintain.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Strong Type System',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Support for <strong>int</strong>, <strong>double</strong>, <strong>boolean</strong>, and <strong>enum</strong> types
+        with built-in validation. Define required and optional parameters with
+        defaults—your commands become self-documenting and robust.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Interactive Pickers',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Enum parameters and switch commands automatically present beautiful
+        interactive menus. No need to parse input manually or write custom
+        prompts—it&apos;s all handled for you.
       </>
     ),
   },
