@@ -116,11 +116,19 @@ class Param {
   /// Validates if the given value is allowed for this parameter
   ///
   /// For enum parameters, validates against the allowed values list
+  /// - For boolean types: accepts any valid boolean ('true' or 'false') regardless of values list
   /// - For string types: case-insensitive string comparison (quotes are stripped)
   /// - For numeric types (int/double): numeric equivalence (e.g., "3.0" == "3" for int)
   /// For non-enum parameters, always returns true
   bool isValidValue(String value) {
     if (!isEnum) return true;
+
+    // For boolean types, always accept 'true' or 'false' regardless of values list
+    // When type is explicitly boolean, the values list is just for documentation/picker purposes
+    if (type == 'boolean' || type == 'bool') {
+      final lowerValue = value.toLowerCase();
+      return lowerValue == 'true' || lowerValue == 'false';
+    }
 
     // For numeric types, compare numeric values
     if (type == 'integer' || type == 'double') {
@@ -134,7 +142,7 @@ class Param {
       });
     }
 
-    // For string/boolean types, use case-insensitive string comparison
+    // For string types, use case-insensitive string comparison
     // Strip quotes from enum values for comparison (quotes are preserved in YAML to
     // distinguish strings from booleans, but should be ignored when matching input)
     final lowerValue = value.toLowerCase();
