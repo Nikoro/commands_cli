@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://pub.dev/packages/commands_cli"><img src="https://raw.githubusercontent.com/nikoro/commands_cli/main/assets/logo.webp" width="500"/></a>
+  <a alt="Commands CLI Logo" href="https://pub.dev/packages/commands_cli"><img src="https://raw.githubusercontent.com/nikoro/commands_cli/main/website/static/img/logo.webp" width="500"/></a>
 </p>
 <p align="center">
   <a href="https://pub.dev/packages/commands_cli">
@@ -11,6 +11,9 @@
   <a href="https://opensource.org/licenses/MIT">
     <img alt="MIT License" src="https://tinyurl.com/3uf9tzpy">
   </a>
+  <a href="https://nikoro.github.io/commands_cli/docs">
+    <img alt="Documentation" src="https://tinyurl.com/hvzj2wx9">
+  </a>
 </p>
 
 A simple, yet powerful command-line interface (CLI) tool to define and run project-local commands, similar to a `Makefile`. 
@@ -18,7 +21,7 @@ A simple, yet powerful command-line interface (CLI) tool to define and run proje
 This package allows you to create a `commands.yaml` file in your project's root directory and define a set of keywords, which can then be executed from the command line.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/nikoro/commands_cli/main/assets/demo.webp" alt="Demo" width="800"/>
+  <img src="https://raw.githubusercontent.com/nikoro/commands_cli/main/website/static/img/demo.webp" alt="Demo" width="800"/>
 </p>
 
 ## Why use [`commands`](https://pub.dev/packages/commands_cli) instead of `Makefile`? 🤔
@@ -61,7 +64,7 @@ While `Makefile` is a powerful and widely used tool, [`commands_cli`](https://pu
     $ tell 
     ❌ Missing required positional param: <span style="color:#FFB3B3;font-weight:bold;">message</span></code></pre>
     
-*   **Strong Type System:** Unlike Makefile's string-based approach, [`commands_cli`](https://pub.dev/packages/commands_cli) supports a powerful type system with **int**, **double**, **boolean**, and **enum** types. This provides built-in validation, preventing common errors and making your commands more robust.
+*   **Strong Type System:** Unlike Makefile's string-based approach, [`commands_cli`](https://pub.dev/packages/commands_cli) supports a powerful type system with **string**, **boolean**, **integer**, **double**, **number**, and **enum** types. This provides built-in validation, preventing common errors and making your commands more robust.
 
     ```yaml
     # commands.yaml
@@ -79,7 +82,7 @@ While `Makefile` is a powerful and widely used tool, [`commands_cli`](https://pu
 
     $ deploy -r abc
     ❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">replicas</span></span> expects an <span style="color:#808997;">[integer]</span>
-       Got: "abc" <span style="color:#808997;">[string]</span></code></pre>
+       Got: abc <span style="color:#808997;">[string]</span></code></pre>
 
 *   **Built-in Interactive Pickers:** When you define enum parameters or switch commands without defaults, [`commands_cli`](https://pub.dev/packages/commands_cli) automatically presents a beautiful interactive menu. No need to parse input manually or write custom prompts—it's all handled for you.
 
@@ -167,7 +170,7 @@ While `Makefile` is a powerful and widely used tool, [`commands_cli`](https://pu
 4.  **Activate your defined commands:**
 
     <pre><code class="language-sh">$ commands
-    ✅ <span style="color:#C9E2AF;font-weight:bold;">hello</span>: <span style="color:#808997;">Prints "Hello {message}"</span></code></pre>
+    ✅ <span style="color:#C9E2AF;font-weight:bold;">hello</span>: <span style="color:#808997;">Prints "Hello {message}". Type "hello --help" to learn more.</span></code></pre>
 
 5. **Run your defined commands:** 
 
@@ -223,7 +226,7 @@ hello:
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">hello</span></code></pre>
+✅ <span style="color:#C9E2AF;font-weight:bold;">hello</span>: <span style="color:#808997;">Type "hello --help" to learn more.</span></code></pre>
 
 **Run:**
 
@@ -249,8 +252,7 @@ greet:
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">greet</span></code></pre>
-
+✅ <span style="color:#C9E2AF;font-weight:bold;">greet</span>: <span style="color:#808997;">Type "greet --help" to learn more.</span></code></pre>
 
 **Run:**
 
@@ -280,8 +282,7 @@ greet:
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">greet</span></code></pre>
-
+✅ <span style="color:#C9E2AF;font-weight:bold;">greet</span>: <span style="color:#808997;">Type "greet --help" to learn more.</span></code></pre>
 
 **Run:**
 
@@ -312,8 +313,7 @@ goodbye:
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">goodbye</span></code></pre>
-
+✅ <span style="color:#C9E2AF;font-weight:bold;">goodbye</span>: <span style="color:#808997;">Type "goodbye --help" to learn more.</span></code></pre>
 
 **Run:**
 
@@ -345,8 +345,7 @@ This allows you to create concise aliases while still keeping the flexibility to
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">d</span>: <span style="color:#808997;">dart alias</span></code></pre>
-
+✅ <span style="color:#C9E2AF;font-weight:bold;">d</span>: <span style="color:#808997;">dart alias. Type "d --help" to learn more.</span></code></pre>
 
 **Run:**
 
@@ -369,7 +368,7 @@ analyze: ## dart analyze
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">analyze</span>: <span style="color:#808997;">dart analyze</span></code></pre>
+✅ <span style="color:#C9E2AF;font-weight:bold;">analyze</span>: <span style="color:#808997;">dart analyze. Type "analyze --help" to learn more.</span></code></pre>
 
 
 **Run:**
@@ -385,21 +384,56 @@ No issues found!
 
 [`commands_cli`](https://pub.dev/packages/commands_cli) supports a powerful type system for parameters, allowing you to define explicit types and constrain values for better validation and user experience.
 
-#### Numeric Types
+#### Supported Types
 
-You can explicitly specify `int` or `double` types for numeric parameters:
+| Type | Aliases | Description |
+|------|---------|-------------|
+| `string` | - | Text values (default if not specified) |
+| `boolean` | `bool` | Boolean values (`true` or `false`) |
+| `integer` | `int` | Whole numbers (no decimal point allowed) |
+| `double` | - | Decimal numbers (must include decimal point) |
+| `number` | `num` | Any numeric value (integer or decimal) |
+
+#### Integer Type
+
+The `integer` type (or `int`) accepts only whole numbers. Values with decimal points are rejected.
 
 ```yaml
 # commands.yaml
 
 deploy: ## Deploy application
-  script: |
-    echo "Deploying to port {port} with timeout {timeout}s"
+  script: echo "Deploying to port {port}"
   params:
     optional:
       - port: '-p, --port'
         type: int
         default: 3000
+```
+
+**Run:**
+
+<pre><code class="language-sh">$ deploy -p 8080
+Deploying to port 8080
+
+$ deploy -p 3.14
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">port</span></span> expects an <span style="color:#808997;">[integer]</span>
+   Got: 3.14 <span style="color:#808997;">[double]</span>
+
+$ deploy -p abc
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">port</span></span> expects an <span style="color:#808997;">[integer]</span>
+   Got: abc <span style="color:#808997;">[string]</span></code></pre>
+
+#### Double Type
+
+The `double` type accepts only decimal numbers. The value **must** include a decimal point.
+
+```yaml
+# commands.yaml
+
+configure: ## Configure timeout
+  script: echo "Timeout set to {timeout}s"
+  params:
+    optional:
       - timeout: '-t, --timeout'
         type: double
         default: 30.5
@@ -407,16 +441,43 @@ deploy: ## Deploy application
 
 **Run:**
 
-<pre><code class="language-sh">$ deploy -p 8080 -t 60.0
-Deploying to port 8080 with timeout 60.0s
+<pre><code class="language-sh">$ configure -t 60.0
+Timeout set to 60.0s
 
-$ deploy -p abc
-❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">port</span></span> expects an <span style="color:#808997;">[integer]</span>
-   Got: "abc" <span style="color:#808997;">[string]</span></code></pre>
+$ configure -t 1
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">timeout</span></span> expects a <span style="color:#808997;">[double]</span>
+   Got: 1 <span style="color:#808997;">[integer]</span></code></pre>
 
-#### Boolean Flags
+#### Number Type
 
-Boolean parameters can be toggled on/off:
+The `number` type (or `num`) accepts both integers and decimals - any numeric value.
+
+```yaml
+# commands.yaml
+
+calculate: ## Calculate with value
+  script: echo "Value is {value}"
+  params:
+    optional:
+      - value: '-v, --value'
+        type: number
+```
+
+**Run:**
+
+<pre><code class="language-sh">$ calculate -v 42
+Value is 42
+
+$ calculate -v 3.14
+Value is 3.14
+
+$ calculate -v abc
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">value</span></span> expects a <span style="color:#808997;">[number]</span>
+   Got: abc <span style="color:#808997;">[string]</span></code></pre>
+
+#### Boolean Type
+
+The `boolean` type (or `bool`) accepts only `true` or `false` values. When used as a flag without a value, it toggles the default.
 
 ```yaml
 # commands.yaml
@@ -427,8 +488,10 @@ build: ## Build with options
   params:
     optional:
       - verbose: '-v, --verbose'
+        type: boolean
         default: false
       - debug: '-d, --debug'
+        type: boolean
         default: true
 ```
 
@@ -486,7 +549,7 @@ build: ## Build for platform
     echo "Building for {platform}"
   params:
     optional:
-      - required: '-p, --platform'
+      - platform: '-p, --platform'
         values: [ios, android, web]
 ```
 
@@ -528,7 +591,7 @@ build: ## Build application
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">build</span>: <span style="color:#808997;">Build application</span></code></pre>
+✅ <span style="color:#C9E2AF;font-weight:bold;">build</span>: <span style="color:#808997;">Build application. Type "build --help" to learn more.</span></code></pre>
 
 **Run:**
 
@@ -700,7 +763,7 @@ ls: ## custom ls
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">ls</span>: <span style="color:#808997;">custom ls</span></code></pre>
+✅ <span style="color:#C9E2AF;font-weight:bold;">ls</span>: <span style="color:#808997;">custom ls. Type "ls --help" to learn more.</span></code></pre>
 
 **Run:**
 
@@ -755,8 +818,8 @@ which: ## custom which
 **Activate your defined commands:**
 
   <pre><code class="language-sh">$ commands
-✅ <span style="color:#C9E2AF;font-weight:bold;">test</span>: <span style="color:#808997;">custom test</span>
-✅ <span style="color:#C9E2AF;font-weight:bold;">which</span>: <span style="color:#808997;">custom which</span></code></pre>
+✅ <span style="color:#C9E2AF;font-weight:bold;">test</span>: <span style="color:#808997;">custom test. Type "test --help" to learn more.</span>
+✅ <span style="color:#C9E2AF;font-weight:bold;">which</span>: <span style="color:#808997;">custom which. Type "which --help" to learn more.</span></code></pre>
 
 **Run:**
 
