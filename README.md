@@ -549,7 +549,7 @@ build: ## Build for platform
     echo "Building for {platform}"
   params:
     optional:
-      - required: '-p, --platform'
+      - platform: '-p, --platform'
         values: [ios, android, web]
 ```
 
