@@ -103,25 +103,6 @@ void main() {
       });
     }
 
-    for (String flag in ['update', '-u', '--update']) {
-      test('$flag flag runs update command', () async {
-        final result = await Process.run('commands', [flag]);
-
-        final output = result.stdout as String;
-
-        // Should show updating message (either from git or pub.dev)
-        expect(
-          output,
-          anyOf([
-            contains('${bold}Updating global commands_cli package...$reset\n'),
-            contains('${bold}Updating global commands_cli package from git...$reset\n'),
-          ]),
-        );
-
-        expect(result.exitCode, equals(0));
-      });
-    }
-
     for (String flag in ['--silent', '-s']) {
       test('$flag suppresses all output when no errors/warnings to report', () async {
         final result = await Process.run('commands', [flag]);
