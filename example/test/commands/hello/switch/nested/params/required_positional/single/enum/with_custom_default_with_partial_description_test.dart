@@ -49,6 +49,7 @@ void main() {
           equals('''
 
 Select value for ${blue}name$reset:
+${gray}Description of parameter name$reset
 
     ${green}1. Alpha   ✓$reset
     2. Bravo    

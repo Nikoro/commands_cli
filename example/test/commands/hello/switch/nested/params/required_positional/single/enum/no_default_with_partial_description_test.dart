@@ -57,6 +57,7 @@ ${gray}Press number (1-3) or press Esc to cancel:$reset
           equals('''
 
 Select value for ${blue}name$reset:
+${gray}Description of parameter name$reset
 
     ${green}1. Alpha   ✓$reset
     2. Bravo    
