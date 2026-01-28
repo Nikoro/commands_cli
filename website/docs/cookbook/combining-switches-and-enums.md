@@ -6,12 +6,12 @@ sidebar_label: 'Combining Switches and Enums'
 
 You can combine switches and enums to create very powerful and flexible commands.
 
-Here is an example of a `test` command that uses a switch to select between `unit` and `integration` tests, and an enum to select the platform to run the tests on.
+Here is an example of a `tests` command that uses a switch to select between `unit` and `integration` tests, and an enum to select the platform to run the tests on.
 
 ```yaml
 # commands.yaml
 
-test: ## Run tests
+tests: ## Run tests
   switch:
     - unit: ## Run unit tests
       script: |
@@ -33,20 +33,20 @@ test: ## Run tests
 
 ## Running the command
 
-You can now run the `test` command with different combinations of switches and enums.
+You can now run the `tests` command with different combinations of switches and enums.
 
 ```sh
-$ test unit
+$ tests unit
 Running unit tests on vm
 
-$ test unit -p chrome
+$ tests unit -p chrome
 Running unit tests on chrome
 ```
 
 If you run `test integration` without a platform, it will show the interactive picker for the `platform` enum.
 
 ```sh
-$ test integration
+$ tests integration
 
 Select value for platform:
 

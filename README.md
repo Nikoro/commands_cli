@@ -64,7 +64,7 @@ While `Makefile` is a powerful and widely used tool, [`commands_cli`](https://pu
     $ tell 
     ❌ Missing required positional param: <span style="color:#FFB3B3;font-weight:bold;">message</span></code></pre>
     
-*   **Strong Type System:** Unlike Makefile's string-based approach, [`commands_cli`](https://pub.dev/packages/commands_cli) supports a powerful type system with **int**, **double**, **boolean**, and **enum** types. This provides built-in validation, preventing common errors and making your commands more robust.
+*   **Strong Type System:** Unlike Makefile's string-based approach, [`commands_cli`](https://pub.dev/packages/commands_cli) supports a powerful type system with **string**, **boolean**, **integer**, **double**, **number**, and **enum** types. This provides built-in validation, preventing common errors and making your commands more robust.
 
     ```yaml
     # commands.yaml
@@ -82,7 +82,7 @@ While `Makefile` is a powerful and widely used tool, [`commands_cli`](https://pu
 
     $ deploy -r abc
     ❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">replicas</span></span> expects an <span style="color:#808997;">[integer]</span>
-       Got: "abc" <span style="color:#808997;">[string]</span></code></pre>
+       Got: abc <span style="color:#808997;">[string]</span></code></pre>
 
 *   **Built-in Interactive Pickers:** When you define enum parameters or switch commands without defaults, [`commands_cli`](https://pub.dev/packages/commands_cli) automatically presents a beautiful interactive menu. No need to parse input manually or write custom prompts—it's all handled for you.
 
@@ -384,21 +384,56 @@ No issues found!
 
 [`commands_cli`](https://pub.dev/packages/commands_cli) supports a powerful type system for parameters, allowing you to define explicit types and constrain values for better validation and user experience.
 
-#### Numeric Types
+#### Supported Types
 
-You can explicitly specify `int` or `double` types for numeric parameters:
+| Type | Aliases | Description |
+|------|---------|-------------|
+| `string` | - | Text values (default if not specified) |
+| `boolean` | `bool` | Boolean values (`true` or `false`) |
+| `integer` | `int` | Whole numbers (no decimal point allowed) |
+| `double` | - | Decimal numbers (must include decimal point) |
+| `number` | `num` | Any numeric value (integer or decimal) |
+
+#### Integer Type
+
+The `integer` type (or `int`) accepts only whole numbers. Values with decimal points are rejected.
 
 ```yaml
 # commands.yaml
 
 deploy: ## Deploy application
-  script: |
-    echo "Deploying to port {port} with timeout {timeout}s"
+  script: echo "Deploying to port {port}"
   params:
     optional:
       - port: '-p, --port'
         type: int
         default: 3000
+```
+
+**Run:**
+
+<pre><code class="language-sh">$ deploy -p 8080
+Deploying to port 8080
+
+$ deploy -p 3.14
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">port</span></span> expects an <span style="color:#808997;">[integer]</span>
+   Got: 3.14 <span style="color:#808997;">[double]</span>
+
+$ deploy -p abc
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">port</span></span> expects an <span style="color:#808997;">[integer]</span>
+   Got: abc <span style="color:#808997;">[string]</span></code></pre>
+
+#### Double Type
+
+The `double` type accepts only decimal numbers. The value **must** include a decimal point.
+
+```yaml
+# commands.yaml
+
+configure: ## Configure timeout
+  script: echo "Timeout set to {timeout}s"
+  params:
+    optional:
       - timeout: '-t, --timeout'
         type: double
         default: 30.5
@@ -406,16 +441,43 @@ deploy: ## Deploy application
 
 **Run:**
 
-<pre><code class="language-sh">$ deploy -p 8080 -t 60.0
-Deploying to port 8080 with timeout 60.0s
+<pre><code class="language-sh">$ configure -t 60.0
+Timeout set to 60.0s
 
-$ deploy -p abc
-❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">port</span></span> expects an <span style="color:#808997;">[integer]</span>
-   Got: "abc" <span style="color:#808997;">[string]</span></code></pre>
+$ configure -t 1
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">timeout</span></span> expects a <span style="color:#808997;">[double]</span>
+   Got: 1 <span style="color:#808997;">[integer]</span></code></pre>
 
-#### Boolean Flags
+#### Number Type
 
-Boolean parameters can be toggled on/off:
+The `number` type (or `num`) accepts both integers and decimals - any numeric value.
+
+```yaml
+# commands.yaml
+
+calculate: ## Calculate with value
+  script: echo "Value is {value}"
+  params:
+    optional:
+      - value: '-v, --value'
+        type: number
+```
+
+**Run:**
+
+<pre><code class="language-sh">$ calculate -v 42
+Value is 42
+
+$ calculate -v 3.14
+Value is 3.14
+
+$ calculate -v abc
+❌ Parameter <span style="font-weight:bold;"><span style="color:#FFB3B3;">value</span></span> expects a <span style="color:#808997;">[number]</span>
+   Got: abc <span style="color:#808997;">[string]</span></code></pre>
+
+#### Boolean Type
+
+The `boolean` type (or `bool`) accepts only `true` or `false` values. When used as a flag without a value, it toggles the default.
 
 ```yaml
 # commands.yaml
@@ -426,8 +488,10 @@ build: ## Build with options
   params:
     optional:
       - verbose: '-v, --verbose'
+        type: boolean
         default: false
       - debug: '-d, --debug'
+        type: boolean
         default: true
 ```
 
