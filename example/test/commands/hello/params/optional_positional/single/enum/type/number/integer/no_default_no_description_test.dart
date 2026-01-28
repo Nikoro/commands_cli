@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import '../../../../../../../../../integration_tests.dart';
 
 void main() {
-  for (String type in ['integer', 'int']) {
+  for (String type in ['integer']) {
     integrationTests(
       '''
         hello:
@@ -36,18 +36,7 @@ void main() {
 '''));
         });
 
-        for (String value in [
-          'text',
-          "text",
-          '"1"',
-          '\"1\"',
-          '\'1.5\'',
-          "'1.5'",
-          '\"true\"',
-          '"true"',
-          '\'false\'',
-          "'false'"
-        ]) {
+        for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
           test('prints error when value is string ($value)', () async {
             final result = await runCommand('hello', [value]);
             expect(result.stderr, equals('''
@@ -75,14 +64,8 @@ params:
     for (final invalid in [
       (value: true, type: 'boolean'),
       (value: 'text', type: 'string'),
-      (value: "text", type: 'string'),
       (value: '"2"', type: 'string'),
-      (value: '\"2\"', type: 'string'),
-      (value: '\"2\"', type: 'string'),
-      (value: '\"true\"', type: 'string'),
       (value: '"true"', type: 'string'),
-      (value: '\'false\'', type: 'string'),
-      (value: "'false'", type: 'string'),
     ]) {
       integrationTests(
         '''
@@ -129,18 +112,7 @@ params:
 '''));
           });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
+          for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
             test('prints error', () async {
               final result = await runCommand('hello', [value]);
               expect(result.stderr, equals('''

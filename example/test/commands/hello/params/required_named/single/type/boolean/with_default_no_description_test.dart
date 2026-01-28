@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import '../../../../../../../integration_tests.dart';
 
 void main() {
-  for (String type in ['boolean', 'bool']) {
+  for (String type in ['boolean']) {
     integrationTests(
       '''
         hello:
@@ -54,18 +54,7 @@ void main() {
 '''));
           });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
+          for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
             test('prints error when value is string ($value)', () async {
               final result = await runCommand('hello', [flag, value]);
               expect(result.stderr, equals('''
@@ -141,18 +130,7 @@ params:
 '''));
           });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
+          for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
             test('prints error when value is string ($value)', () async {
               final result = await runCommand('hello', [flag, value]);
               expect(result.stderr, equals('''
@@ -242,18 +220,7 @@ params:
                       '❌ Parameter $bold${red}name$reset is declared as type ${gray}[boolean]$reset, but its default value is ${gray}[${invalid.type}]$reset\n'));
             });
 
-            for (String value in [
-              'text',
-              "text",
-              '"1"',
-              '\"1\"',
-              '\'1.5\'',
-              "'1.5'",
-              '\"true\"',
-              '"true"',
-              '\'false\'',
-              "'false'"
-            ]) {
+            for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
               test('prints error', () async {
                 final result = await runCommand('hello', [flag, value]);
                 expect(

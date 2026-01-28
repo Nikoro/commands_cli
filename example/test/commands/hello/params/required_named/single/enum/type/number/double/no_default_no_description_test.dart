@@ -54,18 +54,7 @@ ${gray}Press number (1-2) or press Esc to cancel:$reset
 '''));
         });
 
-        for (String value in [
-          'text',
-          "text",
-          '"1"',
-          '\"1\"',
-          '\'1.5\'',
-          "'1.5'",
-          '\"true\"',
-          '"true"',
-          '\'false\'',
-          "'false'"
-        ]) {
+        for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
           test('prints error when value is string ($value)', () async {
             final result = await runCommand('hello', [flag, value]);
             expect(result.stderr, equals('''

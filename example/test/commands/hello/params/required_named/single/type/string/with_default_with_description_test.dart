@@ -98,18 +98,7 @@ params:
                     '❌ Parameter $bold${red}name$reset is declared as type ${gray}[string]$reset, but its default value is ${gray}[${invalid.type}]$reset\n'));
           });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
+          for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
             test('prints error', () async {
               final result = await runCommand('hello', [flag, value]);
               expect(

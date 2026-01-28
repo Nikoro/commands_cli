@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
-      
+
       - name: Install dependencies
         run: dart pub get --no-example
       
@@ -47,7 +47,7 @@ jobs:
 
       - name: Integration tests
         working-directory: example
-        run: dart test --reporter compact --concurrency=1 --fail-fast
+        run: dart test --reporter compact --fail-fast
       
       - name: Dry run publish
         run: dart pub publish --dry-run

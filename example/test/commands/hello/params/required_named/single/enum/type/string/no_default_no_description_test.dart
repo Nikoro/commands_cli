@@ -148,18 +148,7 @@ params:
 '''));
           });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
+          for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
             test('prints error', () async {
               final result = await runCommand('hello', [flag, value]);
               expect(result.stderr, equals('''

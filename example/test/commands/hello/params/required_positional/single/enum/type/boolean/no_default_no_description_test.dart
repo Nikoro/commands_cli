@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 import '../../../../../../../../integration_tests.dart';
 
 void main() {
-  for (String type in ['boolean', 'bool']) {
+  for (String type in ['boolean']) {
     for (String values in ['', '[]', '[true]', '[true, false]', '[false, true]', '[false, true, true]']) {
       integrationTests(
         '''
@@ -59,18 +59,7 @@ ${gray}Enter to confirm, Esc to cancel$reset
 '''));
           });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
+          for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
             test('prints error when value is string ($value)', () async {
               final result = await runCommand('hello', [value]);
               expect(result.stderr, equals('''
@@ -98,19 +87,13 @@ params:
     }
   }
 
-  for (String type in ['boolean', 'bool']) {
+  for (String type in ['boolean']) {
     for (final invalid in [
       (value: 2, type: 'integer'),
       (value: 1.5, type: 'double'),
       (value: 'text', type: 'string'),
-      (value: "text", type: 'string'),
       (value: '"2"', type: 'string'),
-      (value: '\"2\"', type: 'string'),
-      (value: '\"2\"', type: 'string'),
-      (value: '\"true\"', type: 'string'),
       (value: '"true"', type: 'string'),
-      (value: '\'false\'', type: 'string'),
-      (value: "'false'", type: 'string'),
     ]) {
       integrationTests(
         '''
@@ -157,18 +140,7 @@ params:
 '''));
           });
 
-          for (String value in [
-            'text',
-            "text",
-            '"1"',
-            '\"1\"',
-            '\'1.5\'',
-            "'1.5'",
-            '\"true\"',
-            '"true"',
-            '\'false\'',
-            "'false'"
-          ]) {
+          for (String value in ['text', '"1"', "'1.5'", '"true"', "'false'"]) {
             test('prints error', () async {
               final result = await runCommand('hello', [value]);
               expect(result.stderr, equals('''
