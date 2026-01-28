@@ -14,10 +14,7 @@ function HomepageHeader() {
           alt="Commands CLI Logo"
           style={{ height: '160px', marginBottom: '1rem' }}
         />
-        <p
-          className="hero__subtitle"
-          style={{ color: '#025597' }}
-        >
+        <p className="hero__subtitle">
           <span className={styles.tagline}>{siteConfig.tagline}</span>
         </p>
         <div>
@@ -25,7 +22,7 @@ function HomepageHeader() {
         </div>
         <div className={styles.buttons}>
           <Link
-            className={"button " + styles.getStartedButton}
+            className={`button ${styles.getStartedButton}`}
             to="/docs/getting-started/installation">
             Get Started
           </Link>
