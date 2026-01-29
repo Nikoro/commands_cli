@@ -1,3 +1,45 @@
+## 0.4.0 - 2026-01-28
+
+### Added
+- Typed parameter support with `integer` type (`int` alias) and strict validation
+- Typed parameter support with `number` type (`num` alias) for numeric values
+- Typed parameter support with `double` type for floating-point values
+- Typed parameter support with `boolean` type (`bool` alias) with improved validation
+- Specialized `BooleanPicker` for boolean type parameters with interactive selection
+- Typed enum validation for parameters with explicit type specification
+- Support for `values:` without brackets for boolean params
+- Default values now styled with bold orange instead of wrapped in quotes
+- Docusaurus documentation website with GitHub Pages deployment
+
+### Changed
+- Removed type inference - explicit type specification now required
+- Improved enum validation error messages with single-line output
+- Alternative switch names now formatted as `or <alias1>, <alias2>` instead of `or: [aliases]`
+- Report all missing positional params together including enums
+- Include enum values and param descriptions in switch help output
+- Optimized integration test suite performance
+
+### Fixed
+- Accept any valid boolean when type is explicitly boolean
+- Show type-specific errors for boolean-typed enums
+- Use strict integer validation for enum values and defaults
+- Use strict double validation for typed enum values
+- Use correct article 'an' for integer type in error messages
+- Strip quotes from enum string values for validation and display
+- Strip quotes from enum values in interactive picker
+- Preserve param order in missing params error
+- Check missing params before showing enum picker
+- Check params+switch conflict before script+switch
+- Include all command names in padding calculation
+- Validate default values at runtime for typed parameters
+- Handle type aliases (num, int, bool) in runtime validation
+- Support param description without colon
+- Exit params context when encountering switch keyword
+- Finalize param immediately after values are processed
+- Handle numeric equivalence in enum value validation
+- Store validation errors instead of exit(1) during activation
+
+---
 ## 0.3.2 - 2025-12-15
 
 ### Fixed
