@@ -1,3 +1,9 @@
+## 0.4.1 - 2026-01-29
+
+### Fixed
+- Version checker now correctly fetches latest version from pub.dev API
+
+---
 ## 0.4.0 - 2026-01-28
 
 ### Added
