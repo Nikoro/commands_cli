@@ -47,26 +47,19 @@ Future<VersionCheckResult?> checkForUpdate(String currentVersion) async {
 Future<VersionCheckResult?> _checkPubDev(String currentVersion) async {
   try {
     final result = await Process.run(
-      'dart',
-      ['pub', 'search', 'commands_cli', '--format', 'json'],
+      'curl',
+      ['-s', 'https://pub.dev/api/packages/commands_cli'],
       runInShell: true,
     );
 
     if (result.exitCode != 0) return null;
 
     final jsonOutput = jsonDecode(result.stdout.toString());
-    final packages = jsonOutput['packages'] as List?;
+    final latest = jsonOutput['latest'] as Map<String, dynamic>?;
 
-    if (packages == null || packages.isEmpty) return null;
+    if (latest == null) return null;
 
-    final commandsCliPackage = packages.firstWhere(
-      (pkg) => pkg['package'] == 'commands_cli',
-      orElse: () => null,
-    );
-
-    if (commandsCliPackage == null) return null;
-
-    final latestVersion = commandsCliPackage['version'] as String?;
+    final latestVersion = latest['version'] as String?;
 
     return VersionCheckResult(
       currentVersion: currentVersion,
