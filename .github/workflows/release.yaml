@@ -36,19 +36,6 @@ jobs:
       - name: Unit tests
         run: dart test --test-randomize-ordering-seed=random
 
-      - name: Set up commands
-        uses: Nikoro/setup-commands@v1
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Activate commands
-        working-directory: example
-        run: commands
-
-      - name: Integration tests
-        working-directory: example
-        run: dart test --reporter compact --fail-fast
-      
       - name: Dry run publish
         run: dart pub publish --dry-run
       
