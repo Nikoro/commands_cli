@@ -1,3 +1,9 @@
+## 0.4.2 - 2026-02-05
+
+### Fixed
+- Suppress warmup progress output when `--silent` flag is used
+
+---
 ## 0.4.1 - 2026-01-29
 
 ### Fixed
